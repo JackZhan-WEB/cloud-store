@@ -1,0 +1,28 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://eureka7001.com:7001/eureka #,http://eureka7002.com:7002/eureka,http://eureka7003.com:7003/eureka
+    instance:
+        instance-id: gateway-9527.com
+        prefer-ip-address: true
+info:
+    aa: ${spring.datasource.url}
+    app:
+        name: jackzhan-cloud-store
+    build:
+        artifactId: $project.artifactId$
+        version: ${project.version}
+    company:
+        name: self.yun888.xyz:2181
+server:
+    port: 9527
+spring:
+    application:
+        name: cloud-store-zuul-gateway
+zuul:
+    ignored-services: '*'
+    prefix: /jackzhan
+    routes:
+        mydept:
+            path: /mydept/**
+            serviceId: cloud-store-dept

@@ -1,0 +1,28 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://eureka7001.com:7001/eureka/ #,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+    instance:
+        instance-id: cloud-store-admin
+        prefer-ip-address: true
+
+info:
+    app:
+        name: jackzhan-cloud-store
+    build:
+        artifactId: $project.artifactId$
+        version: ${project.version}
+    company:
+        name: self.yun888.xyz:2181
+
+
+#feign:
+#    hystrix:
+#        enabled: true
+
+server:
+    port: 8002
+
+spring:
+    application:
+        name: cloud-store-admin

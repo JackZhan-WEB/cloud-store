@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.jackzhan.cloudstore.mapper.MemberMapper">
+  <resultMap id="BaseResultMap" type="club.jackzhan.cloudstore.module.entities.Member">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="pwd_err_count" jdbcType="BIT" property="pwdErrCount" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="phone_code" jdbcType="VARCHAR" property="phoneCode" />
+    <result column="phone_code_time" jdbcType="TIMESTAMP" property="phoneCodeTime" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="state" jdbcType="BIT" property="state" />
+    <result column="type" jdbcType="BIT" property="type" />
+    <result column="head_img" jdbcType="VARCHAR" property="headImg" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state_change_time" jdbcType="TIMESTAMP" property="stateChangeTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="login_count" jdbcType="BIGINT" property="loginCount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, username, `password`, salt, pwd_err_count, nickname, phone, phone_code, phone_code_time, 
+    email, `state`, `type`, head_img, create_time, update_time, state_change_time, last_login_time, 
+    login_count
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from member
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from member
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="club.jackzhan.cloudstore.module.entities.Member">
+    <!--@mbg.generated-->
+    insert into member (id, username, `password`, 
+      salt, pwd_err_count, nickname, 
+      phone, phone_code, phone_code_time, 
+      email, `state`, `type`, head_img, 
+      create_time, update_time, state_change_time, 
+      last_login_time, login_count)
+    values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{salt,jdbcType=VARCHAR}, #{pwdErrCount,jdbcType=BIT}, #{nickname,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{phoneCode,jdbcType=VARCHAR}, #{phoneCodeTime,jdbcType=TIMESTAMP}, 
+      #{email,jdbcType=VARCHAR}, #{state,jdbcType=BIT}, #{type,jdbcType=BIT}, #{headImg,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{stateChangeTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginTime,jdbcType=TIMESTAMP}, #{loginCount,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="club.jackzhan.cloudstore.module.entities.Member">
+    <!--@mbg.generated-->
+    insert into member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="pwdErrCount != null">
+        pwd_err_count,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="phoneCode != null">
+        phone_code,
+      </if>
+      <if test="phoneCodeTime != null">
+        phone_code_time,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="state != null">
+        `state`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="headImg != null">
+        head_img,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="stateChangeTime != null">
+        state_change_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="loginCount != null">
+        login_count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdErrCount != null">
+        #{pwdErrCount,jdbcType=BIT},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCode != null">
+        #{phoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCodeTime != null">
+        #{phoneCodeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=BIT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=BIT},
+      </if>
+      <if test="headImg != null">
+        #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stateChangeTime != null">
+        #{stateChangeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginCount != null">
+        #{loginCount,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="club.jackzhan.cloudstore.module.entities.Member">
+    <!--@mbg.generated-->
+    update member
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdErrCount != null">
+        pwd_err_count = #{pwdErrCount,jdbcType=BIT},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCode != null">
+        phone_code = #{phoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCodeTime != null">
+        phone_code_time = #{phoneCodeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        `state` = #{state,jdbcType=BIT},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=BIT},
+      </if>
+      <if test="headImg != null">
+        head_img = #{headImg,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stateChangeTime != null">
+        state_change_time = #{stateChangeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginCount != null">
+        login_count = #{loginCount,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="club.jackzhan.cloudstore.module.entities.Member">
+    <!--@mbg.generated-->
+    update member
+    set username = #{username,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      pwd_err_count = #{pwdErrCount,jdbcType=BIT},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      phone_code = #{phoneCode,jdbcType=VARCHAR},
+      phone_code_time = #{phoneCodeTime,jdbcType=TIMESTAMP},
+      email = #{email,jdbcType=VARCHAR},
+      `state` = #{state,jdbcType=BIT},
+      `type` = #{type,jdbcType=BIT},
+      head_img = #{headImg,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      state_change_time = #{stateChangeTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      login_count = #{loginCount,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2019-04-18-->
+  <select id="getMember" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from member
+    where (username=#{loginName,jdbcType=VARCHAR} or phone=#{loginName,jdbcType=VARCHAR})
+  </select>
+
+
+</mapper>

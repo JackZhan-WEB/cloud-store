@@ -1,0 +1,37 @@
+eureka:
+    client:
+        service-url:
+            defaultZone: http://eureka7001.com:7001/eureka/ #,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+    instance:
+        instance-id: cloud-store-member
+        prefer-ip-address: true
+info:
+    app:
+        name: jackzhan-cloud-store
+    build:
+        artifactId: $project.artifactId$
+        version: ${project.version}
+    company:
+        name: self.yun888.xyz:2181
+mybatis:
+    config-location: classpath:mybatis/mybatis.cfg.xml
+    mapper-locations: classpath:mybatis/mapper/**/*.xml
+    type-aliases-package: club.jackzhan.cloudstore.entities
+server:
+    port: 8001
+spring:
+    application:
+        name: cloud-store-member
+    datasource:
+        url: jdbc:mysql://localhost:3306/cloud-store-member
+        type: com.alibaba.druid.pool.DruidDataSource
+        username: root
+        password: admin
+logging:
+  level:
+    club:
+      jackzhan:
+        cloudstore:
+          mapper:
+            debug
+
