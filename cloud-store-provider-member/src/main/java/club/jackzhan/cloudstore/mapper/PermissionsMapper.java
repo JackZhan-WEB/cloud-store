@@ -4,6 +4,7 @@ import club.jackzhan.cloudstore.module.entities.Permissions;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,5 +26,5 @@ public interface PermissionsMapper {
 
     int updateByPrimaryKey(Permissions record);
 
-    List<Permissions> getByRoleId(@Param("roleId") Integer roleId);
+    List<Permissions> getByRoleIds(@Param("roleIds") String roleIds);
 }

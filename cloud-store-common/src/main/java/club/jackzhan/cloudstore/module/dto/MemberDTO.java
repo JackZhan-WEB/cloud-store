@@ -3,6 +3,7 @@ package club.jackzhan.cloudstore.module.dto;
 import club.jackzhan.cloudstore.module.entities.Permissions;
 import club.jackzhan.cloudstore.module.entities.Role;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,10 +17,12 @@ import java.util.List;
  * @Author: JackZhan
  */
 @Data
+@Accessors(chain = true)
 public class MemberDTO implements Serializable {
 
     private List<RoleDTO> roles = new ArrayList<>();
-
+    private List<PermissionsDTO> permissions = new ArrayList<>();
+    private List<MenuDTO> menus = new ArrayList<>();
     /**
     * 用户标识id
     */
@@ -109,6 +112,7 @@ public class MemberDTO implements Serializable {
     * 登录次数
     */
     private Integer loginCount;
+
 
     private static final long serialVersionUID = 1L;
 }
