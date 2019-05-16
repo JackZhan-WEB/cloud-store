@@ -139,10 +139,10 @@
       update_user = #{updateUser,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <select id="getByRoleId" resultMap="BaseResultMap">
+    <select id="getByRoleIds" resultMap="BaseResultMap">
       select
         <include refid="Base_Column_List"/>
       from permissions p JOIN role_permissions rp on p.id = rp.permissions_id
-      where rp.role_id = #{roleId,jdbcType=INTEGER}
+      where rp.role_id in (#{roleIds})
     </select>
 </mapper>

@@ -14,9 +14,11 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +32,8 @@ import java.util.Map;
 @Slf4j
 public class MyRealm extends AuthorizingRealm {
 
-
-    private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER";
-    @Resource
-    private RestTemplate restTemplate;
+    @Autowired
+    private RemoteCallUtil remoteCallUtil;
 
     /**
      * 认证
@@ -45,7 +45,9 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        ResultResponse memberResponse = restTemplate.getForEntity(MEMBER_REST_URL_PREFIX + "/member/getMember?loginName={loginName}", ResultResponse.class, token.getUsername()).getBody();
+        Map<String, Object> map = new HashMap<>();
+        map.put("loginName",token.getUsername());
+        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/getMember", map);
         MemberDTO memberDTO = null;
         try {
             memberDTO = BeanUtils.json2Bean((String) memberResponse.getData(), MemberDTO.class);
@@ -55,7 +57,7 @@ public class MyRealm extends AuthorizingRealm {
         if (memberDTO == null) {
             return null;
         }
-        log.info("doGetAuthenticationInfo");
+        log.info("==开始认证==");
         //session中不需要保存密码
 //        memberDTO.setPassword("");
         //将用户信息放入session中
@@ -83,7 +85,7 @@ public class MyRealm extends AuthorizingRealm {
                 info.addStringPermission(p.getName());
             }
         }
-        log.info("doGetAuthorizationInfo");
+        log.info("==开始授权==");
         return info;
     }
 

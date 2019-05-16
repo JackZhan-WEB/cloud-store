@@ -2,28 +2,17 @@ package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
-import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
-import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.ResultResponse;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.client.RestTemplate;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author: hxy

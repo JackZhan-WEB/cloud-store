@@ -21,4 +21,9 @@ public class ConfigBeans {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
+    @Bean
+    public RemoteCallUtil remoteCallUtil() {
+        return new RemoteCallUtil();
+    }
 }

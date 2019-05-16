@@ -82,6 +82,7 @@
   </div>
 </template>
 <script>
+  import * as memberService from '@/api/member/member'
   import {mapGetters} from 'vuex'
 
   export default {
@@ -133,14 +134,12 @@
       getList() {
         //查询列表
         this.listLoading = true;
-        this.api({
-          url: "/user/list",
-          method: "get",
-          params: this.listQuery
-        }).then(data => {
+        memberService.getList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = data.list;
-          this.totalCount = data.totalCount;
+          this.list = response.list;
+          this.totalCount = response.totalCount;
+          console.log(response);
+
         })
       },
       handleSizeChange(val) {
