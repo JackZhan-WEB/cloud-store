@@ -9,19 +9,13 @@ eureka:
 info:
     app:
         name: jackzhan-cloud-store
-    build:
-        artifactId: $project.artifactId$
-        version: ${project.version}
-    company:
-        name: self.yun888.xyz:2181
-
 
 #feign:
 #    hystrix:
 #        enabled: true
 
 server:
-    port: 8002
+    port: 9992
 
 spring:
     application:

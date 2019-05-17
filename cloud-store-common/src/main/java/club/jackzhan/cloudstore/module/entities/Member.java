@@ -68,7 +68,7 @@ public class Member implements Serializable {
     private Integer state;
 
     /**
-    * 用户类型 1：管理员 2：普通用户 3：VIP用户
+    * 用户类型 1：管理员 2：后台管理人员 3：普通用户 4：VIP用户
     */
     private Integer type;
 

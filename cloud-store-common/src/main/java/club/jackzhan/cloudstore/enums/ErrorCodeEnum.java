@@ -11,13 +11,13 @@ import lombok.Getter;
  */
 public enum ErrorCodeEnum implements BaseEnum<Integer> {
     //正常
-    NORMAL(0,"正常"),
+    NORMAL(0,"调用成功"),
     //用户信息查询失败
     MEMBER_INFO_ERROR(1,"用户信息查询失败"),
 
-    MEMBER_SESSION_TIME_OUT(2, "登陆已过期,请重新登陆"),
+    MEMBER_SESSION_TIME_OUT(2, "登陆已过期，请重新登陆"),
     //业务异常
-    SERVICE_ERROR(9999,"业务异常");
+    SERVICE_ERROR(9999,"业务异常，请稍候重试");
 
 
 

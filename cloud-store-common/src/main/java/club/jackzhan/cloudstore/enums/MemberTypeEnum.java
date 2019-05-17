@@ -5,14 +5,15 @@ import lombok.Getter;
 /**
  * Created with IntelliJ IDEA.
  * Description:
- * User: JackZhan
  * Date: 2019-01-12
  * Time: 15:41
+ * @author JackZhan
  */
-public enum UserStateEnum implements BaseEnum {
-    NORMAL(0, "正常"),
-    DISABLE(1, "禁用"),
-    DELETE(9999, "注销");
+public enum MemberTypeEnum implements BaseEnum {
+    ADMIN(1, "管理员"),
+    MANAGER(2, "后台管理人员"),
+    MEMBER(3, "普通用户"),
+    VIP_MEMBER(4, "VIP用户");
 
 
     @Getter
@@ -20,7 +21,7 @@ public enum UserStateEnum implements BaseEnum {
     @Getter
     private String desc;
 
-    UserStateEnum(Integer code, String desc) {
+    MemberTypeEnum(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }

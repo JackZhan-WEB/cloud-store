@@ -9,11 +9,6 @@ info:
     aa: ${spring.datasource.url}
     app:
         name: jackzhan-cloud-store
-    build:
-        artifactId: $project.artifactId$
-        version: ${project.version}
-    company:
-        name: self.yun888.xyz:2181
 server:
     port: 9527
 spring:

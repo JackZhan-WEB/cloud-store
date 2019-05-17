@@ -1,4 +1,6 @@
 import {asyncRouterMap, constantRouterMap} from '@/router/index'
+import store from "../index";
+import {Message} from 'element-ui'
 
 /**
  * 判断用户是否拥有此菜单
@@ -54,6 +56,20 @@ const permission = {
       return new Promise(resolve => {
         //roles是后台传过来的角色数组,比如['管理员','文章']
         const roles = userPermission.roles;
+        if(roles.length === 0){
+          Message({
+            showClose: true,
+            message: '该账号未绑定角色，联系管理员绑定角色后再尝试登陆！',
+            type: 'error',
+            duration: 3000,
+            onClose: () => {
+              store.dispatch('FedLogOut').then(() => {
+                location.reload()// 为了重新实例化vue-router对象 避免bug
+              })
+            }
+          });
+          return Promise.reject("该账号未绑定角色")
+        }
         const menus = userPermission.menus;
         let adminFlag = false;
         //声明 该角色可用的路由

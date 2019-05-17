@@ -27,8 +27,6 @@ public class RemoteCallUtil {
     private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER";
 
     public ResultResponse sendGet(String path, Map<String, Object> params) {
-
-
         StringBuilder sb = new StringBuilder(50);
         sb.append("?");
         params.keySet().forEach(e -> {

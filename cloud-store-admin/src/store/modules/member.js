@@ -4,7 +4,7 @@ import {default as api} from '../../utils/api'
 import store from '../../store'
 import router from '../../router'
 
-const user = {
+const member = {
   state: {
     username: "",
     memberId: "",
@@ -15,7 +15,6 @@ const user = {
   },
   mutations: {
     SET_USER: (state, userInfo) => {
-      console.log(userInfo);
       state.username = userInfo.username;
       state.memberId = userInfo.id;
       state.role = userInfo.roles;
@@ -80,11 +79,11 @@ const user = {
           url: "login/logout",
           method: "post"
         }).then(data => {
-          commit('RESET_USER')
-          removeToken()
+          commit('RESET_USER');
+          removeToken();
           resolve(data);
         }).catch(() => {
-          commit('RESET_USER')
+          commit('RESET_USER');
           removeToken()
         })
       })
@@ -92,11 +91,11 @@ const user = {
     // 前端 登出
     FedLogOut({commit}) {
       return new Promise(resolve => {
-        commit('RESET_USER')
-        removeToken()
+        commit('RESET_USER');
+        removeToken();
         resolve()
       })
     }
   }
-}
-export default user
+};
+export default member

@@ -1,6 +1,8 @@
 package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.constant.Constants;
+import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
+import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
@@ -51,6 +53,9 @@ public class LoginServiceImpl implements LoginService {
 		//从session获取用户信息
 		Session session = SecurityUtils.getSubject().getSession();
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(Constants.MEMBER_IN_SESSION);
+		if(memberDTO == null){
+			return ResultResponse.failure(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);
+		}
 //		List<RoleDTO> roles = memberDTO.getRoles();
 //		session.setAttribute(Constants.MEMBER_ROLE_IN_SESSION, roles);
 //		List<PermissionsDTO> list = new ArrayList<>();

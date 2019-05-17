@@ -16,10 +16,10 @@ import java.io.Serializable;
 @Data
 public class ResultResponse<T> implements Serializable {
 
-    public final static Integer SUCCESS_CODE = ErrorCodeEnum.NORMAL.getCode();
-    public final static String DEFAULT_SUCCESS_MESSAGE = "调用成功";
-    public final static Integer FAILURE_CODE = ErrorCodeEnum.SERVICE_ERROR.getCode();
-    public final static String DEFAULT_FAILURE_MESSAGE = "业务异常,请稍候重试";
+    public final static Integer DEFAULT_SUCCESS_CODE = ErrorCodeEnum.NORMAL.getCode();
+    public final static String DEFAULT_SUCCESS_MESSAGE = ErrorCodeEnum.NORMAL.getDesc();
+    public final static Integer DEFAULT_FAILURE_CODE = ErrorCodeEnum.SERVICE_ERROR.getCode();
+    public final static String DEFAULT_FAILURE_MESSAGE = ErrorCodeEnum.SERVICE_ERROR.getDesc();
 
     private T data;
 
@@ -27,7 +27,7 @@ public class ResultResponse<T> implements Serializable {
 
     private Boolean state;
 
-    private Integer code = SUCCESS_CODE;
+    private Integer code = DEFAULT_SUCCESS_CODE;
 
     public void setErrorInfo(ErrorCodeEnum e) {
         this.setCode(e.getCode());
@@ -66,18 +66,14 @@ public class ResultResponse<T> implements Serializable {
     }
 
     public static <T> ResultResponse failure(String message) {
-        return ResultResponse.failure(message, FAILURE_CODE);
+        return ResultResponse.failure(message, DEFAULT_FAILURE_CODE);
     }
 
-    public static <T> ResultResponse failure(T data) {
-        return ResultResponse.failure(data, DEFAULT_FAILURE_MESSAGE, FAILURE_CODE);
+    public static <T> ResultResponse failure(ErrorCodeEnum codeEnum) {
+        return ResultResponse.failure(codeEnum.getDesc(), codeEnum.getCode());
     }
 
     public static <T> ResultResponse failure(String message, Integer code) {
-        return ResultResponse.failure(null, message, code);
-    }
-
-    public static <T> ResultResponse failure(T data, String message, Integer code) {
         ResultResponse<T> response = new ResultResponse<>();
         response.setMsg(message);
         response.setCode(code);

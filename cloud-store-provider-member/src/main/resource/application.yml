@@ -8,17 +8,12 @@ eureka:
 info:
     app:
         name: jackzhan-cloud-store
-    build:
-        artifactId: $project.artifactId$
-        version: ${project.version}
-    company:
-        name: self.yun888.xyz:2181
 mybatis:
     config-location: classpath:mybatis/mybatis.cfg.xml
     mapper-locations: classpath:mybatis/mapper/**/*.xml
     type-aliases-package: club.jackzhan.cloudstore.entities
 server:
-    port: 8001
+    port: 9991
 spring:
     application:
         name: cloud-store-member

@@ -17,14 +17,14 @@ const app = {
       state.sidebar.opened = !state.sidebar.opened
     },
     ADD_VISITED_VIEWS: (state, view) => {
-      if (state.visitedViews.some(v => v.path === view.path)) return
+      if (state.visitedViews.some(v => v.path === view.path)) return;
       state.visitedViews.push({ name: view.name, path: view.path })
     },
     DEL_VISITED_VIEWS: (state, view) => {
-      let index
+      let index;
       for (const [i, v] of state.visitedViews.entries()) {
         if (v.path === view.path) {
-          index = i
+          index = i;
           break
         }
       }
@@ -40,11 +40,11 @@ const app = {
     },
     delVisitedViews({ commit, state }, view) {
       return new Promise((resolve) => {
-        commit('DEL_VISITED_VIEWS', view)
+        commit('DEL_VISITED_VIEWS', view);
         resolve([...state.visitedViews])
       })
     }
   }
-}
+};
 
 export default app

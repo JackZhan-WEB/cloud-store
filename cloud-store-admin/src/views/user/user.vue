@@ -138,23 +138,21 @@
           this.listLoading = false;
           this.list = response.list;
           this.totalCount = response.totalCount;
-          console.log(response);
-
         })
       },
       handleSizeChange(val) {
         //改变每页数量
-        this.listQuery.pageRow = val
+        this.listQuery.pageRow = val;
         this.handleFilter();
       },
       handleCurrentChange(val) {
         //改变页码
-        this.listQuery.pageNum = val
+        this.listQuery.pageNum = val;
         this.getList();
       },
       handleFilter() {
         //查询事件
-        this.listQuery.pageNum = 1
+        this.listQuery.pageNum = 1;
         this.getList()
       },
       getIndex($index) {
@@ -168,7 +166,7 @@
         this.tempUser.nickname = "";
         this.tempUser.roleId = "";
         this.tempUser.userId = "";
-        this.dialogStatus = "create"
+        this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
       showUpdate($index) {
@@ -179,7 +177,7 @@
         this.tempUser.userId = user.userId;
         this.tempUser.deleteStatus = '1';
         this.tempUser.password = '';
-        this.dialogStatus = "update"
+        this.dialogStatus = "update";
         this.dialogFormVisible = true
       },
       createUser() {
@@ -202,7 +200,7 @@
           data: this.tempUser
         }).then(() => {
           let msg = "修改成功";
-          this.dialogFormVisible = false
+          this.dialogFormVisible = false;
           if (this.userId === this.tempUser.userId) {
             msg = '修改成功,部分信息重新登录后生效'
           }
