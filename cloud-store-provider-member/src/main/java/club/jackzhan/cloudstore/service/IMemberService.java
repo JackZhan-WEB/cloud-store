@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.service;
 
-import club.jackzhan.cloudstore.util.ResultResponse;
+import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 
 /**
@@ -18,4 +18,6 @@ public interface IMemberService {
      * @return
      */
     String getMember(MemberQueryRequest request);
+
+    PageBean list(MemberQueryRequest request);
 }

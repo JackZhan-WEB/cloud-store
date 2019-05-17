@@ -8,16 +8,16 @@ import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.MenuDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.entities.Member;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.BeanUtils;
+import club.jackzhan.cloudstore.util.PageBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -70,5 +70,12 @@ public class MemberServiceImpl implements IMemberService {
             memberDTO.setMenus(BeanUtils.copyList(menuMapper.getByPermissionIds(permissionIds.toString()), MenuDTO.class));
         }
         return BeanUtils.beanToJsonStringWithDateFormat(memberDTO);
+    }
+
+    @Override
+    public PageBean list(MemberQueryRequest request) {
+        PageBean<MemberDTO> page = new PageBean<>(request.getCurrentPage(),request.getPageSize());
+        page.setPageData(BeanUtils.copyList(memberMapper.list(request,page), MemberDTO.class));
+        return page;
     }
 }

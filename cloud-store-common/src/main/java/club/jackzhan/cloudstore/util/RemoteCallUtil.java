@@ -1,9 +1,7 @@
-package club.jackzhan.cloudstore.cfgbeans;
+package club.jackzhan.cloudstore.util;
 
-import club.jackzhan.cloudstore.util.ResultResponse;
+import club.jackzhan.cloudstore.module.request.BaseRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -25,14 +23,20 @@ public class RemoteCallUtil {
     private RestTemplate restTemplate;
 
     private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER";
+    public ResultResponse sendGet(String path) {
+        return sendGet(path,null);
+    }
 
-    public ResultResponse sendGet(String path, Map<String, Object> params) {
+    public ResultResponse sendGet(String path, BaseRequest request) {
+        Map<String, Object> params = BeanUtils.beanToMap(request);
         StringBuilder sb = new StringBuilder(50);
-        sb.append("?");
-        params.keySet().forEach(e -> {
-            sb.append(e).append("=").append(params.get(e)).append("&");
-        });
-        sb.deleteCharAt(sb.length() - 1);
+        if (params != null && params.size() != 0) {
+            sb.append("?");
+            params.keySet().forEach(e -> {
+                sb.append(e).append("=").append(params.get(e)).append("&");
+            });
+            sb.deleteCharAt(sb.length() - 1);
+        }
         return restTemplate.getForEntity(matchingServePath(path) + path + sb.toString(), ResultResponse.class).getBody();
     }
 

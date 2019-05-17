@@ -9,9 +9,11 @@ info:
     app:
         name: jackzhan-cloud-store
 mybatis:
-    config-location: classpath:mybatis/mybatis.cfg.xml
+#    config-location: classpath:mybatis/mybatis.cfg.xml
     mapper-locations: classpath:mybatis/mapper/**/*.xml
     type-aliases-package: club.jackzhan.cloudstore.entities
+    configuration:
+      interceptors: club.jackzhan.cloudstore.web.interceptor.PageInterceptor
 server:
     port: 9991
 spring:
@@ -30,3 +32,4 @@ logging:
           mapper:
             debug
 
+databaseType: mysql

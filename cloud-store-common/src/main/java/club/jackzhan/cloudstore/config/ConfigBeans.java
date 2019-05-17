@@ -1,5 +1,6 @@
-package club.jackzhan.cloudstore.cfgbeans;
+package club.jackzhan.cloudstore.config;
 
+import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

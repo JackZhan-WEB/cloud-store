@@ -4,9 +4,12 @@ import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
+import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -19,13 +22,14 @@ import javax.annotation.Resource;
  * @Author: JackZhan
  */
 @RestController
+@RequestMapping("/member")
 @Slf4j
 public class MemberController {
 
     @Resource
     private IMemberService memberService;
 
-    @GetMapping("/member/getMember")
+    @GetMapping("/getMember")
     public ResultResponse getMember(MemberQueryRequest request) {
         String json;
         try {
@@ -44,4 +48,19 @@ public class MemberController {
         return ResultResponse.success(json);
     }
 
+
+    @GetMapping("/list")
+    public ResultResponse list(MemberQueryRequest request) {
+        PageBean page;
+        try {
+            page = memberService.list(request);
+        } catch (BusinessException e) {
+            log.error("[MemberController][list] " + e.getMessage());
+            return ResultResponse.failure(e.getMessage());
+        } catch (Exception e) {
+            log.error(e.toString());
+            return ResultResponse.failure();
+        }
+        return ResultResponse.success(page);
+    }
 }

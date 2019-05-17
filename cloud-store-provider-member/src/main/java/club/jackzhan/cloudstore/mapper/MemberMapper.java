@@ -1,8 +1,11 @@
 package club.jackzhan.cloudstore.mapper;
+
 import java.util.List;
 import java.util.Date;
 
 import club.jackzhan.cloudstore.module.entities.Member;
+import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.util.PageBean;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -26,5 +29,8 @@ public interface MemberMapper {
     int updateByPrimaryKey(Member record);
 
     Member getMember(@Param("loginName") String loginName);
+
+    List<Member> list(@Param("request")MemberQueryRequest request, PageBean page);
+
 
 }

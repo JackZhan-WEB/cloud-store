@@ -113,7 +113,7 @@
       getAllPermisson() {
         //查询所有权限
         this.api({
-          url: "/user/listAllPermission",
+          url: "/member/listAllPermission",
           method: "get"
         }).then(data => {
           this.allPermission = data.list;
@@ -123,7 +123,7 @@
         //查询列表
         this.listLoading = true;
         this.api({
-          url: "/user/listRole",
+          url: "/member/listRole",
           method: "get"
         }).then(data => {
           this.listLoading = false;
@@ -165,7 +165,7 @@
         }
         //添加新角色
         this.api({
-          url: "/user/addRole",
+          url: "/member/addRole",
           method: "post",
           data: this.tempRole
         }).then(() => {
@@ -182,7 +182,7 @@
         }
         //修改角色
         this.api({
-          url: "/user/updateRole",
+          url: "/member/updateRole",
           method: "post",
           data: this.tempRole
         }).then(() => {
@@ -225,7 +225,7 @@
         }).then(() => {
           let role = _vue.list[$index];
           _vue.api({
-            url: "/user/deleteRole",
+            url: "/member/deleteRole",
             method: "post",
             data: {
               roleId: role.roleId

@@ -37,8 +37,8 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="listQuery.pageNum"
-      :page-size="listQuery.pageRow"
+      :current-page="listQuery.currentPage"
+      :page-size="listQuery.pageSize"
       :total="totalCount"
       :page-sizes="[10, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
@@ -92,8 +92,8 @@
         list: [],//表格的数据
         listLoading: false,//数据加载等待动画
         listQuery: {
-          pageNum: 1,//页码
-          pageRow: 50,//每页条数
+          currentPage: 1,//页码
+          pageSize: 50,//每页条数
         },
         roles: [],//角色列表
         dialogStatus: 'create',
@@ -125,7 +125,7 @@
     methods: {
       getAllRoles() {
         this.api({
-          url: "/user/getAllRoles",
+          url: "/member/getAllRoles",
           method: "get"
         }).then(data => {
           this.roles = data.list;
@@ -136,28 +136,28 @@
         this.listLoading = true;
         memberService.getList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.list;
+          this.list = response.data;
           this.totalCount = response.totalCount;
         })
       },
       handleSizeChange(val) {
         //改变每页数量
-        this.listQuery.pageRow = val;
+        this.listQuery.pageSize = val;
         this.handleFilter();
       },
       handleCurrentChange(val) {
         //改变页码
-        this.listQuery.pageNum = val;
+        this.listQuery.currentPage = val;
         this.getList();
       },
       handleFilter() {
         //查询事件
-        this.listQuery.pageNum = 1;
+        this.listQuery.currentPage = 1;
         this.getList()
       },
       getIndex($index) {
         //表格序号
-        return (this.listQuery.pageNum - 1) * this.listQuery.pageRow + $index + 1
+        return (this.listQuery.currentPage - 1) * this.listQuery.pageSize + $index + 1
       },
       showCreate() {
         //显示新增对话框
@@ -183,7 +183,7 @@
       createUser() {
         //添加新用户
         this.api({
-          url: "/user/addUser",
+          url: "/member/addUser",
           method: "post",
           data: this.tempUser
         }).then(() => {
@@ -195,7 +195,7 @@
         //修改用户信息
         let _vue = this;
         this.api({
-          url: "/user/updateUser",
+          url: "/member/updateUser",
           method: "post",
           data: this.tempUser
         }).then(() => {
@@ -224,7 +224,7 @@
           let user = _vue.list[$index];
           user.deleteStatus = '2';
           _vue.api({
-            url: "/user/updateUser",
+            url: "/member/updateUser",
             method: "post",
             data: user
           }).then(() => {

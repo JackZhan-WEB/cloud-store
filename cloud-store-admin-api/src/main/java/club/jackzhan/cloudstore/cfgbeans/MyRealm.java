@@ -4,7 +4,9 @@ import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.util.BeanUtils;
+import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -15,9 +17,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,9 +45,7 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        Map<String, Object> map = new HashMap<>();
-        map.put("loginName",token.getUsername());
-        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/getMember", map);
+        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
         MemberDTO memberDTO = null;
         try {
             memberDTO = BeanUtils.json2Bean((String) memberResponse.getData(), MemberDTO.class);
