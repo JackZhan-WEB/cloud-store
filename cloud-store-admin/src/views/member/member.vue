@@ -10,25 +10,25 @@
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
               highlight-current-row>
-      <el-table-column align="center" label="序号" width="80">
+      <el-table-column align="center" label="序号" width="80px">
         <template slot-scope="scope">
           <span v-text="getIndex(scope.$index)"> </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="昵称" prop="nickname" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" label="用户名" prop="username" style="width: 60px;"></el-table-column>
-      <el-table-column align="center" label="角色" width="100">
+      <el-table-column align="center" label="昵称" prop="nickname"/>
+      <el-table-column align="center" label="用户名" prop="username"/>
+      <el-table-column align="center" label="角色">
         <template slot-scope="scope">
-          <el-tag type="success" v-text="scope.row.roleName" v-if="scope.row.roleId===1"></el-tag>
-          <el-tag type="primary" v-text="scope.row.roleName" v-else></el-tag>
+          <el-tag type="success" v-if="scope.row.username==='admin'">超级管理员</el-tag>
+          <el-tag type="primary" v-else>{{scope.row.roles | getRoleNames}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="createTime" width="170"></el-table-column>
-      <el-table-column align="center" label="最近修改时间" prop="updateTime" width="170"></el-table-column>
-      <el-table-column align="center" label="管理" width="220" v-if="hasPerm('user:update')">
+      <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
+      <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime" />
+      <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
-          <el-button type="danger" icon="delete" v-if="scope.row.userId!=userId "
+          <el-button type="danger" icon="delete" v-if="scope.row.userId!=userId"
                      @click="removeUser(scope.$index)">删除
           </el-button>
         </template>
@@ -85,7 +85,19 @@
   import * as memberService from '@/api/member/member'
   import {mapGetters} from 'vuex'
 
+
   export default {
+
+    filters: {
+      getRoleNames: function (value) {
+        if (!value) return '';
+        let res = '';
+        for (let i = 0; i < value.length; i++) {
+         res = res + value[i].description+'，';
+        }
+        return res;
+      }
+    },
     data() {
       return {
         totalCount: 0, //分页组件--数据总条数
@@ -123,6 +135,14 @@
       ])
     },
     methods: {
+      dateFormat: function (row, column) {
+        let moment = require('moment');
+        let date = row[column.property];
+        if (!date) {
+          return "";
+        }
+        return moment(date).format("YYYY-MM-DD HH:mm:ss");
+      },
       getAllRoles() {
         this.api({
           url: "/member/getAllRoles",
@@ -136,7 +156,7 @@
         this.listLoading = true;
         memberService.getList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.data;
+          this.list = response.data.pageData;
           this.totalCount = response.totalCount;
         })
       },
