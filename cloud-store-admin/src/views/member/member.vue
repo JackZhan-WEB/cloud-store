@@ -17,14 +17,36 @@
       </el-table-column>
       <el-table-column align="center" label="昵称" prop="nickname"/>
       <el-table-column align="center" label="用户名" prop="username"/>
+      <el-table-column align="center" label="手机号" prop="phone"/>
       <el-table-column align="center" label="角色">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.username==='admin'">超级管理员</el-tag>
-          <el-tag type="primary" v-else>{{scope.row.roles | getRoleNames}}</el-tag>
+          <span v-for="role in scope.row.roles">
+            &nbsp;
+            <el-tag type="success" v-text="role.description" v-if="role.name==='admin'"/>
+            <el-tag type="primary" v-text="role.description" v-else/>
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="用户状态" prop="state">
+        <template slot-scope="scope">
+            <el-tag type="primary" v-if="scope.row.state===1">正常</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.state===2">密码错误次数过多被禁用</el-tag>
+            <el-tag type="warning" v-else-if="scope.row.state===3">管理员禁用</el-tag>
+            <el-tag type="info" v-else-if="scope.row.state===4">注销</el-tag>
+            <el-tag type="danger" v-else>账号异常</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="用户类型" prop="type">
+        <template slot-scope="scope">
+          <el-tag type="success" v-if="scope.row.type===1">超级管理员</el-tag>
+          <el-tag type="primary" v-else-if="scope.row.type===2">后台管理人员</el-tag>
+          <el-tag type="primary" v-else-if="scope.row.type===3">普通用户</el-tag>
+          <el-tag type="primary" v-else-if="scope.row.type===4">VIP用户</el-tag>
+          <el-tag type="danger" v-else>账号异常</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
-      <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime" />
+      <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
       <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
@@ -40,7 +62,7 @@
       :current-page="listQuery.currentPage"
       :page-size="listQuery.pageSize"
       :total="totalCount"
-      :page-sizes="[10, 20, 50, 100]"
+      :page-sizes="[1, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
@@ -62,9 +84,9 @@
           <el-select v-model="tempUser.roleId" placeholder="请选择">
             <el-option
               v-for="item in roles"
-              :key="item.roleId"
-              :label="item.roleName"
-              :value="item.roleId">
+              :key="item.id"
+              :label="item.description"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -87,17 +109,6 @@
 
 
   export default {
-
-    filters: {
-      getRoleNames: function (value) {
-        if (!value) return '';
-        let res = '';
-        for (let i = 0; i < value.length; i++) {
-         res = res + value[i].description+'，';
-        }
-        return res;
-      }
-    },
     data() {
       return {
         totalCount: 0, //分页组件--数据总条数
@@ -144,11 +155,8 @@
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
       },
       getAllRoles() {
-        this.api({
-          url: "/member/getAllRoles",
-          method: "get"
-        }).then(data => {
-          this.roles = data.list;
+        memberService.getAllRoles().then(response => {
+          this.roles = response.data;
         })
       },
       getList() {
@@ -157,7 +165,7 @@
         memberService.getList(this.listQuery).then(response => {
           this.listLoading = false;
           this.list = response.data.pageData;
-          this.totalCount = response.totalCount;
+          this.totalCount = response.data.totalCount;
         })
       },
       handleSizeChange(val) {

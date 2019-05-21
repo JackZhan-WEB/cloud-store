@@ -1,8 +1,7 @@
 package club.jackzhan.cloudstore.module.request;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,23 +10,10 @@ import lombok.experimental.Accessors;
  *
  * @Author: JackZhan
  */
+@Getter
+@Setter
 public class PageQueryRequest extends BaseRequest{
     private Integer currentPage = 1;
     private Integer pageSize = 20;
 
-    public Integer getCurrentPage() {
-        return currentPage;
-    }
-
-    public void setCurrentPage(Integer currentPage) {
-        this.currentPage = currentPage;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
 }

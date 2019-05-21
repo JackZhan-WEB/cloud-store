@@ -27,4 +27,9 @@ public class MemberController {
         return remoteCallUtil.sendGet("/member/list", request);
     }
 
+    @GetMapping("/getAllRoles")
+    public ResultResponse getAllRoles(){
+        return remoteCallUtil.sendGet("/member/getAllRoles");
+    }
+
 }

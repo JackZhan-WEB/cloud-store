@@ -1,7 +1,11 @@
 package club.jackzhan.cloudstore.service;
 
+import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.util.ResultResponse;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,4 +24,6 @@ public interface IMemberService {
     String getMember(MemberQueryRequest request);
 
     PageBean list(MemberQueryRequest request);
+
+    List<RoleDTO> getAllRoles();
 }

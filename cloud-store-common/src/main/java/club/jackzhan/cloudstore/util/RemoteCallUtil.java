@@ -1,6 +1,7 @@
 package club.jackzhan.cloudstore.util;
 
 import club.jackzhan.cloudstore.module.request.BaseRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
@@ -14,6 +15,7 @@ import java.util.Map;
  *
  * @Author: JackZhan
  */
+@Slf4j
 public class RemoteCallUtil {
 
     @Autowired
@@ -23,8 +25,9 @@ public class RemoteCallUtil {
     private RestTemplate restTemplate;
 
     private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER";
+
     public ResultResponse sendGet(String path) {
-        return sendGet(path,null);
+        return sendGet(path, null);
     }
 
     public ResultResponse sendGet(String path, BaseRequest request) {
@@ -32,11 +35,15 @@ public class RemoteCallUtil {
         StringBuilder sb = new StringBuilder(50);
         if (params != null && params.size() != 0) {
             sb.append("?");
-            params.keySet().forEach(e -> {
+            for (String e : params.keySet()) {
+                if (params.get(e) == null) {
+                    continue;
+                }
                 sb.append(e).append("=").append(params.get(e)).append("&");
-            });
+            }
             sb.deleteCharAt(sb.length() - 1);
         }
+        log.info("发送请求：{}，参数：{}", path, sb);
         return restTemplate.getForEntity(matchingServePath(path) + path + sb.toString(), ResultResponse.class).getBody();
     }
 

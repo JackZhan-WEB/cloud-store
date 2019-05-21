@@ -19,9 +19,9 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => {
     const res = response.data;
-    if (res.code === 0) {
+    if (res.code === 1) {
       return res;
-    } else if (res.code === 2) {
+    } else if (res.code === 3) {
       Message({
         showClose: true,
         message: res.msg,

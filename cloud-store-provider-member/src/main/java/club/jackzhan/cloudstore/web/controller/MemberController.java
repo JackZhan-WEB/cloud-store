@@ -1,6 +1,8 @@
 package club.jackzhan.cloudstore.web.controller;
 
 import club.jackzhan.cloudstore.exception.BusinessException;
+import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.entities.Role;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -62,5 +65,19 @@ public class MemberController {
             return ResultResponse.failure();
         }
         return ResultResponse.success(page);
+    }
+    @GetMapping("/getAllRoles")
+    public ResultResponse getAllRoles() {
+        List<RoleDTO> list;
+        try {
+            list = memberService.getAllRoles();
+        } catch (BusinessException e) {
+            log.error("[MemberController][list] " + e.getMessage());
+            return ResultResponse.failure(e.getMessage());
+        } catch (Exception e) {
+            log.error(e.toString());
+            return ResultResponse.failure();
+        }
+        return ResultResponse.success(list);
     }
 }

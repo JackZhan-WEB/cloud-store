@@ -1,5 +1,7 @@
 package club.jackzhan.cloudstore.service.impl;
 
+import club.jackzhan.cloudstore.enums.RoleStateEnum;
+import club.jackzhan.cloudstore.enums.TrueFalseEnum;
 import club.jackzhan.cloudstore.mapper.MemberMapper;
 import club.jackzhan.cloudstore.mapper.MenuMapper;
 import club.jackzhan.cloudstore.mapper.PermissionsMapper;
@@ -74,8 +76,14 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public PageBean list(MemberQueryRequest request) {
-        PageBean<MemberDTO> page = new PageBean<>(request.getCurrentPage(),request.getPageSize());
-        page.setPageData(BeanUtils.copyList(memberMapper.list(request,page), MemberDTO.class));
+        PageBean<MemberDTO> page = new PageBean<>(request.getCurrentPage(), request.getPageSize());
+        page.setPageData(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(), request.getPageSize()), MemberDTO.class));
+        page.setTotalCount(memberMapper.countByQuery(request));
         return page;
+    }
+
+    @Override
+    public List<RoleDTO> getAllRoles() {
+        return BeanUtils.copyList(roleMapper.getAllRolesByStateAndType(RoleStateEnum.NORMAL.getCode(), TrueFalseEnum.TRUE.getCode()), RoleDTO.class);
     }
 }

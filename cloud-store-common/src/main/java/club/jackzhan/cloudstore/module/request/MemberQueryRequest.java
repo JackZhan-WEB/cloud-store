@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * Created with IntelliJ IDEA.
  * Description: @EqualsAndHashCode  不会调用父类中的hashCode等方法
@@ -22,5 +24,8 @@ public class MemberQueryRequest extends PageQueryRequest {
 
     private String password;
 
+    private String username;
+
+    private String pbone;
 
 }

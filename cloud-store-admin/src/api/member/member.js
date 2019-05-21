@@ -9,3 +9,10 @@ export function getList(params) {
     params: params
   });
 }
+
+export function getAllRoles() {
+ return api({
+   url: "/member/getAllRoles",
+   method: "get"
+ })
+}

@@ -46,6 +46,10 @@ public class RoleDTO implements Serializable {
     * 角色类型 1：可授权 0：不可授权
     */
     private Boolean type;
+    /**
+     * 角色状态  1：正常  2：禁用  3：已删除
+     */
+    private Boolean state;
 
     /**
     * 创建时间

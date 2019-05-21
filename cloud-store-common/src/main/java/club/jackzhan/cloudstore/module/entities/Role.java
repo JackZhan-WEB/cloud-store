@@ -38,6 +38,11 @@ public class Role implements Serializable {
     private Boolean type;
 
     /**
+    * 角色状态  1：正常  2：禁用  3：已删除
+    */
+    private Boolean state;
+
+    /**
     * 创建时间
     */
     private Date createTime;

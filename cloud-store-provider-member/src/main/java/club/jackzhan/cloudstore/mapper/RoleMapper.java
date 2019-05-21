@@ -26,4 +26,7 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     List<Role> getByMemberId(@Param("memberId") String memberId);
+
+    List<Role> getAllRolesByStateAndType(@Param("state")Integer state, @Param("type")Integer type);
+
 }

@@ -10,7 +10,7 @@ import lombok.Getter;
  * Time: 15:41
  */
 public enum MemberStateEnum implements BaseEnum {
-    NORMAL(0, "正常"),
+    NORMAL(1, "正常"),
     DISABLE(1, "禁用"),
     DELETE(9999, "注销");
 

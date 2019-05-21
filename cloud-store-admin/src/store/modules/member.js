@@ -39,7 +39,7 @@ const member = {
           data: loginForm
         }).then(data => {
           console.log(data);
-          if (data.code === 0) {
+          if (data.code === 1) {
             //cookie中保存前端登录状态
             setToken();
           }
