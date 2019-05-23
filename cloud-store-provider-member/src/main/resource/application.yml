@@ -1,29 +1,39 @@
 eureka:
-    client:
-        service-url:
-            defaultZone: http://eureka7001.com:7001/eureka/ #,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
-    instance:
-        instance-id: cloud-store-member
-        prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/ #,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: cloud-store-member
+    prefer-ip-address: true
+
 info:
-    app:
-        name: jackzhan-cloud-store
-mybatis:
-#    config-location: classpath:mybatis/mybatis.cfg.xml
-    mapper-locations: classpath:mybatis/mapper/**/*.xml
-    type-aliases-package: club.jackzhan.cloudstore.entities
-    configuration:
-      interceptors: club.jackzhan.cloudstore.web.interceptor.PageInterceptor
+  app:
+    name: jackzhan-cloud-store
+
+mybatis-plus:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  type-aliases-package: club.jackzhan.cloudstore.entities
+  # 原生配置
+  configuration:
+    interceptors: club.jackzhan.cloudstore.web.interceptor.PageInterceptor
+  global-config:
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+
 server:
-    port: 9991
+  port: 9991
+
 spring:
-    application:
-        name: cloud-store-member
-    datasource:
-        url: jdbc:mysql://localhost:3306/cloud-store-member
-        type: com.alibaba.druid.pool.DruidDataSource
-        username: root
-        password: admin
+  application:
+    name: cloud-store-member
+  datasource:
+    url: jdbc:mysql://localhost:3306/cloud-store-member
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: admin
+
 logging:
   level:
     club:
@@ -32,4 +42,4 @@ logging:
           mapper:
             debug
 
-databaseType: mysql
+

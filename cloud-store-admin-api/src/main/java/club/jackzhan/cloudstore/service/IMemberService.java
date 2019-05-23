@@ -1,6 +1,7 @@
 package club.jackzhan.cloudstore.service;
 
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
+import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.util.ResultResponse;
 
 import java.util.List;
@@ -13,5 +14,5 @@ import java.util.List;
  * @Author: JackZhan
  */
 public interface IMemberService {
-
+    ResultResponse createUser(MemberQueryRequest request);
 }

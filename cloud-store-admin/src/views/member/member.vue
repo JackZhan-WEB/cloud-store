@@ -29,11 +29,11 @@
       </el-table-column>
       <el-table-column align="center" label="用户状态" prop="state">
         <template slot-scope="scope">
-            <el-tag type="primary" v-if="scope.row.state===1">正常</el-tag>
-            <el-tag type="warning" v-else-if="scope.row.state===2">密码错误次数过多被禁用</el-tag>
-            <el-tag type="warning" v-else-if="scope.row.state===3">管理员禁用</el-tag>
-            <el-tag type="info" v-else-if="scope.row.state===4">注销</el-tag>
-            <el-tag type="danger" v-else>账号异常</el-tag>
+          <el-tag type="primary" v-if="scope.row.state===1">正常</el-tag>
+          <el-tag type="warning" v-else-if="scope.row.state===2">密码错误次数过多被禁用</el-tag>
+          <el-tag type="warning" v-else-if="scope.row.state===3">管理员禁用</el-tag>
+          <el-tag type="info" v-else-if="scope.row.state===4">注销</el-tag>
+          <el-tag type="danger" v-else>账号异常</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="用户类型" prop="type">
@@ -50,7 +50,7 @@
       <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
-          <el-button type="danger" icon="delete" v-if="scope.row.userId!=userId"
+          <el-button type="danger" icon="delete" v-if="scope.row.memberId!=memberId"
                      @click="removeUser(scope.$index)">删除
           </el-button>
         </template>
@@ -73,20 +73,19 @@
           </el-input>
         </el-form-item>
         <el-form-item label="密码" v-if="dialogStatus=='create'" required>
-          <el-input type="password" v-model="tempUser.password">
-          </el-input>
+          <el-input type="password" v-model="tempUser.password"/>
         </el-form-item>
         <el-form-item label="新密码" v-else>
           <el-input type="password" v-model="tempUser.password" placeholder="不填则表示不修改">
           </el-input>
         </el-form-item>
         <el-form-item label="角色" required>
-          <el-select v-model="tempUser.roleId" placeholder="请选择">
+          <el-select multiple v-model="tempUser.roles" value-key="id" placeholder="请选择">
             <el-option
               v-for="item in roles"
               :key="item.id"
               :label="item.description"
-              :value="item.id">
+              :value="item">
             </el-option>
           </el-select>
         </el-form-item>
@@ -129,8 +128,8 @@
           username: '',
           password: '',
           nickname: '',
-          roleId: '',
-          userId: ''
+          roles: [],
+          memberId: ''
         }
       }
     },
@@ -142,7 +141,7 @@
     },
     computed: {
       ...mapGetters([
-        'userId'
+        'memberId'
       ])
     },
     methods: {
@@ -192,8 +191,8 @@
         this.tempUser.username = "";
         this.tempUser.password = "";
         this.tempUser.nickname = "";
-        this.tempUser.roleId = "";
-        this.tempUser.userId = "";
+        this.tempUser.roles = [];
+        this.tempUser.memberId = "";
         this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
@@ -201,8 +200,8 @@
         let user = this.list[$index];
         this.tempUser.username = user.username;
         this.tempUser.nickname = user.nickname;
-        this.tempUser.roleId = user.roleId;
-        this.tempUser.userId = user.userId;
+        this.tempUser.roles = user.roles;
+        this.tempUser.memberId = user.memberId;
         this.tempUser.deleteStatus = '1';
         this.tempUser.password = '';
         this.dialogStatus = "update";
@@ -210,11 +209,7 @@
       },
       createUser() {
         //添加新用户
-        this.api({
-          url: "/member/addUser",
-          method: "post",
-          data: this.tempUser
-        }).then(() => {
+        memberService.createUser(this.tempUser).then(() => {
           this.getList();
           this.dialogFormVisible = false
         })
@@ -229,7 +224,7 @@
         }).then(() => {
           let msg = "修改成功";
           this.dialogFormVisible = false;
-          if (this.userId === this.tempUser.userId) {
+          if (this.memberId === this.tempUser.memberId) {
             msg = '修改成功,部分信息重新登录后生效'
           }
           this.$message({

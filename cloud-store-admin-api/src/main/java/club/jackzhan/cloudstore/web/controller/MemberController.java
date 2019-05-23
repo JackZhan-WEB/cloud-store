@@ -1,12 +1,11 @@
 package club.jackzhan.cloudstore.web.controller;
 
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     @Autowired
+    private IMemberService memberService;
+
+    @Autowired
     private RemoteCallUtil remoteCallUtil;
 
     @GetMapping("/list")
@@ -28,8 +30,13 @@ public class MemberController {
     }
 
     @GetMapping("/getAllRoles")
-    public ResultResponse getAllRoles(){
+    public ResultResponse getAllRoles(MemberQueryRequest request){
         return remoteCallUtil.sendGet("/member/getAllRoles");
+    }
+
+    @PostMapping("/createUser")
+    public ResultResponse createUser(MemberQueryRequest request){
+        return memberService.createUser(request);
     }
 
 }

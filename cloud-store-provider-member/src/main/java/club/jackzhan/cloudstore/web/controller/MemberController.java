@@ -1,21 +1,13 @@
 package club.jackzhan.cloudstore.web.controller;
 
-import club.jackzhan.cloudstore.exception.BusinessException;
-import club.jackzhan.cloudstore.module.dto.RoleDTO;
-import club.jackzhan.cloudstore.module.entities.Role;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
-import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,50 +26,33 @@ public class MemberController {
 
     @GetMapping("/getMember")
     public ResultResponse getMember(MemberQueryRequest request) {
-        String json;
-        try {
-            CheckParametersUtil
-                    .getInstance()
-                    .put(request.getLoginName(), "loginName")
-                    .checkParameter();
-            json = memberService.getMember(request);
-        } catch (BusinessException e) {
-            log.error("[MemberController][getMember] " + e.getMessage());
-            return ResultResponse.failure(e.getMessage());
-        } catch (Exception e) {
-            log.error(e.toString());
-            return ResultResponse.failure();
-        }
-        return ResultResponse.success(json);
+        CheckParametersUtil
+                .getInstance()
+                .put(request.getLoginName(), "loginName")
+                .checkParameter();
+        return ResultResponse.success(memberService.getMember(request));
     }
 
 
     @GetMapping("/list")
     public ResultResponse list(MemberQueryRequest request) {
-        PageBean page;
-        try {
-            page = memberService.list(request);
-        } catch (BusinessException e) {
-            log.error("[MemberController][list] " + e.getMessage());
-            return ResultResponse.failure(e.getMessage());
-        } catch (Exception e) {
-            log.error(e.toString());
-            return ResultResponse.failure();
-        }
-        return ResultResponse.success(page);
+        return ResultResponse.success(memberService.list(request));
     }
+
     @GetMapping("/getAllRoles")
     public ResultResponse getAllRoles() {
-        List<RoleDTO> list;
-        try {
-            list = memberService.getAllRoles();
-        } catch (BusinessException e) {
-            log.error("[MemberController][list] " + e.getMessage());
-            return ResultResponse.failure(e.getMessage());
-        } catch (Exception e) {
-            log.error(e.toString());
-            return ResultResponse.failure();
-        }
-        return ResultResponse.success(list);
+        return ResultResponse.success(memberService.getAllRoles());
+    }
+
+    @PostMapping("/createUser")
+    public ResultResponse createUser(@RequestBody MemberQueryRequest request) {
+        CheckParametersUtil
+                .getInstance()
+                .put(request.getUsername(), "用户名")
+                .put(request.getSalt(), "salt")
+                .put(request.getPassword(), "密码")
+                .put(request.getNickname(), "昵称")
+                .checkParameter();
+        return ResultResponse.success(memberService.createUser(request));
     }
 }

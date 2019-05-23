@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class PermissionsDTO implements Serializable {
+public class PermissionsDTO{
     /**
     * 权限id
     */
@@ -60,5 +60,4 @@ public class PermissionsDTO implements Serializable {
     */
     private String updateUser;
 
-    private static final long serialVersionUID = 1L;
 }

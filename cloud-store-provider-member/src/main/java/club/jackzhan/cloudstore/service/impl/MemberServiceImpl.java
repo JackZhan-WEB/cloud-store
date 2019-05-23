@@ -1,7 +1,9 @@
+
 package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.enums.RoleStateEnum;
 import club.jackzhan.cloudstore.enums.TrueFalseEnum;
+import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.mapper.MemberMapper;
 import club.jackzhan.cloudstore.mapper.MenuMapper;
 import club.jackzhan.cloudstore.mapper.PermissionsMapper;
@@ -15,10 +17,14 @@ import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.PageBean;
+import club.jackzhan.cloudstore.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -85,5 +91,25 @@ public class MemberServiceImpl implements IMemberService {
     @Override
     public List<RoleDTO> getAllRoles() {
         return BeanUtils.copyList(roleMapper.getAllRolesByStateAndType(RoleStateEnum.NORMAL.getCode(), TrueFalseEnum.TRUE.getCode()), RoleDTO.class);
+    }
+
+    @Override
+    public Boolean createUser(MemberQueryRequest request) {
+        Date now = new Date();
+        Member member = new Member()
+                .setId(RandomUtil.generateStr(32))
+                .setUsername(request.getUsername())
+                .setNickname(request.getNickname())
+                .setSalt(request.getSalt())
+                .setPassword(request.getPassword())
+                .setState(1)
+                .setType(1)
+                .setCreateTime(now)
+                .setUpdateTime(now)
+                .setUpdateUser("1");
+        //保存用户基础信息
+        int insert = memberMapper.insert(member);
+        //保存用户的角色信息
+        return memberMapper.insertMemberRole(request.getMemberId(), request.getRoles()) > 0;
     }
 }

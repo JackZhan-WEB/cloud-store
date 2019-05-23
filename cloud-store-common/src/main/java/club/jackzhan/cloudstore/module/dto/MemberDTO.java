@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class MemberDTO implements Serializable {
+public class MemberDTO{
 
     private List<RoleDTO> roles = new ArrayList<>();
     private List<PermissionsDTO> permissions = new ArrayList<>();
@@ -114,5 +114,4 @@ public class MemberDTO implements Serializable {
     private Integer loginCount;
 
 
-    private static final long serialVersionUID = 1L;
 }

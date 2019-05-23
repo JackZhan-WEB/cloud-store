@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-public class MenuDTO implements Serializable {
+public class MenuDTO{
     /**
      * 自增菜单ID
      */
@@ -100,6 +100,4 @@ public class MenuDTO implements Serializable {
      * 菜单类型 1：菜单文件夹 2菜单文件 3按钮
      */
     private Integer type;
-
-    private static final long serialVersionUID = 1L;
 }

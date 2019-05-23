@@ -1,6 +1,5 @@
 package club.jackzhan.cloudstore.module.dto;
 
-import club.jackzhan.cloudstore.module.entities.Permissions;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -17,7 +16,7 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class RoleDTO implements Serializable {
+public class RoleDTO {
 
 
     private List<PermissionsDTO> permissions = new ArrayList<>();
@@ -45,11 +44,11 @@ public class RoleDTO implements Serializable {
     /**
     * 角色类型 1：可授权 0：不可授权
     */
-    private Boolean type;
+    private Integer type;
     /**
      * 角色状态  1：正常  2：禁用  3：已删除
      */
-    private Boolean state;
+    private Integer state;
 
     /**
     * 创建时间
@@ -70,6 +69,4 @@ public class RoleDTO implements Serializable {
     * 修改人
     */
     private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 }

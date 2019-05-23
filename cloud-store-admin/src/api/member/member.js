@@ -16,3 +16,11 @@ export function getAllRoles() {
    method: "get"
  })
 }
+
+export function createUser(params) {
+ return api({
+   url: "/member/createUser",
+   method: "post",
+   params: params
+ })
+}

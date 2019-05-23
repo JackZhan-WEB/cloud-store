@@ -26,4 +26,6 @@ public interface IMemberService {
     PageBean list(MemberQueryRequest request);
 
     List<RoleDTO> getAllRoles();
+
+    Boolean createUser(MemberQueryRequest request);
 }

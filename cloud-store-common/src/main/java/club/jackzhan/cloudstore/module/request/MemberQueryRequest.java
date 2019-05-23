@@ -1,10 +1,12 @@
 package club.jackzhan.cloudstore.module.request;
 
+import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,12 +22,17 @@ public class MemberQueryRequest extends PageQueryRequest {
 
     private String loginName;
 
+    private String nickname;
+
     private String memberId;
 
     private String password;
 
+    private String salt;
+
     private String username;
 
-    private String pbone;
+    private String phone;
 
+    private List<RoleDTO> roles;
 }

@@ -3,14 +3,16 @@ package club.jackzhan.cloudstore.module.entities;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 
+ * Description:
  * Date: 2019-04-17 16:45
  * @Author: JackZhan
  */
 @Data
+@Accessors(chain = true)
 public class Member implements Serializable {
     /**
     * 用户标识id
@@ -88,9 +90,9 @@ public class Member implements Serializable {
     private Date updateTime;
 
     /**
-    * 状态修改时间
-    */
-    private Date stateChangeTime;
+     * 修改人
+     */
+    private String updateUser;
 
     /**
     * 最后登录时间

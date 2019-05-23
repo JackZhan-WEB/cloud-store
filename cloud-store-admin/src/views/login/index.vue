@@ -47,7 +47,6 @@
           if (valid) {
             console.log('-----')
             this.$store.dispatch('Login', this.loginForm).then(data => {
-              console.log(data);
               this.loading = false;
               if (data.code === 1) {
                 this.$router.push({path: '/'})
