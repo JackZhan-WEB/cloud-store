@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestControllerAdvice
 @Slf4j
-public class BusinessExceptionHandler {
+public class CloudStoreExceptionHandler {
 
     @ExceptionHandler(value = BusinessException.class)
     public ResultResponse defaultErrorHandler(HttpServletRequest req, BusinessException e) throws BusinessException {

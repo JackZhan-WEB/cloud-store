@@ -35,7 +35,7 @@ public class MemberController {
     }
 
     @PostMapping("/createUser")
-    public ResultResponse createUser(MemberQueryRequest request){
+    public ResultResponse createUser(@RequestBody MemberQueryRequest request){
         return memberService.createUser(request);
     }
 

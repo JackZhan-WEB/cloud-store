@@ -1,16 +1,12 @@
 package club.jackzhan.cloudstore.util;
 
 import club.jackzhan.cloudstore.module.request.BaseRequest;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -51,7 +47,6 @@ public class RemoteCallUtil {
             }
             sb.deleteCharAt(sb.length() - 1);
         }
-        log.info("发送请求：{}，参数：{}", path, request);
         return restTemplate.getForEntity(matchingServePath(path) + path + sb.toString(), ResultResponse.class).getBody();
     }
 
@@ -68,7 +63,6 @@ public class RemoteCallUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<>(BeanUtils.beanToJsonStringWithDateFormat(request), headers);
-        log.info("发送请求：{}，参数：{}", path, request);
         return restTemplate.postForEntity(matchingServePath(path) + path, entity, ResultResponse.class).getBody();
     }
 }

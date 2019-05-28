@@ -1,6 +1,7 @@
 package club.jackzhan.cloudstore.service.impl;
 
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
+import club.jackzhan.cloudstore.enums.BusinessConstant;
+import club.jackzhan.cloudstore.enums.MemberTypeEnum;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.RandomUtil;
@@ -9,8 +10,7 @@ import club.jackzhan.cloudstore.util.ResultResponse;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,11 +27,12 @@ public class MemberServiceImpl implements IMemberService {
     private RemoteCallUtil remoteCallUtil;
 
     @Override
-    public ResultResponse createUser(MemberQueryRequest request) {
+    public ResultResponse createUser(@RequestBody MemberQueryRequest request) {
+        request.setType(MemberTypeEnum.MANAGER.getCode());
         //加密次数
-        int hashIterations = 1;
-        String salt = RandomUtil.generateStr(6);
-        request.setSalt(salt).setPassword(new SimpleHash("MD5",request.getPassword(),salt,hashIterations).toString());
+        int hashIterations = BusinessConstant.PASSWORD_ENCRYPTION_TIMES;
+        String salt = RandomUtil.generateStr(BusinessConstant.PASSWORD_SALT_LENGTH);
+        request.setSalt(salt).setPassword(new SimpleHash(BusinessConstant.PASSWORD_ENCRYPTION_TYPE,request.getPassword(),salt,hashIterations).toString());
         return remoteCallUtil.sendPost("/member/createUser",request);
     }
 }

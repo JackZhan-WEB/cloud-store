@@ -21,7 +21,6 @@
       <el-table-column align="center" label="角色">
         <template slot-scope="scope">
           <span v-for="role in scope.row.roles">
-            &nbsp;
             <el-tag type="success" v-text="role.description" v-if="role.name==='admin'"/>
             <el-tag type="primary" v-text="role.description" v-else/>
           </span>
@@ -50,7 +49,7 @@
       <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
-          <el-button type="danger" icon="delete" v-if="scope.row.memberId!=memberId"
+          <el-button type="danger" icon="delete" v-if="scope.row.memberId!==memberId"
                      @click="removeUser(scope.$index)">删除
           </el-button>
         </template>
@@ -80,12 +79,15 @@
           </el-input>
         </el-form-item>
         <el-form-item label="角色" required>
-          <el-select multiple v-model="tempUser.roles" value-key="id" placeholder="请选择">
+          <el-select multiple v-model="tempUser.roles" @change="disableRow" value-key="id"
+                     placeholder="请选择">
             <el-option
               v-for="item in roles"
+              :id="item.name"
               :key="item.id"
               :label="item.description"
-              :value="item">
+              :value="item"
+            >
             </el-option>
           </el-select>
         </el-form-item>
@@ -128,9 +130,10 @@
           username: '',
           password: '',
           nickname: '',
-          roles: [],
+          roles: null,
           memberId: ''
-        }
+        },
+        disabled: true,
       }
     },
     created() {
@@ -145,6 +148,49 @@
       ])
     },
     methods: {
+      removeElement: function (_element) {
+        var _parentElement = _element.parentNode;
+        if (_parentElement) {
+          _parentElement.removeChild(_element);
+        }
+      },
+      disableRow: function (row) {
+        //判断是否选择超级管理员
+        var result = row.some(item => {
+          if (item.name === 'admin') {
+            return true
+          }
+        });
+        if (result) { // 如果选择超级管理员，禁用其他角色选项
+          row.forEach(item => {
+            if (item.name === 'admin') {
+              // item.disabled = true;
+              let childNodes = document.getElementById("admin").parentNode.childNodes;
+              childNodes.forEach(item => {
+                if (item.tagName === 'LI' && item.textContent !== '超级管理员') {
+                  item.classList.remove('selected');
+                  item.className += ' select-disabled';
+                }
+              });
+
+              let spans = document.getElementsByClassName('el-select__tags')[0].childNodes[1].childNodes;
+              spans.forEach(item => {
+                if (item.textContent !== '超级管理员') {
+                  this.removeElement(item);
+                  // console.log(11)
+                }
+              })
+            }
+          })
+        } else {
+          let childNodes = document.getElementById("admin").parentNode.childNodes;
+          childNodes.forEach(item => {
+            if (item.tagName === 'LI') {
+              item.classList.remove('select-disabled')
+            }
+          });
+        }
+      },
       dateFormat: function (row, column) {
         let moment = require('moment');
         let date = row[column.property];
@@ -260,3 +306,9 @@
     }
   }
 </script>
+<style>
+  .select-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+</style>

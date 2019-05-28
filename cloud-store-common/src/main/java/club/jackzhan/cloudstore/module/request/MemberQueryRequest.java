@@ -28,6 +28,8 @@ public class MemberQueryRequest extends PageQueryRequest {
 
     private String password;
 
+    private Integer type;
+
     private String salt;
 
     private String username;

@@ -110,6 +110,6 @@ public class MemberServiceImpl implements IMemberService {
         //保存用户基础信息
         int insert = memberMapper.insert(member);
         //保存用户的角色信息
-        return memberMapper.insertMemberRole(request.getMemberId(), request.getRoles()) > 0;
+        return memberMapper.insertMemberRole(member.getId(), request.getRoles()) > 0;
     }
 }

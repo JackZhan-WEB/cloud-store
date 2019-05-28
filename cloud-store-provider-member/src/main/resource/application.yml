@@ -24,15 +24,22 @@ mybatis-plus:
 
 server:
   port: 9991
+  tomcat:
+    uri-encoding: UTF-8
 
 spring:
   application:
     name: cloud-store-member
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud-store-member
+    url: jdbc:mysql://localhost:3306/cloud-store-member?useUnicode=true&characterEncoding=utf-8
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: admin
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
 
 logging:
   level:
@@ -41,5 +48,3 @@ logging:
         cloudstore:
           mapper:
             debug
-
-

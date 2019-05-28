@@ -16,8 +16,7 @@ service.interceptors.request.use(config => {
   Promise.reject(error)
 });
 // respone拦截器
-service.interceptors.response.use(
-  response => {
+service.interceptors.response.use(response => {
     const res = response.data;
     if (res.code === 1) {
       return res;
