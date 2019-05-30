@@ -46,6 +46,7 @@
       </el-table-column>
       <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
       <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
+      <el-table-column align="center" label="修改人" prop="updateUser"/>
       <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
@@ -71,6 +72,10 @@
           <el-input type="text" v-model="tempUser.username">
           </el-input>
         </el-form-item>
+        <el-form-item label="手机号" required v-if="dialogStatus=='create'">
+          <el-input type="text" v-model="tempUser.phone">
+          </el-input>
+        </el-form-item>
         <el-form-item label="密码" v-if="dialogStatus=='create'" required>
           <el-input type="password" v-model="tempUser.password"/>
         </el-form-item>
@@ -79,11 +84,10 @@
           </el-input>
         </el-form-item>
         <el-form-item label="角色" required>
-          <el-select multiple v-model="tempUser.roles" @change="disableRow" value-key="id"
+          <el-select multiple v-model="tempUser.roles" value-key="id"
                      placeholder="请选择">
             <el-option
               v-for="item in roles"
-              :id="item.name"
               :key="item.id"
               :label="item.description"
               :value="item"
@@ -128,6 +132,7 @@
         },
         tempUser: {
           username: '',
+          phone: '',
           password: '',
           nickname: '',
           roles: null,
@@ -148,49 +153,6 @@
       ])
     },
     methods: {
-      removeElement: function (_element) {
-        var _parentElement = _element.parentNode;
-        if (_parentElement) {
-          _parentElement.removeChild(_element);
-        }
-      },
-      disableRow: function (row) {
-        //判断是否选择超级管理员
-        var result = row.some(item => {
-          if (item.name === 'admin') {
-            return true
-          }
-        });
-        if (result) { // 如果选择超级管理员，禁用其他角色选项
-          row.forEach(item => {
-            if (item.name === 'admin') {
-              // item.disabled = true;
-              let childNodes = document.getElementById("admin").parentNode.childNodes;
-              childNodes.forEach(item => {
-                if (item.tagName === 'LI' && item.textContent !== '超级管理员') {
-                  item.classList.remove('selected');
-                  item.className += ' select-disabled';
-                }
-              });
-
-              let spans = document.getElementsByClassName('el-select__tags')[0].childNodes[1].childNodes;
-              spans.forEach(item => {
-                if (item.textContent !== '超级管理员') {
-                  this.removeElement(item);
-                  // console.log(11)
-                }
-              })
-            }
-          })
-        } else {
-          let childNodes = document.getElementById("admin").parentNode.childNodes;
-          childNodes.forEach(item => {
-            if (item.tagName === 'LI') {
-              item.classList.remove('select-disabled')
-            }
-          });
-        }
-      },
       dateFormat: function (row, column) {
         let moment = require('moment');
         let date = row[column.property];

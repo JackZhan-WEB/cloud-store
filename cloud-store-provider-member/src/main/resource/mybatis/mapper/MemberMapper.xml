@@ -39,6 +39,7 @@
         <result column="head_img" property="headImg"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
+        <result column="update_user" property="updateUser"/>
         <result column="last_login_time" property="lastLoginTime"/>
         <result column="login_count" property="loginCount"/>
         <collection property="roles" ofType="club.jackzhan.cloudstore.module.dto.RoleDTO" columnPrefix="role_">
@@ -74,6 +75,7 @@
         m.type,
         m.create_time,
         m.update_time,
+        m.update_user,
         mr.role_desc,
         mr.role_id,
         mr.role_name

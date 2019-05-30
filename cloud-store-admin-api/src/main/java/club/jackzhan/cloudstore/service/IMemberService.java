@@ -15,4 +15,6 @@ import java.util.List;
  */
 public interface IMemberService {
     ResultResponse createUser(MemberQueryRequest request);
+
+    ResultResponse list(MemberQueryRequest request);
 }

@@ -97,11 +97,10 @@ public class MemberDTO{
     * 修改时间
     */
     private Date updateTime;
-
     /**
-    * 状态修改时间
+    * 修改时间
     */
-    private Date stateChangeTime;
+    private String updateUser;
 
     /**
     * 最后登录时间

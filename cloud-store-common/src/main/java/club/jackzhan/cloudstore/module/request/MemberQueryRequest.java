@@ -36,5 +36,7 @@ public class MemberQueryRequest extends PageQueryRequest {
 
     private String phone;
 
+    private String updateUser;
+
     private List<RoleDTO> roles;
 }

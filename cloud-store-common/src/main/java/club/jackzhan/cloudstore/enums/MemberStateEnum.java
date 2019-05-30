@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 public enum MemberStateEnum implements BaseEnum {
     NORMAL(1, "正常"),
-    DISABLE(1, "禁用"),
+    DISABLE(2, "禁用"),
     DELETE(9999, "注销");
 
 

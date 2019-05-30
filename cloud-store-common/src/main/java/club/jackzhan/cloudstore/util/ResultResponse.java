@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.util;
 
+import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import lombok.Data;
 
@@ -66,6 +67,10 @@ public class ResultResponse<T> implements Serializable {
     }
 
     public static <T> ResultResponse failure(String message) {
+        String[] err = message.split(BusinessConstant.BUSINESSEXCEPTION_SPLIT);
+        if (err.length==2) {
+            return ResultResponse.failure(err[0], Integer.valueOf(err[1]));
+        }
         return ResultResponse.failure(message, DEFAULT_FAILURE_CODE);
     }
 

@@ -1,6 +1,8 @@
 
 package club.jackzhan.cloudstore.service.impl;
 
+import club.jackzhan.cloudstore.enums.MemberStateEnum;
+import club.jackzhan.cloudstore.enums.MemberTypeEnum;
 import club.jackzhan.cloudstore.enums.RoleStateEnum;
 import club.jackzhan.cloudstore.enums.TrueFalseEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
@@ -96,19 +98,18 @@ public class MemberServiceImpl implements IMemberService {
     @Override
     public Boolean createUser(MemberQueryRequest request) {
         Date now = new Date();
-        Member member = new Member()
-                .setId(RandomUtil.generateStr(32))
-                .setUsername(request.getUsername())
-                .setNickname(request.getNickname())
-                .setSalt(request.getSalt())
-                .setPassword(request.getPassword())
-                .setState(1)
-                .setType(1)
+        Member member = BeanUtils.copyProperties(request, Member.class);
+        member.setId(RandomUtil.generateStr(32))
+                .setState(MemberStateEnum.NORMAL.getCode())
+                .setType(MemberTypeEnum.MANAGER.getCode())
                 .setCreateTime(now)
                 .setUpdateTime(now)
-                .setUpdateUser("1");
+                .setUpdateUser(request.getUpdateUser());
         //保存用户基础信息
         int insert = memberMapper.insert(member);
+        if (insert <= 0) {
+            return Boolean.FALSE;
+        }
         //保存用户的角色信息
         return memberMapper.insertMemberRole(member.getId(), request.getRoles()) > 0;
     }

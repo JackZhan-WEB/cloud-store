@@ -1,5 +1,8 @@
 package club.jackzhan.cloudstore.exception;
 
+import club.jackzhan.cloudstore.constant.BusinessConstant;
+import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -11,6 +14,10 @@ public class BusinessException extends RuntimeException{
 
     public BusinessException() {
         super();
+    }
+
+    public BusinessException(ErrorCodeEnum errorCodeEnum) {
+        super(errorCodeEnum.getDesc()+ BusinessConstant.BUSINESSEXCEPTION_SPLIT +errorCodeEnum.getCode());
     }
 
     public BusinessException(String message) {

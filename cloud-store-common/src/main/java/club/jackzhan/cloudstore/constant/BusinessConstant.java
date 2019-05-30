@@ -1,5 +1,6 @@
-package club.jackzhan.cloudstore.enums;
+package club.jackzhan.cloudstore.constant;
 
+import club.jackzhan.cloudstore.exception.BusinessException;
 import lombok.Getter;
 
 /**
@@ -24,6 +25,11 @@ public interface BusinessConstant {
      * 密码加密类型
      */
     String PASSWORD_ENCRYPTION_TYPE = "md5";
+
+    /**
+     * 异常分隔符
+     */
+    String BUSINESSEXCEPTION_SPLIT = ",code:";
 
 
 

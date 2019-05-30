@@ -10,10 +10,9 @@ import lombok.Getter;
  * @author JackZhan
  */
 public enum MemberTypeEnum implements BaseEnum {
-    ADMIN(1, "管理员"),
-    MANAGER(2, "后台管理人员"),
-    MEMBER(3, "普通用户"),
-    VIP_MEMBER(4, "VIP用户");
+    MANAGER(1, "后台管理人员"),
+    MEMBER(2, "普通用户"),
+    VIP_MEMBER(3, "VIP用户");
 
 
     @Getter
