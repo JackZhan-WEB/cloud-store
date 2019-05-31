@@ -5,6 +5,8 @@ import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * Created with IntelliJ IDEA.

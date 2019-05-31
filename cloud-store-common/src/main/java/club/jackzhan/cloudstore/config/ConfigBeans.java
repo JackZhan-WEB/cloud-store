@@ -1,6 +1,5 @@
 package club.jackzhan.cloudstore.config;
 
-import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Created with IntelliJ IDEA.
  * Description:
- * User: JackZhan
+ * @Author: : JackZhan
  * Date: 2019-03-21
  * Time: 17:05
  */
@@ -27,8 +26,4 @@ public class ConfigBeans {
         return restTemplate;
     }
 
-    @Bean
-    public RemoteCallUtil remoteCallUtil() {
-        return new RemoteCallUtil();
-    }
 }

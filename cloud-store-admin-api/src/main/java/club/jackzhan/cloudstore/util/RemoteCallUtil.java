@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -20,15 +21,15 @@ import java.util.Map;
  * @Author: JackZhan
  */
 @Slf4j
+@Component
 public class RemoteCallUtil {
 
     @Autowired
-    RemoteCallUtil remoteCallUtil;
-
-    @Resource
     private RestTemplate restTemplate;
 
     private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER";
+
+    public static RemoteCallUtil create = new RemoteCallUtil();
 
     public ResultResponse sendGet(String path) {
         return sendGet(path, null);

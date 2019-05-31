@@ -1,4 +1,4 @@
-package club.jackzhan.cloudstore.cfgbeans;
+package club.jackzhan.cloudstore.config;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;

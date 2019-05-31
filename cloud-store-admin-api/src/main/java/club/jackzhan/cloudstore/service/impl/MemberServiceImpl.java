@@ -27,8 +27,6 @@ import java.util.List;
 public class MemberServiceImpl implements IMemberService {
 
 
-    @Autowired
-    private RemoteCallUtil remoteCallUtil;
 
     @Override
     public ResultResponse createUser(MemberQueryRequest request) {
@@ -47,11 +45,11 @@ public class MemberServiceImpl implements IMemberService {
                 break;
             }
         }
-        return remoteCallUtil.sendPost("/member/createUser", request);
+        return RemoteCallUtil.create.sendPost("/member/createUser", request);
     }
 
     @Override
     public ResultResponse list(MemberQueryRequest request) {
-        return remoteCallUtil.sendGet("/member/list", request);
+        return RemoteCallUtil.create.sendGet("/member/list", request);
     }
 }

@@ -6,6 +6,7 @@ import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
+import club.jackzhan.cloudstore.util.RedisOperation;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -13,6 +14,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,6 +27,9 @@ import org.springframework.util.StringUtils;
 @Service
 @Slf4j
 public class LoginServiceImpl implements LoginService {
+
+	@Autowired
+	private RedisTemplate redisTemplate;
 
 	/**
 	 * 登录表单提交
@@ -50,6 +56,8 @@ public class LoginServiceImpl implements LoginService {
 	 */
 	@Override
 	public ResultResponse getInfo() {
+//		MemberDTO memberDTO = (MemberDTO) new RedisOperation(redisTemplate).get(Constants.MEMBER_IN_SESSION);
+
 		//从session获取用户信息
 		Session session = SecurityUtils.getSubject().getSession();
 		MemberDTO memberDTO = (MemberDTO) session.getAttribute(Constants.MEMBER_IN_SESSION);

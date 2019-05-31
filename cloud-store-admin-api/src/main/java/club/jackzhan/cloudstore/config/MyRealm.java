@@ -1,4 +1,4 @@
-package club.jackzhan.cloudstore.cfgbeans;
+package club.jackzhan.cloudstore.config;
 
 import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
@@ -6,6 +6,7 @@ import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.util.BeanUtils;
+import club.jackzhan.cloudstore.util.RedisOperation;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,9 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,8 +32,9 @@ import java.util.Map;
 @Slf4j
 public class MyRealm extends AuthorizingRealm {
 
-    @Autowired
-    private RemoteCallUtil remoteCallUtil;
+
+//    @Autowired
+//    private RedisTemplate redisTemplate;
 
     /**
      * 认证
@@ -45,7 +46,7 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
+        ResultResponse memberResponse = RemoteCallUtil.create.sendGet("/member/getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
         MemberDTO memberDTO = null;
         try {
             memberDTO = BeanUtils.json2Bean((String) memberResponse.getData(), MemberDTO.class);
@@ -60,6 +61,8 @@ public class MyRealm extends AuthorizingRealm {
 //        memberDTO.setPassword("");
         //将用户信息放入session中
         SecurityUtils.getSubject().getSession().setAttribute(Constants.MEMBER_IN_SESSION, memberDTO);
+
+//        new RedisOperation(redisTemplate).set(Constants.MEMBER_IN_SESSION, memberDTO);
         return new SimpleAuthenticationInfo(memberDTO, memberDTO.getPassword().toCharArray(), ByteSource.Util.bytes(memberDTO.getSalt()), getName());
     }
 

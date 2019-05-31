@@ -1,4 +1,4 @@
-package club.jackzhan.cloudstore.cfgbeans;
+package club.jackzhan.cloudstore.config;
 
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import com.alibaba.fastjson.JSONObject;

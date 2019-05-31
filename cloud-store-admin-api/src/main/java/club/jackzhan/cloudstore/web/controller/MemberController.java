@@ -21,8 +21,6 @@ public class MemberController {
     @Autowired
     private IMemberService memberService;
 
-    @Autowired
-    private RemoteCallUtil remoteCallUtil;
 
     @GetMapping("/list")
     public ResultResponse list(MemberQueryRequest request){
@@ -33,7 +31,7 @@ public class MemberController {
 
     @GetMapping("/getAllRoles")
     public ResultResponse getAllRoles(MemberQueryRequest request){
-        return remoteCallUtil.sendGet("/member/getAllRoles");
+        return RemoteCallUtil.create.sendGet("/member/getAllRoles");
     }
 
     @PostMapping("/createUser")

@@ -1,4 +1,4 @@
-package club.jackzhan.cloudstore.cfgbeans;
+package club.jackzhan.cloudstore.config;
 
 import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.util.ResultResponse;
