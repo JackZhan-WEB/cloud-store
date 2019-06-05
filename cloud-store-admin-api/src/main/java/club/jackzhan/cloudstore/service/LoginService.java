@@ -17,8 +17,9 @@ public interface LoginService {
 
 	/**
 	 * 查询当前登录用户的权限等信息
+	 * @param request
 	 */
-	ResultResponse getInfo();
+	ResultResponse getInfo(String request);
 
 	/**
 	 * 退出登录

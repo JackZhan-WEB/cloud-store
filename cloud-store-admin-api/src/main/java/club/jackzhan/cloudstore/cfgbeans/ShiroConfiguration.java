@@ -3,6 +3,7 @@ package club.jackzhan.cloudstore.cfgbeans;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.context.annotation.Bean;
@@ -76,7 +77,6 @@ public class ShiroConfiguration {
         sessionManager.setDeleteInvalidSessions(true);
         return sessionManager;
     }
-
 
     /**
      * 设置过滤规则

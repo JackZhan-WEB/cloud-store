@@ -2,6 +2,7 @@ const getters = {
   sidebar: state => state.app.sidebar,
   visitedViews: state => state.app.visitedViews,
 
+  token: state => state.member.token,
   nickname: state => state.member.username,
   memberId: state => state.member.memberId,
   avatar: state => state.member.avatar,

@@ -1,26 +1,30 @@
 package club.jackzhan.cloudstore.cfgbeans;
 
+import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
-import club.jackzhan.cloudstore.util.BeanUtils;
-import club.jackzhan.cloudstore.util.RemoteCallUtil;
-import club.jackzhan.cloudstore.util.ResultResponse;
+import club.jackzhan.cloudstore.util.*;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.util.HashMap;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +38,9 @@ public class MyRealm extends AuthorizingRealm {
 
     @Autowired
     private RemoteCallUtil remoteCallUtil;
+
+    @Autowired
+    private RedisOperation redisOperation;
 
     /**
      * 认证
@@ -52,14 +59,17 @@ public class MyRealm extends AuthorizingRealm {
         } catch (Exception e) {
             log.error(e.toString());
         }
-        if (memberDTO == null) {
+        if (memberDTO == null || memberDTO.getId() == null) {
             return null;
         }
         log.info("==开始认证==");
-        //session中不需要保存密码
-//        memberDTO.setPassword("");
+        System.out.println(MemberUtil.getSessionId());
+
+        //将用户信息放入redis中
+        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO),30);
+        Object o = redisOperation.get(MemberUtil.getSessionId().toString());
         //将用户信息放入session中
-        SecurityUtils.getSubject().getSession().setAttribute(Constants.MEMBER_IN_SESSION, memberDTO);
+//        SecurityUtils.getSubject().getSession().setAttribute(Constants.MEMBER_IN_SESSION, memberDTO);
         return new SimpleAuthenticationInfo(memberDTO, memberDTO.getPassword().toCharArray(), ByteSource.Util.bytes(memberDTO.getSalt()), getName());
     }
 

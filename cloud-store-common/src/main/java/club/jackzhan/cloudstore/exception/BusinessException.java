@@ -17,7 +17,7 @@ public class BusinessException extends RuntimeException{
     }
 
     public BusinessException(ErrorCodeEnum errorCodeEnum) {
-        super(errorCodeEnum.getDesc()+ BusinessConstant.BUSINESSEXCEPTION_SPLIT +errorCodeEnum.getCode());
+        super(errorCodeEnum.getDesc()+ BusinessConstant.BUSINESS_EXCEPTION_SPLIT +errorCodeEnum.getCode());
     }
 
     public BusinessException(String message) {

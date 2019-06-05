@@ -10,6 +10,7 @@ const member = {
     memberId: "",
     avatar: 'https://www.gravatar.com/avatar/6560ed55e62396e40b34aac1e5041028',
     role: '',
+    token: '',
     menus: [],
     permissions: [],
   },
@@ -22,8 +23,8 @@ const member = {
       state.permissions = userInfo.permissions;
     },
     RESET_USER: (state) => {
-      state.username = "";
-      state.memberId = "";
+      state.username = '';
+      state.memberId = '';
       state.role = '';
       state.menus = [];
       state.permissions = [];
@@ -40,7 +41,8 @@ const member = {
         }).then(data => {
           if (data.code === 1) {
             //cookie中保存前端登录状态
-            setToken();
+            this.state.member.token = data.data;
+            setToken(data.data);
           }
           resolve(data);
         }).catch(err => {
@@ -51,16 +53,18 @@ const member = {
     // 获取用户信息
     GetInfo({commit, state}) {
       return new Promise((resolve, reject) => {
+        console.log(getToken(), 'getToken');
         api({
           url: '/login/getInfo',
-          method: 'post'
+          method: 'post',
+          headers: {'token': getToken()}
         }).then(data => {
           //储存用户信息
           commit('SET_USER', data.data);
           //cookie保存登录状态,仅靠vuex保存的话,页面刷新就会丢失登录状态
-          setToken();
+          // setToken();
           //生成路由
-          let userPermission = data.data ;
+          let userPermission = data.data;
           store.dispatch('GenerateRoutes', userPermission).then(() => {
             //生成该用户的新路由json操作完毕之后,调用vue-router的动态新增路由方法,将新路由添加
             router.addRoutes(store.getters.addRouters)

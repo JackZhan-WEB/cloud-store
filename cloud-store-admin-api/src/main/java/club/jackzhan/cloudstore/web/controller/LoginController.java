@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
+import club.jackzhan.cloudstore.module.request.BaseRequest;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.ResultResponse;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,8 +38,8 @@ public class LoginController {
 	 * 查询当前登录用户的信息
 	 */
 	@PostMapping("/getInfo")
-	public ResultResponse getInfo() {
-		return loginService.getInfo();
+	public ResultResponse getInfo(HttpServletRequest request) {
+		return loginService.getInfo(request.getHeader("token"));
 	}
 
 	/**

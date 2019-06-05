@@ -29,7 +29,12 @@ public interface BusinessConstant {
     /**
      * 异常分隔符
      */
-    String BUSINESSEXCEPTION_SPLIT = ",code:";
+    String BUSINESS_EXCEPTION_SPLIT = ",code:";
+
+    /**
+     * token过期时间
+     */
+    long TOKEN_EXPIRE_TIME = 300;
 
 
 

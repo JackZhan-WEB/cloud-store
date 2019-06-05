@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
+import club.jackzhan.cloudstore.module.request.CurrentMember;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
@@ -37,7 +38,7 @@ public class MemberController {
     }
 
     @PostMapping("/createUser")
-    public ResultResponse createUser(@RequestBody MemberQueryRequest request){
+    public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.createUser(request);
     }
 

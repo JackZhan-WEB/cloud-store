@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-store-provider--member</artifactId>
+    <artifactId>cloud-store-provider-member</artifactId>
 
-    <name>cloud-store-provider--member</name>
+    <name>cloud-store-provider-member</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 

@@ -67,7 +67,7 @@ public class ResultResponse<T> implements Serializable {
     }
 
     public static <T> ResultResponse failure(String message) {
-        String[] err = message.split(BusinessConstant.BUSINESSEXCEPTION_SPLIT);
+        String[] err = message.split(BusinessConstant.BUSINESS_EXCEPTION_SPLIT);
         if (err.length==2) {
             return ResultResponse.failure(err[0], Integer.valueOf(err[1]));
         }

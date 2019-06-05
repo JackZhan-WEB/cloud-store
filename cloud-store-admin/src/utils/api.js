@@ -9,7 +9,14 @@ const service = axios.create({
 });
 // request拦截器
 service.interceptors.request.use(config => {
-  return config
+  let token = getToken();
+  if (token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+    config.headers.token = `${token}`;
+  }
+  // if (config.url.indexOf(url) === -1) {
+  //   config.url = url + config.url;/*拼接完整请求路径*/
+  // }
+  return config;
 }, error => {
   // Do something with request error
   console.error(error); // for debug
