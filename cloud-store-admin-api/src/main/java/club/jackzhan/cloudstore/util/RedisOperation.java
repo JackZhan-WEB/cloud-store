@@ -139,7 +139,7 @@ public class RedisOperation {
 
     public Object get(String key) {
 
-        return key == null ? null : redisTemplate.opsForValue().get(key);
+        return key == null ? null : stringRedisTemplate.opsForValue().get(key);
 
     }
 

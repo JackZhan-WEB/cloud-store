@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
+import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.module.request.BaseRequest;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
@@ -39,7 +40,7 @@ public class LoginController {
 	 */
 	@PostMapping("/getInfo")
 	public ResultResponse getInfo(HttpServletRequest request) {
-		return loginService.getInfo(request.getHeader("token"));
+		return loginService.getInfo(request.getHeader(Constants.TOKEN));
 	}
 
 	/**

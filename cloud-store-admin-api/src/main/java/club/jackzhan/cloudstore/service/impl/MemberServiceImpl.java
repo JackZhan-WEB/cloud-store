@@ -2,14 +2,14 @@ package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.enums.MemberTypeEnum;
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.request.CurrentMember;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
-import club.jackzhan.cloudstore.util.MemberUtil;
 import club.jackzhan.cloudstore.util.RandomUtil;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
+import club.jackzhan.cloudstore.util.UserThreadLocal;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,8 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public ResultResponse createUser(MemberQueryRequest request) {
-        MemberDTO currentMember = MemberUtil.getCurrentMember();
-        request.setUpdateUser(currentMember.getNickname());
+        CurrentMember currentMember = UserThreadLocal.get();
+        request.setUpdateUser(currentMember.getUsername());
         request.setType(MemberTypeEnum.MANAGER.getCode());
         //加密次数
         int hashIterations = BusinessConstant.PASSWORD_ENCRYPTION_TIMES;
@@ -48,6 +48,11 @@ public class MemberServiceImpl implements IMemberService {
             }
         }
         return remoteCallUtil.sendPost("/member/createUser", request);
+    }
+
+    @Override
+    public ResultResponse getAllRoles(MemberQueryRequest request) {
+        return remoteCallUtil.sendGet("/member/getAllRoles");
     }
 
     @Override

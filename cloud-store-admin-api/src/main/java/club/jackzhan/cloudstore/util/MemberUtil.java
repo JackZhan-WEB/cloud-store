@@ -4,8 +4,11 @@ import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
+import club.jackzhan.cloudstore.module.request.CurrentMember;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springsource.loaded.C;
 
 import java.io.Serializable;
 
@@ -16,15 +19,23 @@ import java.io.Serializable;
  *
  * @Author: JackZhan
  */
+@Component
 public class MemberUtil {
 
+    private static RedisOperation redisOperation;
+
     @Autowired
-    private RedisOperation redisOperation;
+    public MemberUtil(RedisOperation redisOperation){
+        MemberUtil.redisOperation = redisOperation;
+    }
 
     private MemberUtil(){}
-    public static MemberDTO getCurrentMember() {
-//        BeanUtils.json2Bean(redisOperation.get(token),MemberDTO.class);
-        MemberDTO currentMember = (MemberDTO) SecurityUtils.getSubject().getSession().getAttribute(Constants.MEMBER_IN_SESSION);
+    public static CurrentMember getCurrentMember() {
+        Object obj = redisOperation.get(getSessionId().toString());
+        if(obj == null){
+            throw new BusinessException(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);
+        }
+        CurrentMember currentMember = BeanUtils.json2Bean(obj.toString(), CurrentMember.class);
         if(currentMember == null){
             throw new BusinessException(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);
         }
