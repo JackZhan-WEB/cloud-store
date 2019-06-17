@@ -49,7 +49,7 @@
         </collection>
     </resultMap>
     <sql id="Base_Column_List">
-       <!--@sql select-->
+        <!--@sql select-->
         id, username, `password`, salt, pwd_err_count, nickname, phone, phone_code, phone_code_time,
         email, `state`, `type`, head_img, create_time, update_time, last_login_time,
         login_count
@@ -86,10 +86,10 @@
         <include refid="querySql"/>
         LIMIT #{offSet}, #{pageSize}) m
         LEFT JOIN member_role mr ON m.id = mr.member_id
+        order by m.create_time
     </select>
     <sql id="querySql">
         <!--@sql select count(1) from member where 1=1-->
-
         <if test="request.username != null and request.username != ''">
             AND username = #{request.username}
         </if>
@@ -98,6 +98,9 @@
         </if>
         <if test="request.phone != null and request.phone != ''">
             AND phone = #{request.phone}
+        </if>
+        <if test="request.type != null and request.type != ''">
+            and type = #{request.type}
         </if>
     </sql>
     <select id="countByQuery" resultType="java.lang.Integer">
@@ -112,6 +115,10 @@
             (#{memberId}, #{role.id}, #{role.name},#{role.description})
         </foreach>
     </insert>
-
+    <delete id="deleteUserRoles">
+        delete
+        from member_role
+        where member_id = #{memberId}
+    </delete>
 
 </mapper>

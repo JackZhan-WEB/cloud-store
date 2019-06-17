@@ -26,4 +26,6 @@ public interface MemberMapper extends BaseMapper<Member> {
     Integer countByQuery(@Param("request") MemberQueryRequest request);
 
     int insertMemberRole(@Param("memberId") String memberId, @Param("roles") List<RoleDTO> roles);
+
+    int deleteUserRoles(@Param("memberId") String memberId);
 }

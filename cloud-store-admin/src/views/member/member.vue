@@ -1,10 +1,16 @@
 <template>
   <div class="app-container">
+    <div>
+      <el-tabs v-model="listQuery.type" type="card" @tab-click="selectByType">
+        <el-tab-pane label="后台管理人员" name="1"></el-tab-pane>
+        <el-tab-pane label="普通用户" name="2"></el-tab-pane>
+        <el-tab-pane label="VIP用户" name="3"></el-tab-pane>
+      </el-tabs>
+    </div>
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="primary" icon="plus" v-if="hasPerm('user:add')" @click="showCreate">添加
-          </el-button>
+          <el-button type="primary" icon="plus" v-if="hasPerm('user:add') && listQuery.type==='1'" @click="showCreate">添加</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -37,10 +43,9 @@
       </el-table-column>
       <el-table-column align="center" label="用户类型" prop="type">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.type===1">超级管理员</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===2">后台管理人员</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===3">普通用户</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===4">VIP用户</el-tag>
+          <el-tag type="success" v-if="scope.row.type===1">后台管理人员</el-tag>
+          <el-tag type="primary" v-else-if="scope.row.type===2">普通用户</el-tag>
+          <el-tag type="primary" v-else-if="scope.row.type===3">VIP用户</el-tag>
           <el-tag type="danger" v-else>账号异常</el-tag>
         </template>
       </el-table-column>
@@ -49,7 +54,8 @@
       <el-table-column align="center" label="修改人" prop="updateUser"/>
       <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">修改</el-button>
+          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)" v-if="scope.row.type===1">设置角色
+          </el-button>
           <el-button type="danger" icon="delete" v-if="scope.row.memberId!==memberId"
                      @click="removeUser(scope.$index)">删除
           </el-button>
@@ -65,24 +71,24 @@
       :page-sizes="[1, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px">
       <el-form class="small-space" :model="tempUser" label-position="left" label-width="80px"
                style='width: 300px; margin-left:50px;'>
-        <el-form-item label="用户名" required v-if="dialogStatus=='create'">
+        <el-form-item label="用户名" required v-if="dialogStatus==='create'">
           <el-input type="text" v-model="tempUser.username">
           </el-input>
         </el-form-item>
-        <el-form-item label="手机号" required v-if="dialogStatus=='create'">
+        <el-form-item label="手机号" required v-if="dialogStatus==='create'">
           <el-input type="text" v-model="tempUser.phone">
           </el-input>
         </el-form-item>
-        <el-form-item label="密码" v-if="dialogStatus=='create'" required>
+        <el-form-item label="密码" v-if="dialogStatus==='create'" required>
           <el-input type="password" v-model="tempUser.password"/>
         </el-form-item>
-        <el-form-item label="新密码" v-else>
-          <el-input type="password" v-model="tempUser.password" placeholder="不填则表示不修改">
-          </el-input>
-        </el-form-item>
+        <!--        <el-form-item label="新密码" v-else>-->
+        <!--          <el-input type="password" v-model="tempUser.password" placeholder="不填则表示不修改">-->
+        <!--          </el-input>-->
+        <!--        </el-form-item>-->
         <el-form-item label="角色" required>
           <el-select multiple v-model="tempUser.roles" value-key="id"
                      placeholder="请选择">
@@ -95,15 +101,15 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="昵称" required>
+        <el-form-item label="昵称" v-if="dialogStatus==='create'" required>
           <el-input type="text" v-model="tempUser.nickname">
           </el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="success" @click="createUser">创 建</el-button>
-        <el-button type="primary" v-else @click="updateUser">修 改</el-button>
+        <el-button v-if="dialogStatus==='create'" type="success" @click="createUser">创 建</el-button>
+        <el-button type="primary" v-else @click="updateUserRole">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -120,6 +126,7 @@
         list: [],//表格的数据
         listLoading: false,//数据加载等待动画
         listQuery: {
+          type: '1',
           currentPage: 1,//页码
           pageSize: 50,//每页条数
         },
@@ -131,14 +138,14 @@
           create: '新建用户'
         },
         tempUser: {
+          id: '',
           username: '',
           phone: '',
           password: '',
           nickname: '',
-          roles: null,
+          roles: [],
           memberId: ''
-        },
-        disabled: true,
+        }
       }
     },
     created() {
@@ -169,6 +176,7 @@
       getList() {
         //查询列表
         this.listLoading = true;
+        console.log(this.listQuery, 'listQuery');
         memberService.getList(this.listQuery).then(response => {
           this.listLoading = false;
           this.list = response.data.pageData;
@@ -206,11 +214,13 @@
       },
       showUpdate($index) {
         let user = this.list[$index];
+        console.log(user, 'showUpdate');
+        this.tempUser.id = user.id;
         this.tempUser.username = user.username;
         this.tempUser.nickname = user.nickname;
         this.tempUser.roles = user.roles;
         this.tempUser.memberId = user.memberId;
-        this.tempUser.deleteStatus = '1';
+        this.tempUser.state = user.state;
         this.tempUser.password = '';
         this.dialogStatus = "update";
         this.dialogFormVisible = true
@@ -222,14 +232,11 @@
           this.dialogFormVisible = false
         })
       },
-      updateUser() {
-        //修改用户信息
+      updateUserRole() {
+        //修改用户角色
         let _vue = this;
-        this.api({
-          url: "/member/updateUser",
-          method: "post",
-          data: this.tempUser
-        }).then(() => {
+        console.log(this.tempUser, 'tempUser');
+        memberService.updateUser(this.tempUser).then(() => {
           let msg = "修改成功";
           this.dialogFormVisible = false;
           if (this.memberId === this.tempUser.memberId) {
@@ -253,18 +260,19 @@
           type: 'warning'
         }).then(() => {
           let user = _vue.list[$index];
-          user.deleteStatus = '2';
-          _vue.api({
-            url: "/member/updateUser",
-            method: "post",
-            data: user
-          }).then(() => {
+          console.log(user, 'user');
+          user.state = '4';
+          user.roles = null;
+          memberService.updateUser(user).then(() => {
             _vue.getList()
           }).catch(() => {
             _vue.$message.error("删除失败")
           })
         })
       },
+      selectByType() {
+        this.getList();
+      }
     }
   }
 </script>

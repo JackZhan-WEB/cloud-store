@@ -28,4 +28,6 @@ public interface IMemberService {
     List<RoleDTO> getAllRoles();
 
     Boolean createUser(MemberQueryRequest request);
+
+    Boolean updateUser(MemberQueryRequest request);
 }

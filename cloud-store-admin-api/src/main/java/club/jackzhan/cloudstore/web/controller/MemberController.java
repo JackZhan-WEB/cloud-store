@@ -42,5 +42,10 @@ public class MemberController {
         return memberService.createUser(request);
     }
 
+    @PostMapping("/updateUser")
+    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
+        return memberService.updateUser(request);
+    }
+
 
 }

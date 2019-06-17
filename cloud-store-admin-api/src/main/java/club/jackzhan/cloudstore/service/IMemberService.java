@@ -19,4 +19,6 @@ public interface IMemberService {
     ResultResponse list(MemberQueryRequest request);
 
     ResultResponse getAllRoles(MemberQueryRequest request);
+
+    ResultResponse updateUser(MemberQueryRequest request);
 }

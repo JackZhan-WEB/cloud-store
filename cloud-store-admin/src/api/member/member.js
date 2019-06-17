@@ -25,3 +25,11 @@ export function createUser(params) {
     data: params
   })
 }
+
+export function updateUser(params) {
+  return api({
+    url: "/member/updateUser",
+    method: "post",
+    data: params
+  })
+}

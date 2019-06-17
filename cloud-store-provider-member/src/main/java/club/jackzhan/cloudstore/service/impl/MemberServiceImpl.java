@@ -20,11 +20,11 @@ import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.util.RandomUtil;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,7 +56,6 @@ public class MemberServiceImpl implements IMemberService {
             //获取roles
             List<RoleDTO> roles = BeanUtils.copyList(roleMapper.getByMemberId(memberDTO.getId()), RoleDTO.class);
             memberDTO.setRoles(roles);
-            List<MenuDTO> menus = new ArrayList<>();
             StringBuilder roleIds = new StringBuilder();
             for (RoleDTO role : roles) {
                 roleIds.append(role.getId());
@@ -110,7 +109,39 @@ public class MemberServiceImpl implements IMemberService {
         if (insert <= 0) {
             return Boolean.FALSE;
         }
+
+        isAdminRole(request.getRoles());
         //保存用户的角色信息
         return memberMapper.insertMemberRole(member.getId(), request.getRoles()) > 0;
+    }
+
+    private void isAdminRole(List<RoleDTO> roles) {
+        for (RoleDTO role : roles) {
+            if ("admin".equals(role.getName())) {
+                roles.clear();
+                roles.add(role);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public Boolean updateUser(MemberQueryRequest request) {
+        if (request.getRoles() != null) {
+            if (memberMapper.deleteUserRoles(request.getId()) <= 0) {
+                throw new BusinessException("设置角色失败");
+            } else {
+                isAdminRole(request.getRoles());
+                if (memberMapper.insertMemberRole(request.getId(), request.getRoles()) <= 0) {
+                    throw new BusinessException("设置角色失败");
+                }
+            }
+        } else {
+            Wrapper<Member> wrapper = new EntityWrapper<Member>().eq("id", request.getId());
+            if (memberMapper.update(BeanUtils.copyProperties(request, Member.class), wrapper) < 0) {
+                throw new BusinessException("删除失败");
+            }
+        }
+        return Boolean.TRUE;
     }
 }

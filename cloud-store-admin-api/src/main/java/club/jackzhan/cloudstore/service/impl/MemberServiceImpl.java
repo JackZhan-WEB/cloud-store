@@ -39,20 +39,17 @@ public class MemberServiceImpl implements IMemberService {
         int hashIterations = BusinessConstant.PASSWORD_ENCRYPTION_TIMES;
         String salt = RandomUtil.generateStr(BusinessConstant.PASSWORD_SALT_LENGTH);
         request.setSalt(salt).setPassword(new SimpleHash(BusinessConstant.PASSWORD_ENCRYPTION_TYPE, request.getPassword(), salt, hashIterations).toString());
-        List<RoleDTO> roles = request.getRoles();
-        for (RoleDTO role : roles) {
-            if ("admin".equals(role.getName())) {
-                roles.clear();
-                roles.add(role);
-                break;
-            }
-        }
         return remoteCallUtil.sendPost("/member/createUser", request);
     }
 
     @Override
     public ResultResponse getAllRoles(MemberQueryRequest request) {
         return remoteCallUtil.sendGet("/member/getAllRoles");
+    }
+
+    @Override
+    public ResultResponse updateUser(MemberQueryRequest request) {
+        return remoteCallUtil.sendPost("/member/updateUser",request);
     }
 
     @Override

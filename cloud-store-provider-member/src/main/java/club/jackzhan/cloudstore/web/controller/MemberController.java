@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
+import club.jackzhan.cloudstore.module.request.CurrentMember;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
@@ -38,10 +39,14 @@ public class MemberController {
     public ResultResponse list(MemberQueryRequest request) {
         return ResultResponse.success(memberService.list(request));
     }
-
     @GetMapping("/getAllRoles")
     public ResultResponse getAllRoles() {
         return ResultResponse.success(memberService.getAllRoles());
+    }
+
+    @PostMapping("/updateUser")
+    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
+        return ResultResponse.success(memberService.updateUser(request));
     }
 
     @PostMapping("/createUser")

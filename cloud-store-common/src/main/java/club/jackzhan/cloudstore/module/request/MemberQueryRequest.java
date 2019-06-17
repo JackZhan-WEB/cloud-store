@@ -20,6 +20,8 @@ import java.util.List;
 @Accessors(chain = true)
 public class MemberQueryRequest extends PageQueryRequest {
 
+    private String id;
+
     private String loginName;
 
     private String nickname;
@@ -37,6 +39,8 @@ public class MemberQueryRequest extends PageQueryRequest {
     private String phone;
 
     private String updateUser;
+
+    private Integer state;
 
     private List<RoleDTO> roles;
 }

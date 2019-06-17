@@ -2,6 +2,8 @@ package club.jackzhan.cloudstore.web.intercept;
 
 import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.constant.Constants;
+import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
+import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.request.CurrentMember;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.RedisOperation;
@@ -67,7 +69,10 @@ public class RequestIntercept {
 
         String token = request.getHeader(Constants.TOKEN);
         StringBuffer requestURL = request.getRequestURL();
-        if (!requestURL.toString().contains("/login/auth") && redisOperation.hasKey(token)) {
+        if (!requestURL.toString().contains("/login/auth")) {
+            if(!redisOperation.hasKey(token)){
+                throw new BusinessException(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);
+            }
             redisOperation.expire(token, BusinessConstant.TOKEN_EXPIRE_TIME);
             CurrentMember currentMember = BeanUtils.json2Bean((String) redisOperation.get(token), CurrentMember.class);
             UserThreadLocal.set(currentMember);
