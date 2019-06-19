@@ -10,12 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.Permission;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -58,7 +60,7 @@ public class MyRealm extends AuthorizingRealm {
         System.out.println(MemberUtil.getSessionId());
 
         //将用户信息放入redis中
-        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO),30);
+        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO), 30);
         //将用户信息放入session中
 //        SecurityUtils.getSubject().getSession().setAttribute(Constants.MEMBER_IN_SESSION, memberDTO);
         return new SimpleAuthenticationInfo(memberDTO, memberDTO.getPassword().toCharArray(), ByteSource.Util.bytes(memberDTO.getSalt()), getName());
@@ -72,6 +74,7 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
         MemberDTO memberDTO = (MemberDTO) principals.getPrimaryPrincipal();
         //取出session中的用户信息
 //        memberDTO = (MemberDTO) SecurityUtils.getSubject().getSession().getAttribute(Constants.MEMBER_IN_SESSION);
@@ -88,4 +91,16 @@ public class MyRealm extends AuthorizingRealm {
         return info;
     }
 
+//    @Override
+//    protected boolean isPermitted(Permission permission, AuthorizationInfo info) {
+//        Collection<Permission> permissions = getPermissions(info);
+//        if (permissions != null && !permissions.isEmpty()) {
+//            for (Permission perm : permissions) {
+//                if(perm.implies(permission)){
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 }

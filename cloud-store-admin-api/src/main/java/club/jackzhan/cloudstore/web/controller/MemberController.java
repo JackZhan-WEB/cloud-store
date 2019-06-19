@@ -21,13 +21,14 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/member")
+//@RequiresPermissions("member:member")
 public class MemberController {
 
     @Autowired
     private IMemberService memberService;
 
     @GetMapping("/list")
-//    @RequiresPermissions("admin")
+//    @RequiresPermissions("member:list")
     public ResultResponse list(MemberQueryRequest request){
         return memberService.list(request);
     }
@@ -38,11 +39,13 @@ public class MemberController {
     }
 
     @PostMapping("/createUser")
+    @RequiresPermissions("member:createUser")
     public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.createUser(request);
     }
 
     @PostMapping("/updateUser")
+    @RequiresPermissions("member:updateUser")
     public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.updateUser(request);
     }

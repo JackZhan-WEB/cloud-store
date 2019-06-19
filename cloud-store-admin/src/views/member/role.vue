@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="success" icon="plus" v-if="hasPerm('user:add')" @click="showCreate">添加角色
+          <el-button type="success" icon="plus" v-if="hasPerm('member:add')" @click="showCreate">添加角色
           </el-button>
         </el-form-item>
       </el-form>
@@ -18,8 +18,8 @@
       <el-table-column align="center" label="角色" prop="roleName" width="150"></el-table-column>
       <el-table-column align="center" label="用户">
         <template slot-scope="scope">
-          <div v-for="user in scope.row.users">
-            <div v-text="user.nickname" style="display: inline-block;vertical-align: middle;"></div>
+          <div v-for="member in scope.row.users">
+            <div v-text="member.nickname" style="display: inline-block;vertical-align: middle;"></div>
           </div>
         </template>
       </el-table-column>

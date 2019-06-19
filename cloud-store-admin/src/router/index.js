@@ -50,16 +50,27 @@ export const asyncRouterMap = [
     meta: {title: '用户权限', icon: 'table'},
     children: [
       {
-        path: '', name: '用户列表', component: _import('member/member'), meta: {title: '用户列表', icon: 'member'}, menu: 'user'
+        path: '',
+        name: '用户列表',
+        component: _import('member/member'),
+        meta: {title: '用户列表', icon: ''},
+        menu: 'member'
       },
       {
         path: 'role',
-        name: '权限管理',
+        name: '角色管理',
         component: _import('member/role'),
-        meta: {title: '权限管理', icon: 'password'},
+        meta: {title: '角色管理', icon: ''},
         menu: 'role'
+      },
+      {
+        path: 'permissions',
+        name: '权限管理',
+        component: _import('member/permissions'),
+        meta: {title: '权限管理', icon: ''},
+        menu: 'permissions'
       },
     ]
   },
   {path: '*', redirect: '/404', hidden: true}
-]
+];

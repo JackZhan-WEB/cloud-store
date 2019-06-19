@@ -5,6 +5,7 @@ import club.jackzhan.cloudstore.module.request.BaseRequest;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.ResultResponse;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,7 @@ public class LoginController {
 	 */
 	@PostMapping("/auth")
 	public ResultResponse authLogin(@RequestBody MemberQueryRequest request) {
+//		SecurityUtils.getSubject().isPermitted("a");
 		return loginService.authLogin(request);
 	}
 

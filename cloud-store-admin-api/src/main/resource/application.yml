@@ -20,3 +20,5 @@ server:
 spring:
     application:
         name: cloud-store-admin
+#    aop:
+#        proxy-target-class: true
