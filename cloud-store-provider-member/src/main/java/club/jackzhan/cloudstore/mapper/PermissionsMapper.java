@@ -1,10 +1,10 @@
 package club.jackzhan.cloudstore.mapper;
 
-import club.jackzhan.cloudstore.module.entities.Permissions;
+import club.jackzhan.cloudstore.entities.Permissions;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,18 +13,13 @@ import java.util.Set;
  *
  * @Author: JackZhan
  */
-public interface PermissionsMapper {
-    int deleteByPrimaryKey(Integer id);
-
-    int insert(Permissions record);
-
-    int insertSelective(Permissions record);
-
-    Permissions selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(Permissions record);
-
-    int updateByPrimaryKey(Permissions record);
+public interface PermissionsMapper extends BaseMapper<Permissions> {
 
     List<Permissions> getByRoleIds(@Param("roleIds") String roleIds);
+
+    List<Permissions> list();
+
+    int insertList(@Param("list")List<Permissions> list);
+
+    int insertPermission(Permissions permissions);
 }

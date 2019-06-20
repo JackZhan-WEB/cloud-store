@@ -18,6 +18,7 @@ public class Constants {
      */
     public static String TOKEN = "token";
 
+    public static Integer TOKEN_EXPIRE_TIME = 3600;
 
 
 }

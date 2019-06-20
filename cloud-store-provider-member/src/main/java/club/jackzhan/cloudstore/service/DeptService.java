@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.service;
 
-import club.jackzhan.cloudstore.module.entities.Dept;
+import club.jackzhan.cloudstore.entities.Dept;
 
 import java.util.List;
 

@@ -10,7 +10,7 @@
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="primary" icon="plus" v-if="hasPerm('user:add') && listQuery.type==='1'" @click="showCreate">添加</el-button>
+          <el-button type="primary" icon="plus" v-if="hasPerm('member:add') && listQuery.type==='1'" @click="showCreate">添加</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -52,7 +52,7 @@
       <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
       <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
       <el-table-column align="center" label="修改人" prop="updateUser"/>
-      <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('user:update')">
+      <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('member:update')">
         <template slot-scope="scope">
           <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)" v-if="scope.row.type===1">设置角色
           </el-button>
@@ -150,7 +150,7 @@
     },
     created() {
       this.getList();
-      if (this.hasPerm('user:add') || this.hasPerm('user:update')) {
+      if (this.hasPerm('member:add') || this.hasPerm('member:update')) {
         this.getAllRoles();
       }
     },

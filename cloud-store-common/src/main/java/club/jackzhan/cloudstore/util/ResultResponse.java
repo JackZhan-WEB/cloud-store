@@ -5,6 +5,7 @@ import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,6 +86,8 @@ public class ResultResponse<T> implements Serializable {
         response.setState(Boolean.FALSE);
         return response;
     }
+
+
 
 }
 

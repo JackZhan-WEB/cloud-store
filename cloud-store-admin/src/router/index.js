@@ -4,8 +4,8 @@ import Router from 'vue-router'
 /* layout */
 import Layout from '../views/layout/Layout'
 
-const _import = require('./_import_' + process.env.NODE_ENV)
-Vue.use(Router)
+const _import = require('./_import_' + process.env.NODE_ENV);
+Vue.use(Router);
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
   {path: '/404', component: _import('404'), hidden: true},
@@ -19,7 +19,7 @@ export const constantRouterMap = [
       path: 'dashboard', component: _import('dashboard/index')
     }]
   }
-]
+];
 export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({y: 0}),
@@ -50,16 +50,27 @@ export const asyncRouterMap = [
     meta: {title: '用户权限', icon: 'table'},
     children: [
       {
-        path: '', name: '用户列表', component: _import('member/member'), meta: {title: '用户列表', icon: 'member'}, menu: 'user'
+        path: '',
+        name: '用户列表',
+        component: _import('member/member'),
+        meta: {title: '用户列表', icon: ''},
+        menu: 'member'
       },
       {
         path: 'role',
-        name: '权限管理',
+        name: '角色管理',
         component: _import('member/role'),
-        meta: {title: '权限管理', icon: 'password'},
+        meta: {title: '角色管理', icon: ''},
         menu: 'role'
+      },
+      {
+        path: 'permissions',
+        name: '权限管理',
+        component: _import('member/permissions'),
+        meta: {title: '权限管理', icon: ''},
+        menu: 'permissions'
       },
     ]
   },
   {path: '*', redirect: '/404', hidden: true}
-]
+];

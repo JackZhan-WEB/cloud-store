@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.service.impl;
 
-import club.jackzhan.cloudstore.module.entities.Dept;
+import club.jackzhan.cloudstore.entities.Dept;
 import club.jackzhan.cloudstore.service.DeptService;
 import club.jackzhan.cloudstore.mapper.DeptDao;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,6 +9,8 @@ import {Message} from 'element-ui'
  */
 function hasPermission(menus, route) {
   if (route.menu) {
+    console.log(route.menu,'route.menu');
+    console.log(menus,'menus');
     /*
     * 如果这个路由有menu属性,就需要判断用户是否拥有此menu权限
     */

@@ -1,7 +1,7 @@
 package club.jackzhan.cloudstore.mapper;
 
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
-import club.jackzhan.cloudstore.module.entities.Member;
+import club.jackzhan.cloudstore.entities.Member;
 import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;

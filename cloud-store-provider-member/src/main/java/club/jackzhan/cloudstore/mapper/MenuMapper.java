@@ -2,7 +2,7 @@ package club.jackzhan.cloudstore.mapper;
 import feign.Param;
 import java.util.List;
 
-import club.jackzhan.cloudstore.module.entities.Menu;
+import club.jackzhan.cloudstore.entities.Menu;
 
 /**
  * Created with IntelliJ IDEA.

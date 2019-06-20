@@ -1,11 +1,8 @@
 package club.jackzhan.cloudstore.module.dto;
 
-import club.jackzhan.cloudstore.module.entities.Permissions;
-import club.jackzhan.cloudstore.module.entities.Role;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

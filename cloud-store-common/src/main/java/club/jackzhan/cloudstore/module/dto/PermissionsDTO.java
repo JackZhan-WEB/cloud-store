@@ -1,7 +1,9 @@
 package club.jackzhan.cloudstore.module.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,7 +15,6 @@ import java.util.Date;
  * @Author: JackZhan
  */
 @Data
-@Accessors(chain = true)
 public class PermissionsDTO{
     /**
     * 权限id
@@ -31,6 +32,11 @@ public class PermissionsDTO{
     private String name;
 
     /**
+     * 权限code
+     */
+    private String code;
+
+    /**
     * 权限描述
     */
     private String description;
@@ -43,21 +49,8 @@ public class PermissionsDTO{
     /**
     * 创建时间
     */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
-    /**
-    * 修改时间
-    */
-    private Date updateTime;
-
-    /**
-    * 创建人
-    */
-    private String createUser;
-
-    /**
-    * 修改人
-    */
-    private String updateUser;
 
 }

@@ -1,4 +1,4 @@
-package club.jackzhan.cloudstore.module.entities;
+package club.jackzhan.cloudstore.entities;
 
 import lombok.Data;
 

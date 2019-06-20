@@ -151,8 +151,19 @@ public class BeanUtils {
         return bean;
     }
 
+
     public static String bean2Json(Object obj) {
         return JSON.toJSONString(obj);
+    }
+
+    /**
+     * json字符串转换成List集合
+     * (需要实体类)
+     * @param jsonString
+     * @return
+     */
+    public static <T>List<T> json2List(String jsonString,Class<T> cls){
+        return JSON.parseArray(jsonString, cls);
     }
 
     public static <T> T json2Bean(String jsonStr, Class<T> objClass) {
@@ -162,5 +173,8 @@ public class BeanUtils {
     public static String beanToJsonStringWithDateFormat(Object obj) {
         return JSON.toJSONStringWithDateFormat(obj, JSON.DEFFAULT_DATE_FORMAT, SerializerFeature.WriteDateUseDateFormat);
     }
+
+
+
 
 }

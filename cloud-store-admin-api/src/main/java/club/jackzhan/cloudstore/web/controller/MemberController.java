@@ -27,7 +27,7 @@ public class MemberController {
     private IMemberService memberService;
 
     @GetMapping("/list")
-//    @RequiresPermissions("admin")
+    @RequiresPermissions({"member:list","用户列表"})
     public ResultResponse list(MemberQueryRequest request){
         return memberService.list(request);
     }
@@ -38,11 +38,13 @@ public class MemberController {
     }
 
     @PostMapping("/createUser")
+    @RequiresPermissions({"member:createUser","用户添加"})
     public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.createUser(request);
     }
 
     @PostMapping("/updateUser")
+    @RequiresPermissions({"member:updateUser","用户更新"})
     public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.updateUser(request);
     }

@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
-import club.jackzhan.cloudstore.module.entities.Dept;
+import club.jackzhan.cloudstore.entities.Dept;
 import club.jackzhan.cloudstore.service.DeptService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.web.bind.annotation.PathVariable;

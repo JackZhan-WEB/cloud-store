@@ -44,7 +44,7 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
+        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/member/getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
         MemberDTO memberDTO = null;
         try {
             memberDTO = BeanUtils.json2Bean((String) memberResponse.getData(), MemberDTO.class);
@@ -58,7 +58,7 @@ public class MyRealm extends AuthorizingRealm {
         System.out.println(MemberUtil.getSessionId());
 
         //将用户信息放入redis中
-        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO),30);
+        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO), Constants.TOKEN_EXPIRE_TIME);
         //将用户信息放入session中
 //        SecurityUtils.getSubject().getSession().setAttribute(Constants.MEMBER_IN_SESSION, memberDTO);
         return new SimpleAuthenticationInfo(memberDTO, memberDTO.getPassword().toCharArray(), ByteSource.Util.bytes(memberDTO.getSalt()), getName());
@@ -73,15 +73,22 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         MemberDTO memberDTO = (MemberDTO) principals.getPrimaryPrincipal();
+
         //取出session中的用户信息
 //        memberDTO = (MemberDTO) SecurityUtils.getSubject().getSession().getAttribute(Constants.MEMBER_IN_SESSION);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         // 将用户对应的角色和权限信息打包放到AuthorizationInfo中
         List<RoleDTO> roles = memberDTO.getRoles();
         for (RoleDTO role : roles) {
-            info.addRole(role.getName());
-            for (PermissionsDTO p : role.getPermissions()) {
-                info.addStringPermission(p.getName());
+            if ("admin".equals(role.getName())) {
+                info.addStringPermission("*:*");
+                info.addRole("admin");
+                return info;
+            } else {
+                info.addRole(role.getName());
+                for (PermissionsDTO p : role.getPermissions()) {
+                    info.addStringPermission(p.getName());
+                }
             }
         }
         log.info("==开始授权==");

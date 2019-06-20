@@ -23,12 +23,14 @@ public class CloudStoreExceptionHandler {
     @ExceptionHandler(value = BusinessException.class)
     public ResultResponse defaultErrorHandler(HttpServletRequest req, BusinessException e) throws BusinessException {
         log.error("请求接口：{}，异常：{}", req.getRequestURI(), e.toString());
+        log.error("",e);
         return ResultResponse.failure(e.getMessage());
     }
 
     @ExceptionHandler(value = Exception.class)
     public ResultResponse defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         log.error("请求接口：{}，异常：{}", req.getRequestURI(), e.toString());
+        log.error("",e);
         return ResultResponse.failure();
     }
 }

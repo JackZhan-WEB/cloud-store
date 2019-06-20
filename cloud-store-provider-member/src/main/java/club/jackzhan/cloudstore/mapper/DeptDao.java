@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.mapper;
 
-import club.jackzhan.cloudstore.module.entities.Dept;
+import club.jackzhan.cloudstore.entities.Dept;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 

@@ -1,7 +1,6 @@
 package club.jackzhan.cloudstore.mapper;
 
-import club.jackzhan.cloudstore.module.entities.Role;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.entities.Role;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

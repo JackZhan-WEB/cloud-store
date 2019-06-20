@@ -1,8 +1,10 @@
-package club.jackzhan.cloudstore.module.entities;
+package club.jackzhan.cloudstore.entities;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
+
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,10 +13,11 @@ import lombok.Data;
  * @Author: JackZhan
  */
 @Data
-public class Permissions implements Serializable {
+public class Permissions {
     /**
     * 权限id
     */
+    @TableId(value="id", type= IdType.AUTO)
     private Integer id;
 
     /**
@@ -26,6 +29,11 @@ public class Permissions implements Serializable {
     * 权限名称
     */
     private String name;
+
+    /**
+     * 权限code
+     */
+    private String code;
 
     /**
     * 权限描述
@@ -42,20 +50,4 @@ public class Permissions implements Serializable {
     */
     private Date createTime;
 
-    /**
-    * 修改时间
-    */
-    private Date updateTime;
-
-    /**
-    * 创建人
-    */
-    private String createUser;
-
-    /**
-    * 修改人
-    */
-    private String updateUser;
-
-    private static final long serialVersionUID = 1L;
 }

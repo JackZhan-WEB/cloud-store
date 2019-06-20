@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.service.impl;
 
-import club.jackzhan.cloudstore.module.entities.Role;
+import club.jackzhan.cloudstore.entities.Role;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.mapper.RoleMapper;
 import club.jackzhan.cloudstore.service.IRoleService;
