@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/member")
+@RequiresPermissions({"member:*","用户模块"})
 public class MemberController {
 
     @Autowired

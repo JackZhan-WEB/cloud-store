@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/permissions")
+@RequiresPermissions({"permissions:*", "权限模块"})
 public class PermissionsController {
 
     @Autowired

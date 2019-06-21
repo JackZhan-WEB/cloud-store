@@ -22,9 +22,9 @@ public class PermissionsDTO{
     private Integer id;
 
     /**
-    * 父级权限ID
+    * 父级权限Code
     */
-    private Integer parentId;
+    private String parentCode;
 
     /**
     * 权限名称

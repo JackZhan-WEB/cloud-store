@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="club.jackzhan.cloudstore.entities.Permissions">
         <!--@mbg.generated-->
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="parent_code" jdbcType="VARCHAR" property="parentCode"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
@@ -13,7 +13,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         <!--@sql select -->
-        p.id, p.parent_id, p.`name`, p.code, p.description, p.`type`, p.create_time
+        p.id, p.parent_code, p.`name`, p.code, p.description, p.`type`, p.create_time
         <!--@sql from permissions p-->
     </sql>
     <select id="getByRoleIds" resultMap="BaseResultMap">
@@ -31,6 +31,7 @@
     <insert id="insertList">
         INSERT INTO permissions(
         name,
+        parent_code,
         code,
         description,
         type,
@@ -39,6 +40,7 @@
         <foreach collection="list" item="element" index="index" separator=",">
             (
             #{element.name,jdbcType=VARCHAR},
+            #{element.parentCode,jdbcType=VARCHAR},
             #{element.code,jdbcType=VARCHAR},
             #{element.description,jdbcType=VARCHAR},
             #{element.type,jdbcType=BIT},
@@ -46,8 +48,7 @@
             )
         </foreach>
     </insert>
-    <insert id="insertPermission" parameterType="club.jackzhan.cloudstore.entities.Permissions">
-        insert into permissions(name, description, code, type, create_time)
-        values (#{name}, #{description}, #{code}, #{type}, #{createTime})
-    </insert>
+    <select id="getCheckList" resultType="java.lang.Integer">
+        select id from permissions where type = #{type}
+    </select>
 </mapper>

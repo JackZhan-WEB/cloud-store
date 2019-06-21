@@ -7,40 +7,14 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
-      <el-table-column align="center" label="序号" width="80px">
-        <template slot-scope="scope">
-          <span v-text="getIndex(scope.$index)"> </span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="权限名称" prop="name"/>
-      <el-table-column align="center" label="权限描述" prop="description"/>
-      <el-table-column align="center" label="权限code" prop="code"/>
-      <el-table-column align="center" label="权限类型" prop="type">
-        <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.state===1">可授权</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.state===2">不可授权</el-tag>
-          <el-tag type="danger" v-else>权限异常</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
-      <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('member:update')">
-        <template slot-scope="scope">
-          <el-button type="danger" icon="delete" v-if="scope.row.memberId!==memberId"
-                     @click="removeUser(scope.$index)">删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="listQuery.currentPage"
-      :page-size="listQuery.pageSize"
-      :total="totalCount"
-      :page-sizes="[1, 20, 50, 100]"
-      layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
+    <el-tree
+      :data="list"
+      show-checkbox
+      node-key="id"
+      :default-checked-keys="checkList"
+      :props="defaultProps">
+    </el-tree>
+
   </div>
 </template>
 <script>
@@ -53,6 +27,7 @@
       return {
         totalCount: 0, //分页组件--数据总条数
         list: [],//表格的数据
+        checkList:[],
         listLoading: false,//数据加载等待动画
         listQuery: {
           type: '1',
@@ -74,7 +49,11 @@
           nickname: '',
           roles: [],
           memberId: ''
-        }
+        },
+        defaultProps: {
+          children: 'children',
+          label: 'name'
+        },
       }
     },
     created() {
@@ -100,8 +79,8 @@
         console.log(this.listQuery, 'listQuery');
         permsService.getList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.data.pageData;
-          this.totalCount = response.data.totalCount;
+          this.list = response.data.children;
+          this.checkList = response.data.checkList;
         })
       },
       handleSizeChange(val) {

@@ -1,9 +1,7 @@
 package club.jackzhan.cloudstore.service;
 
-import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
+import club.jackzhan.cloudstore.module.dto.PermissionsTreeDTO;
 import club.jackzhan.cloudstore.module.request.PermissionsRequest;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,8 +12,7 @@ import java.util.List;
  */
 public interface IPermissionsService {
 
-
-    List<PermissionsDTO> list();
+    PermissionsTreeDTO list();
 
     boolean saveList(PermissionsRequest request);
 }

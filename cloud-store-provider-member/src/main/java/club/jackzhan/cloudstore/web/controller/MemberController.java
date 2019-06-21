@@ -25,6 +25,9 @@ public class MemberController {
     @Resource
     private IMemberService memberService;
 
+    /**
+     * 获取用户的信息
+     */
     @GetMapping("/getMember")
     public ResultResponse getMember(MemberQueryRequest request) {
         CheckParametersUtil
@@ -35,20 +38,33 @@ public class MemberController {
     }
 
 
+    /**
+     * 获取用户列表
+     */
     @GetMapping("/list")
     public ResultResponse list(MemberQueryRequest request) {
         return ResultResponse.success(memberService.list(request));
     }
+
+    /**
+     * 获取所有的角色
+     */
     @GetMapping("/getAllRoles")
     public ResultResponse getAllRoles() {
         return ResultResponse.success(memberService.getAllRoles());
     }
 
+    /**
+     * 更新用户信息
+     */
     @PostMapping("/updateUser")
-    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
+    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member) {
         return ResultResponse.success(memberService.updateUser(request));
     }
 
+    /**
+     * 创建用户
+     */
     @PostMapping("/createUser")
     public ResultResponse createUser(@RequestBody MemberQueryRequest request) {
         CheckParametersUtil

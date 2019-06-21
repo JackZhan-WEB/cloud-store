@@ -21,9 +21,9 @@ public class Permissions {
     private Integer id;
 
     /**
-    * 父级权限ID
+    * 父级权限code
     */
-    private Integer parentId;
+    private String parentCode;
 
     /**
     * 权限名称

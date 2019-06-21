@@ -24,11 +24,17 @@ public class PermissionsController {
     private IPermissionsService permissionsService;
 
 
+    /**
+     * 查询所有的权限列表
+     */
     @GetMapping("/list")
     public ResultResponse list() {
         return ResultResponse.success(permissionsService.list());
     }
 
+    /**
+     * 保存权限列表
+     */
     @PostMapping("/saveList")
     public ResultResponse saveList(@RequestBody PermissionsRequest request) {
         return ResultResponse.success(permissionsService.saveList(request));
