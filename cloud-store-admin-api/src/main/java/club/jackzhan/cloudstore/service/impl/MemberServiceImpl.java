@@ -2,9 +2,8 @@ package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.enums.MemberTypeEnum;
-import club.jackzhan.cloudstore.module.dto.RoleDTO;
-import club.jackzhan.cloudstore.module.request.CurrentMember;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.RandomUtil;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
@@ -13,8 +12,6 @@ import club.jackzhan.cloudstore.util.UserThreadLocal;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +40,7 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public ResultResponse getAllRoles(MemberQueryRequest request) {
+    public ResultResponse getAllRoles() {
         return remoteCallUtil.sendGet("/member/member/getAllRoles");
     }
 

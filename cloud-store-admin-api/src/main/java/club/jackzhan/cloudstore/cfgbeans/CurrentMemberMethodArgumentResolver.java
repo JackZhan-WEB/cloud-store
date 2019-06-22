@@ -1,9 +1,7 @@
 package club.jackzhan.cloudstore.cfgbeans;
 
-import club.jackzhan.cloudstore.constant.Constants;
-import club.jackzhan.cloudstore.module.request.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.util.MemberUtil;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;

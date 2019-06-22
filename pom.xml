@@ -30,6 +30,7 @@
         <lombok.version>1.16.18</lombok.version>
         <reflectasm.version>1.11.1</reflectasm.version>
         <mybatis-plus.version>2.2.0</mybatis-plus.version>
+        <swagger.version>2.7.0</swagger.version>
     </properties>
 
     <dependencyManagement>
@@ -93,6 +94,18 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <!-- swagger2 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <!-- swagger2 ui -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

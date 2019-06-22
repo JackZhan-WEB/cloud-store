@@ -1,11 +1,8 @@
 package club.jackzhan.cloudstore.service.impl;
 
-import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
-import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
-import club.jackzhan.cloudstore.module.dto.RoleDTO;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.MemberUtil;
@@ -20,9 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: hxy

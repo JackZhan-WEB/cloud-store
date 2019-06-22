@@ -1,7 +1,10 @@
 package club.jackzhan.cloudstore.service;
 
+import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.util.ResultResponse;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,4 +21,7 @@ public interface IRoleService {
      * @return
      */
     ResultResponse getByMemberId(MemberQueryRequest request);
+
+
+    List<RoleDTO> getAllRoles();
 }

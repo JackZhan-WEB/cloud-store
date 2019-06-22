@@ -15,7 +15,7 @@ import club.jackzhan.cloudstore.module.dto.MenuDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.entities.Member;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.PageBean;
@@ -86,11 +86,6 @@ public class MemberServiceImpl implements IMemberService {
         page.setPageData(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(), request.getPageSize()), MemberDTO.class));
         page.setTotalCount(memberMapper.countByQuery(request));
         return page;
-    }
-
-    @Override
-    public List<RoleDTO> getAllRoles() {
-        return BeanUtils.copyList(roleMapper.getAllRolesByStateAndType(RoleStateEnum.NORMAL.getCode(), TrueFalseEnum.TRUE.getCode()), RoleDTO.class);
     }
 
     @Override

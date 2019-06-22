@@ -1,10 +1,12 @@
 package club.jackzhan.cloudstore.web.controller;
 
-import club.jackzhan.cloudstore.module.request.CurrentMember;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("/member")
 @Slf4j
+@Api(value = "Member", tags = {"Member"}, description = "用户相关")
 public class MemberController {
 
     @Resource
@@ -29,6 +32,7 @@ public class MemberController {
      * 获取用户的信息
      */
     @GetMapping("/getMember")
+    @ApiOperation(value = "获取用户的信息")
     public ResultResponse getMember(MemberQueryRequest request) {
         CheckParametersUtil
                 .getInstance()
@@ -42,22 +46,16 @@ public class MemberController {
      * 获取用户列表
      */
     @GetMapping("/list")
+    @ApiOperation(value = "用户列表")
     public ResultResponse list(MemberQueryRequest request) {
         return ResultResponse.success(memberService.list(request));
-    }
-
-    /**
-     * 获取所有的角色
-     */
-    @GetMapping("/getAllRoles")
-    public ResultResponse getAllRoles() {
-        return ResultResponse.success(memberService.getAllRoles());
     }
 
     /**
      * 更新用户信息
      */
     @PostMapping("/updateUser")
+    @ApiOperation(value = "用户更新")
     public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member) {
         return ResultResponse.success(memberService.updateUser(request));
     }
@@ -66,6 +64,7 @@ public class MemberController {
      * 创建用户
      */
     @PostMapping("/createUser")
+    @ApiOperation(value = "用户添加")
     public ResultResponse createUser(@RequestBody MemberQueryRequest request) {
         CheckParametersUtil
                 .getInstance()

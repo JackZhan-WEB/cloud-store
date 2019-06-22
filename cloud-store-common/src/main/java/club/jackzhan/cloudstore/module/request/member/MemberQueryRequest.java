@@ -1,6 +1,7 @@
-package club.jackzhan.cloudstore.module.request;
+package club.jackzhan.cloudstore.module.request.member;
 
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.request.PageQueryRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

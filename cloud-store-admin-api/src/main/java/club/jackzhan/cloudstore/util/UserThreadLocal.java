@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.util;
 
-import club.jackzhan.cloudstore.module.request.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 
 public class UserThreadLocal {
 

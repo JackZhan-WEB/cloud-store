@@ -1,14 +1,11 @@
 package club.jackzhan.cloudstore.web.controller;
 
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
-import club.jackzhan.cloudstore.module.request.CurrentMember;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
-import club.jackzhan.cloudstore.util.MemberUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
-import org.apache.shiro.SecurityUtils;
+import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/member")
 @RequiresPermissions({"member:*","用户模块"})
+@Api(value = "Member", tags = {"Member"}, description = "用户相关")
 public class MemberController {
 
     @Autowired
@@ -29,23 +27,21 @@ public class MemberController {
 
     @GetMapping("/list")
     @RequiresPermissions({"member:list","用户列表"})
+    @ApiOperation(value = "用户列表")
     public ResultResponse list(MemberQueryRequest request){
         return memberService.list(request);
     }
 
-    @GetMapping("/getAllRoles")
-    public ResultResponse getAllRoles(MemberQueryRequest request){
-        return memberService.getAllRoles(request);
-    }
-
     @PostMapping("/createUser")
     @RequiresPermissions({"member:createUser","用户添加"})
+    @ApiOperation(value = "用户添加")
     public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.createUser(request);
     }
 
     @PostMapping("/updateUser")
     @RequiresPermissions({"member:updateUser","用户更新"})
+    @ApiOperation(value = "用户更新")
     public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
         return memberService.updateUser(request);
     }

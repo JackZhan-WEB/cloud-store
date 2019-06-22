@@ -1,10 +1,11 @@
 package club.jackzhan.cloudstore.web.controller;
 
 import club.jackzhan.cloudstore.constant.Constants;
-import club.jackzhan.cloudstore.module.request.BaseRequest;
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.ResultResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/login")
+@Api(value = "Login", tags = {"Login"}, description = "登陆相关")
 public class LoginController {
 
 
@@ -31,6 +33,7 @@ public class LoginController {
 	 * 登录
 	 */
 	@PostMapping("/auth")
+	@ApiOperation(value = "登录")
 	public ResultResponse authLogin(@RequestBody MemberQueryRequest request) {
 		return loginService.authLogin(request);
 	}
@@ -39,6 +42,7 @@ public class LoginController {
 	 * 查询当前登录用户的信息
 	 */
 	@PostMapping("/getInfo")
+	@ApiOperation(value = "查询当前登录用户的信息")
 	public ResultResponse getInfo(HttpServletRequest request) {
 		return loginService.getInfo(request.getHeader(Constants.TOKEN));
 	}
@@ -47,6 +51,7 @@ public class LoginController {
 	 * 登出
 	 */
 	@PostMapping("/logout")
+	@ApiOperation(value = "登出")
 	public ResultResponse logout() {
 		return loginService.logout();
 	}

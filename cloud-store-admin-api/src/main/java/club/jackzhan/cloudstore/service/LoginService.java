@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.service;
 
-import club.jackzhan.cloudstore.module.request.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.util.ResultResponse;
 
 /**

@@ -31,6 +31,7 @@ public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter
 			out = response.getWriter();
 			out.println(jsonObject);
 		} catch (Exception e) {
+
 		} finally {
 			if (null != out) {
 				out.flush();

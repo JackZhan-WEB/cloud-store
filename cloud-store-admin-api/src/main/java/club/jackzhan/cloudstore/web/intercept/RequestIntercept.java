@@ -4,7 +4,7 @@ import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
-import club.jackzhan.cloudstore.module.request.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.RedisOperation;
 import club.jackzhan.cloudstore.util.UserThreadLocal;
@@ -16,21 +16,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.

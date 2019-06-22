@@ -116,6 +116,7 @@
 </template>
 <script>
   import * as memberService from '@/api/member/member'
+  import * as roleService from '@/api/member/role'
   import {mapGetters} from 'vuex'
 
 
@@ -169,7 +170,7 @@
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
       },
       getAllRoles() {
-        memberService.getAllRoles().then(response => {
+        roleService.getAllRoles().then(response => {
           this.roles = response.data;
         })
       },

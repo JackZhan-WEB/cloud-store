@@ -10,12 +10,8 @@ import club.jackzhan.cloudstore.util.ResultResponse;
  *
  * @Author: JackZhan
  */
-public interface IMemberService {
-    ResultResponse createUser(MemberQueryRequest request);
-
-    ResultResponse list(MemberQueryRequest request);
+public interface IRoleService {
 
     ResultResponse getAllRoles();
 
-    ResultResponse updateUser(MemberQueryRequest request);
 }
