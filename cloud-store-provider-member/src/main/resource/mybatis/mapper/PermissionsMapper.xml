@@ -51,4 +51,8 @@
     <select id="getCheckList" resultType="java.lang.Integer">
         select id from permissions where type = #{type}
     </select>
+    <select id="getAllCodes" resultType="java.lang.String">
+        select code
+        from permissions;
+    </select>
 </mapper>

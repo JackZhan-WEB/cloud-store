@@ -6,6 +6,7 @@ import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import sun.misc.BASE64Encoder;
 
 import java.io.Serializable;
 
@@ -41,6 +42,6 @@ public class MemberUtil {
     }
 
     public static Serializable getSessionId() {
-        return SecurityUtils.getSubject().getSession().getId();
+        return new BASE64Encoder().encode(SecurityUtils.getSubject().getSession().getId().toString().getBytes());
     }
 }

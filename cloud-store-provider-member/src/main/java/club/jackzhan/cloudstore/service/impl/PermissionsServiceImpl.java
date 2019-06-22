@@ -69,4 +69,9 @@ public class PermissionsServiceImpl implements IPermissionsService {
 
         return permissionsMapper.insertList(list) > 0;
     }
+
+    @Override
+    public List<String> getAllCodes() {
+        return permissionsMapper.getAllCodes();
+    }
 }

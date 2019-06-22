@@ -3,6 +3,8 @@ package club.jackzhan.cloudstore.service;
 import club.jackzhan.cloudstore.module.dto.PermissionsTreeDTO;
 import club.jackzhan.cloudstore.module.request.PermissionsRequest;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -15,4 +17,6 @@ public interface IPermissionsService {
     PermissionsTreeDTO list();
 
     boolean saveList(PermissionsRequest request);
+
+    List<String> getAllCodes();
 }

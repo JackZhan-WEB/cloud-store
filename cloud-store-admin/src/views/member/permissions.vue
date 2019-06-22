@@ -12,9 +12,9 @@
       show-checkbox
       node-key="id"
       :default-checked-keys="checkList"
+      :default-expand-all="true"
       :props="defaultProps">
     </el-tree>
-
   </div>
 </template>
 <script>

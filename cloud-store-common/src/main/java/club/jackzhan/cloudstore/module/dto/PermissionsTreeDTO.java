@@ -15,6 +15,7 @@ import java.util.List;
 public class PermissionsTreeDTO {
     private Integer id;
     private String name;
+    private String code;
     private List<PermissionsTreeDTO> children;
     private List<Integer> checkList;
 }

@@ -27,6 +27,7 @@ public class RoleController {
 
     @GetMapping("/getAllRoles")
     @ApiOperation(value = "角色列表")
+    @RequiresPermissions({"role:list", "角色列表"})
     public ResultResponse getAllRoles(){
         return roleService.getAllRoles();
     }

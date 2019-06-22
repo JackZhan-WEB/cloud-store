@@ -2,9 +2,11 @@ package club.jackzhan.cloudstore.util;
 
 import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
+import com.alibaba.fastjson.JSON;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 /**
@@ -18,10 +20,10 @@ import java.util.List;
 @Data
 public class ResultResponse<T> implements Serializable {
 
-    public final static Integer DEFAULT_SUCCESS_CODE = ErrorCodeEnum.NORMAL.getCode();
-    public final static String DEFAULT_SUCCESS_MESSAGE = ErrorCodeEnum.NORMAL.getDesc();
-    public final static Integer DEFAULT_FAILURE_CODE = ErrorCodeEnum.SERVICE_ERROR.getCode();
-    public final static String DEFAULT_FAILURE_MESSAGE = ErrorCodeEnum.SERVICE_ERROR.getDesc();
+    private final static Integer DEFAULT_SUCCESS_CODE = ErrorCodeEnum.NORMAL.getCode();
+    private final static String DEFAULT_SUCCESS_MESSAGE = ErrorCodeEnum.NORMAL.getDesc();
+    private final static Integer DEFAULT_FAILURE_CODE = ErrorCodeEnum.SERVICE_ERROR.getCode();
+    private final static String DEFAULT_FAILURE_MESSAGE = ErrorCodeEnum.SERVICE_ERROR.getDesc();
 
     private T data;
 
@@ -86,8 +88,5 @@ public class ResultResponse<T> implements Serializable {
         response.setState(Boolean.FALSE);
         return response;
     }
-
-
-
 }
 

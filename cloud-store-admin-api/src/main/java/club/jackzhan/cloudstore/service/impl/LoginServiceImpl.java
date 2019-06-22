@@ -59,7 +59,6 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResultResponse getInfo(String token) {
         //从redis获取用户信息
-//        MemberDTO memberDTO = BeanUtils.json2Bean(redisTemplate.opsForValue().get(token).toString(),MemberDTO.class);
         MemberDTO memberDTO = BeanUtils.json2Bean(redisTemplate.opsForValue().get(token), MemberDTO.class);
         if (memberDTO == null) {
             return ResultResponse.failure(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);

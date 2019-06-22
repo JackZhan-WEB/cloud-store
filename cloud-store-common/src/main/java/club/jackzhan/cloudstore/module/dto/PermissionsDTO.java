@@ -15,6 +15,7 @@ import java.util.Date;
  * @Author: JackZhan
  */
 @Data
+@Accessors(chain = true)
 public class PermissionsDTO{
     /**
     * 权限id

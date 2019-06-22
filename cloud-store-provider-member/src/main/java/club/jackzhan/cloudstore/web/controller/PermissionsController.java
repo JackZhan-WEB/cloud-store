@@ -37,6 +37,15 @@ public class PermissionsController {
     }
 
     /**
+     * 查询所有的权限列表
+     */
+    @GetMapping("/getAllCodes")
+    @ApiOperation(value = "获取所有的权限code")
+    public ResultResponse getAllCodes() {
+        return ResultResponse.success(permissionsService.getAllCodes());
+    }
+
+    /**
      * 保存权限列表
      */
     @PostMapping("/saveList")

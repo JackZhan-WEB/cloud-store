@@ -22,4 +22,6 @@ public interface PermissionsMapper extends BaseMapper<Permissions> {
     int insertList(@Param("list") List<Permissions> list);
 
     List<Integer> getCheckList(@Param("type") Integer type);
+
+    List<String> getAllCodes();
 }

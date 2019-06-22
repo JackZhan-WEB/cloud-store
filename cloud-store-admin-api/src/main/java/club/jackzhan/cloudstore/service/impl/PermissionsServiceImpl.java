@@ -2,12 +2,15 @@ package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.enums.TrueFalseEnum;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
+import club.jackzhan.cloudstore.module.dto.PermissionsTreeDTO;
 import club.jackzhan.cloudstore.module.request.PermissionsRequest;
 import club.jackzhan.cloudstore.service.IPermissionsService;
 import club.jackzhan.cloudstore.util.AnnoManageUtil;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,16 +40,11 @@ public class PermissionsServiceImpl implements IPermissionsService {
 
     @Override
     public ResultResponse loadPerms() {
-        List<PermissionsDTO> permsList = new ArrayList<>();
-        ResultResponse resultResponse = remoteCallUtil.sendGet("/member/permissions/list");
+        ResultResponse resultResponse = remoteCallUtil.sendGet("/member/permissions/getAllCodes");
+        JSONArray codes = new JSONArray();
         if (resultResponse.getState()) {
             String json = BeanUtils.bean2Json(resultResponse.getData());
-            permsList = BeanUtils.json2List(json,PermissionsDTO.class);
-        }
-
-        List<String> codes = new ArrayList<>();
-        for (PermissionsDTO item : permsList) {
-            codes.add(item.getCode());
+            codes = JSON.parseArray(json);
         }
 
         List<PermissionsDTO> newPermsList = new ArrayList<>();
@@ -63,6 +61,7 @@ public class PermissionsServiceImpl implements IPermissionsService {
 
                     PermissionsDTO p = new PermissionsDTO();
                     if(!flag){
+                        flag = true;
                         parentCdoe = code;
                     }else {
                         p.setParentCode(parentCdoe);
@@ -77,15 +76,13 @@ public class PermissionsServiceImpl implements IPermissionsService {
                     p.setCode(code);
                     p.setType(TrueFalseEnum.TRUE.getCode());
                     p.setCreateTime(new Date());
-                    flag = true;
                 }
             }
         }
         PermissionsRequest request = new PermissionsRequest().setList(newPermsList);;
 
         if (remoteCallUtil.sendPost("/member/permissions/saveList",request).getState()) {
-            permsList.addAll(newPermsList);
-            return ResultResponse.success(permsList);
+            return ResultResponse.success();
         }else {
             return ResultResponse.failure("加载失败！");
         }
