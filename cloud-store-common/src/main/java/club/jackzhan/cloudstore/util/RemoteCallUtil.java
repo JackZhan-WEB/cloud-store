@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.util;
 
-import club.jackzhan.cloudstore.module.request.BaseRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseRequest;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class RemoteCallUtil {
     @Resource
     private RestTemplate restTemplate;
 
-    private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER";
+    private static final String MEMBER_REST_URL_PREFIX = "http://CLOUD-STORE-MEMBER/";
 
     public ResultResponse sendGet(String path) {
         return sendGet(path, null);
@@ -47,11 +47,12 @@ public class RemoteCallUtil {
             }
             sb.deleteCharAt(sb.length() - 1);
         }
+        path = path.replace(".","/");
         return restTemplate.getForEntity(matchingServePath(path) + path + sb.toString(), ResultResponse.class).getBody();
     }
 
     private String matchingServePath(String path) {
-        String prefix = path.split("/")[1];
+        String prefix = path.split("/")[0];
         if ("member".equals(prefix)) {
             return MEMBER_REST_URL_PREFIX;
         }
@@ -63,6 +64,7 @@ public class RemoteCallUtil {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
         HttpEntity<String> entity = new HttpEntity<>(BeanUtils.beanToJsonStringWithDateFormat(request), headers);
+        path = path.replace(".","/");
         return restTemplate.postForEntity(matchingServePath(path) + path, entity, ResultResponse.class).getBody();
     }
 }

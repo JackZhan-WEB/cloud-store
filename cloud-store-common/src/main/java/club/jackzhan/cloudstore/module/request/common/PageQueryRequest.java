@@ -1,4 +1,4 @@
-package club.jackzhan.cloudstore.module.request;
+package club.jackzhan.cloudstore.module.request.common;
 
 import lombok.Getter;
 import lombok.Setter;

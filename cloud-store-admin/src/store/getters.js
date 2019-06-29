@@ -3,7 +3,7 @@ const getters = {
   visitedViews: state => state.app.visitedViews,
 
   token: state => state.member.token,
-  nickname: state => state.member.username,
+  nickname: state => state.member.name,
   memberId: state => state.member.memberId,
   avatar: state => state.member.avatar,
   role: state => state.member.role,

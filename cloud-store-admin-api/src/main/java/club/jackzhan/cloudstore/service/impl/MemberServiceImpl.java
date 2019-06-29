@@ -28,29 +28,28 @@ public class MemberServiceImpl implements IMemberService {
     private RemoteCallUtil remoteCallUtil;
 
     @Override
-    public ResultResponse createUser(MemberQueryRequest request) {
-        CurrentMember currentMember = UserThreadLocal.get();
+    public ResultResponse createUser(MemberQueryRequest request, CurrentMember currentMember) {
         request.setUpdateUser(currentMember.getUsername());
         request.setType(MemberTypeEnum.MANAGER.getCode());
         //加密次数
         int hashIterations = BusinessConstant.PASSWORD_ENCRYPTION_TIMES;
         String salt = RandomUtil.generateStr(BusinessConstant.PASSWORD_SALT_LENGTH);
         request.setSalt(salt).setPassword(new SimpleHash(BusinessConstant.PASSWORD_ENCRYPTION_TYPE, request.getPassword(), salt, hashIterations).toString());
-        return remoteCallUtil.sendPost("/member/member/createUser", request);
+        return remoteCallUtil.sendPost("member.member.createUser", request);
     }
 
     @Override
     public ResultResponse getAllRoles() {
-        return remoteCallUtil.sendGet("/member/member/getAllRoles");
+        return remoteCallUtil.sendGet("member.member.getAllRoles");
     }
 
     @Override
     public ResultResponse updateUser(MemberQueryRequest request) {
-        return remoteCallUtil.sendPost("/member/member/updateUser",request);
+        return remoteCallUtil.sendPost("member.member.updateUser",request);
     }
 
     @Override
     public ResultResponse list(MemberQueryRequest request) {
-        return remoteCallUtil.sendGet("/member/member/list", request);
+        return remoteCallUtil.sendGet("member.member.list", request);
     }
 }

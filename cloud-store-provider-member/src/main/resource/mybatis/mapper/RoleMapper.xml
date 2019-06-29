@@ -5,18 +5,18 @@
         <!--@mbg.generated-->
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="type" jdbcType="BIT" property="type"/>
         <result column="state" jdbcType="BIT" property="state"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
         <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
     </resultMap>
     <sql id="Base_Column_List">
         <!--@sql select -->
-        r.id, r.parent_id, r.`name`, r.description, r.`type`, r.`state`, r.create_time, r.update_time, r.create_user,
+        r.id, r.parent_id, r.code,r.`name`, r.description, r.`type`, r.`state`, r.create_time, r.update_time,
         r.update_user
         <!--@sql from role r-->
     </sql>
@@ -35,4 +35,10 @@
         from role r
         where r.`state`=#{state,jdbcType=BIT} and r.`type`=#{type,jdbcType=BIT}
     </select>
+    <insert id="insertRolePerms">
+        insert into role_permissions (role_id, permissions_id) VALUES
+        <foreach collection="perms" separator="," item="perm">
+            (#{id}, #{perm})
+        </foreach>
+    </insert>
 </mapper>

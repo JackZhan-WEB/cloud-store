@@ -27,8 +27,8 @@
       <el-table-column align="center" label="角色">
         <template slot-scope="scope">
           <span v-for="role in scope.row.roles">
-            <el-tag type="success" v-text="role.description" v-if="role.name==='admin'"/>
-            <el-tag type="primary" v-text="role.description" v-else/>
+            <el-tag type="success" v-text="role.name" v-if="role.code==='admin'"/>
+            <el-tag type="primary" v-text="role.name" v-else/>
           </span>
         </template>
       </el-table-column>
@@ -95,7 +95,7 @@
             <el-option
               v-for="item in roles"
               :key="item.id"
-              :label="item.description"
+              :label="item.name"
               :value="item"
             >
             </el-option>
@@ -140,7 +140,7 @@
         },
         tempUser: {
           id: '',
-          username: '',
+          name: '',
           phone: '',
           password: '',
           nickname: '',
@@ -180,8 +180,8 @@
         console.log(this.listQuery, 'listQuery');
         memberService.getList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.data.pageData;
-          this.totalCount = response.data.totalCount;
+          this.list = response.data.records;
+          this.totalCount = response.data.total;
         })
       },
       handleSizeChange(val) {
@@ -217,7 +217,7 @@
         let user = this.list[$index];
         console.log(user, 'showUpdate');
         this.tempUser.id = user.id;
-        this.tempUser.username = user.username;
+        this.tempUser.username = user.name;
         this.tempUser.nickname = user.nickname;
         this.tempUser.roles = user.roles;
         this.tempUser.memberId = user.memberId;

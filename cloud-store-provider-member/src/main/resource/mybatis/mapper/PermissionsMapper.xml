@@ -55,4 +55,7 @@
         select code
         from permissions;
     </select>
+    <select id="getCheckPerms" resultType="java.lang.Integer">
+        select permissions_id from role_permissions where role_id = #{roleId}
+    </select>
 </mapper>

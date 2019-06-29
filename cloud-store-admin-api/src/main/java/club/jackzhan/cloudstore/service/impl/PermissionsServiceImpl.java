@@ -4,6 +4,7 @@ import club.jackzhan.cloudstore.enums.TrueFalseEnum;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsTreeDTO;
 import club.jackzhan.cloudstore.module.request.PermissionsRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
 import club.jackzhan.cloudstore.service.IPermissionsService;
 import club.jackzhan.cloudstore.util.AnnoManageUtil;
 import club.jackzhan.cloudstore.util.BeanUtils;
@@ -35,12 +36,12 @@ public class PermissionsServiceImpl implements IPermissionsService {
 
     @Override
     public ResultResponse list() {
-        return remoteCallUtil.sendGet("/member/permissions/list");
+        return remoteCallUtil.sendGet("member.permissions.list");
     }
 
     @Override
     public ResultResponse loadPerms() {
-        ResultResponse resultResponse = remoteCallUtil.sendGet("/member/permissions/getAllCodes");
+        ResultResponse resultResponse = remoteCallUtil.sendGet("member.permissions.getAllCodes");
         JSONArray codes = new JSONArray();
         if (resultResponse.getState()) {
             String json = BeanUtils.bean2Json(resultResponse.getData());
@@ -81,10 +82,20 @@ public class PermissionsServiceImpl implements IPermissionsService {
         }
         PermissionsRequest request = new PermissionsRequest().setList(newPermsList);;
 
-        if (remoteCallUtil.sendPost("/member/permissions/saveList",request).getState()) {
+        if (remoteCallUtil.sendPost("member.permissions.saveList",request).getState()) {
             return ResultResponse.success();
         }else {
             return ResultResponse.failure("加载失败！");
         }
+    }
+
+    @Override
+    public ResultResponse getPerms() {
+        return remoteCallUtil.sendGet("member.permissions.getPerms");
+    }
+
+    @Override
+    public ResultResponse getCheckPerms(BaseIdRequest<Integer> request) {
+        return remoteCallUtil.sendGet("member.permissions.getCheckPerms",request);
     }
 }

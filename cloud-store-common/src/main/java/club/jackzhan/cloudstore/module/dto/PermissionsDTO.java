@@ -10,26 +10,27 @@ import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * Description: 
+ * Description:
  * Date: 2019-04-17 16:52
+ *
  * @Author: JackZhan
  */
 @Data
 @Accessors(chain = true)
-public class PermissionsDTO{
+public class PermissionsDTO implements Serializable {
     /**
-    * 权限id
-    */
+     * 权限id
+     */
     private Integer id;
 
     /**
-    * 父级权限Code
-    */
+     * 父级权限Code
+     */
     private String parentCode;
 
     /**
-    * 权限名称
-    */
+     * 权限名称
+     */
     private String name;
 
     /**
@@ -38,18 +39,18 @@ public class PermissionsDTO{
     private String code;
 
     /**
-    * 权限描述
-    */
+     * 权限描述
+     */
     private String description;
 
     /**
-    * 权限类型 1：可授权 0：不可授权
-    */
+     * 权限类型 1：可授权 0：不可授权
+     */
     private Integer type;
 
     /**
-    * 创建时间
-    */
+     * 创建时间
+     */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

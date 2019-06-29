@@ -46,7 +46,7 @@ public class RequestLogIntercept {
         log.info("请求IP：{}", request.getRemoteAddr());
         log.info("请求路径：{}", request.getRequestURL());
         log.info("请求方式：{}", request.getMethod());
-        log.info("请求参数：{}", joinPoint.getArgs());
+        log.info("请求参数：{}", "get".equalsIgnoreCase(request.getMethod()) ? request.getQueryString() : joinPoint.getArgs());
     }
 
     /**

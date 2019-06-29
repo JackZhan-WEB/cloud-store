@@ -15,7 +15,7 @@ mybatis-plus:
   type-aliases-package: club.jackzhan.cloudstore.entities
   # 原生配置
   configuration:
-    interceptors: club.jackzhan.cloudstore.web.interceptor.PageInterceptor
+    interceptors: com.baomidou.mybatisplus.plugins.PaginationInterceptor
   global-config:
     #驼峰下划线转换
     db-column-underline: true

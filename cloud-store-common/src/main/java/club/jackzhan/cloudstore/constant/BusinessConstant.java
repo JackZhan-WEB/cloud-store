@@ -34,8 +34,10 @@ public interface BusinessConstant {
     /**
      * token过期时间
      */
-    long TOKEN_EXPIRE_TIME = 300;
-
-
+    long TOKEN_EXPIRE_TIME = -1;
+    /**
+     * token 参数名
+     */
+    String TOKEN = "token";
 
 }

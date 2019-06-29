@@ -1,12 +1,11 @@
 package club.jackzhan.cloudstore.module.request.member;
 
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
-import club.jackzhan.cloudstore.module.request.PageQueryRequest;
+import club.jackzhan.cloudstore.module.request.common.PageQueryRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,8 +37,6 @@ public class MemberQueryRequest extends PageQueryRequest {
     private String username;
 
     private String phone;
-
-    private String updateUser;
 
     private Integer state;
 

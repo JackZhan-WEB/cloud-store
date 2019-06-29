@@ -2,7 +2,11 @@ package club.jackzhan.cloudstore.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,16 +15,23 @@ import lombok.Data;
  * @Author: JackZhan
  */
 @Data
+@Accessors(chain = true)
 public class Role implements Serializable {
     /**
     * 角色id
     */
+    @TableId(value="id", type= IdType.AUTO)
     private Integer id;
 
     /**
     * 父级角色ID
     */
     private Integer parentId;
+
+    /**
+    * 角色编码
+    */
+    private String code;
 
     /**
     * 角色名称
@@ -51,11 +62,6 @@ public class Role implements Serializable {
     * 修改时间
     */
     private Date updateTime;
-
-    /**
-    * 创建人
-    */
-    private String createUser;
 
     /**
     * 修改人

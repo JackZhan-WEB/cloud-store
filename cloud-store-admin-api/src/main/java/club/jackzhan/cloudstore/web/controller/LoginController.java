@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
-import club.jackzhan.cloudstore.constant.Constants;
+import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.ResultResponse;
@@ -44,7 +44,7 @@ public class LoginController {
 	@PostMapping("/getInfo")
 	@ApiOperation(value = "查询当前登录用户的信息")
 	public ResultResponse getInfo(HttpServletRequest request) {
-		return loginService.getInfo(request.getHeader(Constants.TOKEN));
+		return loginService.getInfo(request.getHeader(BusinessConstant.TOKEN));
 	}
 
 	/**

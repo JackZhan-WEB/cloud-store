@@ -26,6 +26,11 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(response => {
     const res = response.data;
     if (res.code === 1) {
+      Message({
+        message: res.msg,
+        type: 'success',
+        duration: 3 * 1000
+      });
       return res;
     } else if (res.code === 3) {
       Message({

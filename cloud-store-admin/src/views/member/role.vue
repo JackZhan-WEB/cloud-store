@@ -1,16 +1,11 @@
 <template>
   <div class="app-container">
-    <div>
-      <el-tabs v-model="listQuery.type" type="card" @tab-click="selectByType">
-        <el-tab-pane label="后台管理人员" name="1"></el-tab-pane>
-        <el-tab-pane label="普通用户" name="2"></el-tab-pane>
-        <el-tab-pane label="VIP用户" name="3"></el-tab-pane>
-      </el-tabs>
-    </div>
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="primary" icon="plus" v-if="hasPerm('member:add') && listQuery.type==='1'" @click="showCreate">添加</el-button>
+          <el-button type="primary" icon="plus" v-if="hasPerm('role:add') && listQuery.type==='1'" @click="showCreate">
+            添加
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -21,44 +16,33 @@
           <span v-text="getIndex(scope.$index)"> </span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="昵称" prop="nickname"/>
-      <el-table-column align="center" label="用户名" prop="username"/>
-      <el-table-column align="center" label="手机号" prop="phone"/>
-      <el-table-column align="center" label="角色">
-        <template slot-scope="scope">
-          <span v-for="role in scope.row.roles">
-            <el-tag type="success" v-text="role.description" v-if="role.name==='admin'"/>
-            <el-tag type="primary" v-text="role.description" v-else/>
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="用户状态" prop="state">
+      <el-table-column align="center" label="角色名称" prop="name"/>
+      <el-table-column align="center" label="角色描述" prop="description"/>
+      <el-table-column align="center" label="角色状态" prop="state">
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.state===1">正常</el-tag>
-          <el-tag type="warning" v-else-if="scope.row.state===2">密码错误次数过多被禁用</el-tag>
-          <el-tag type="warning" v-else-if="scope.row.state===3">管理员禁用</el-tag>
-          <el-tag type="info" v-else-if="scope.row.state===4">注销</el-tag>
-          <el-tag type="danger" v-else>账号异常</el-tag>
+          <el-tag type="warning" v-else-if="scope.row.state===2">禁用</el-tag>
+          <el-tag type="warning" v-else-if="scope.row.state===3">已删除</el-tag>
+          <el-tag type="danger" v-else>角色状态异常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户类型" prop="type">
+      <el-table-column align="center" label="角色类型" prop="type">
         <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.type===1">后台管理人员</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===2">普通用户</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===3">VIP用户</el-tag>
-          <el-tag type="danger" v-else>账号异常</el-tag>
+          <el-tag type="success" v-if="scope.row.type===1">可授权</el-tag>
+          <el-tag type="primary" v-else-if="scope.row.type===2">不可授权</el-tag>
+          <el-tag type="danger" v-else>角色类型异常</el-tag>
         </template>
       </el-table-column>
       <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
       <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
       <el-table-column align="center" label="修改人" prop="updateUser"/>
-      <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('member:update')">
+      <el-table-column align="center" label="管理" width="320px" v-if="hasPerm('role:update')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)" v-if="scope.row.type===1">设置角色
-          </el-button>
-          <el-button type="danger" icon="delete" v-if="scope.row.memberId!==memberId"
-                     @click="removeUser(scope.$index)">删除
-          </el-button>
+          <el-button type="primary" icon="edit" @click="showSetPerms(scope.$index)" size="medium">设置权限</el-button>
+          <el-button type="primary" icon="" size="medium"
+                     @click="removeUser(scope.$index)">设置角色</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="medium"
+                     @click="removeRole(scope.$index)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,51 +56,48 @@
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px">
-      <el-form class="small-space" :model="tempUser" label-position="left" label-width="80px"
+      <el-form class="small-space" :model="tempRole" label-position="left" label-width="80px"
                style='width: 300px; margin-left:50px;'>
-        <el-form-item label="用户名" required v-if="dialogStatus==='create'">
-          <el-input type="text" v-model="tempUser.username">
+        <el-form-item label="角色名" required v-if="dialogStatus==='create'">
+          <el-input type="text" v-model="tempRole.name">
           </el-input>
         </el-form-item>
-        <el-form-item label="手机号" required v-if="dialogStatus==='create'">
-          <el-input type="text" v-model="tempUser.phone">
+        <el-form-item label="角色编码" required v-if="dialogStatus==='create'">
+          <el-input type="text" v-model="tempRole.code">
           </el-input>
         </el-form-item>
-        <el-form-item label="密码" v-if="dialogStatus==='create'" required>
-          <el-input type="password" v-model="tempUser.password"/>
-        </el-form-item>
-        <!--        <el-form-item label="新密码" v-else>-->
-        <!--          <el-input type="password" v-model="tempUser.password" placeholder="不填则表示不修改">-->
-        <!--          </el-input>-->
-        <!--        </el-form-item>-->
-        <el-form-item label="角色" required>
-          <el-select multiple v-model="tempUser.roles" value-key="id"
-                     placeholder="请选择">
-            <el-option
-              v-for="item in roles"
-              :key="item.id"
-              :label="item.description"
-              :value="item"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="昵称" v-if="dialogStatus==='create'" required>
-          <el-input type="text" v-model="tempUser.nickname">
+        <el-form-item label="角色描述" v-if="dialogStatus==='create'">
+          <el-input type="text" v-model="tempRole.description">
           </el-input>
+        </el-form-item>
+        <el-form-item label="设置权限" required>
+          <div v-if="dialogStatus==='create'">
+            <el-radio v-model="tempRole.isSetPerms" label="1">是</el-radio>
+            <el-radio v-model="tempRole.isSetPerms" label="2">否</el-radio>
+          </div>
+          <el-tree
+            :data="perms"
+            show-checkbox
+            @check-change="checkChange"
+            :default-checked-keys="tempRole.permChecks"
+            node-key="id"
+            ref="permsTree"
+            :props="defaultProps"
+            v-if="tempRole.isSetPerms==='1'">
+          </el-tree>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button v-if="dialogStatus==='create'" type="success" @click="createUser">创 建</el-button>
-        <el-button type="primary" v-else @click="updateUserRole">确 定</el-button>
+        <el-button v-if="dialogStatus==='create'" type="success" @click="createRole">创 建</el-button>
+        <el-button type="primary" v-else @click="">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
-  import * as memberService from '@/api/member/member'
   import * as roleService from '@/api/member/role'
+  import * as permsService from '@/api/member/permissions'
   import {mapGetters} from 'vuex'
 
 
@@ -129,30 +110,35 @@
         listQuery: {
           type: '1',
           currentPage: 1,//页码
-          pageSize: 50,//每页条数
+          pageSize: 20,//每页条数
         },
-        roles: [],//角色列表
+        perms: [],//所有的权限
         dialogStatus: 'create',
         dialogFormVisible: false,
         textMap: {
           update: '编辑',
-          create: '新建用户'
+          setPerms: '设置权限',
+          create: '新建角色'
         },
-        tempUser: {
+        tempRole: {
           id: '',
-          username: '',
-          phone: '',
-          password: '',
-          nickname: '',
-          roles: [],
-          memberId: ''
-        }
+          name: '',
+          code: '',
+          isSetPerms: '2',
+          description: '',
+          permChecks: []
+        },
+        defaultProps: {
+          children: 'children',
+          label: 'name'
+        },
+
       }
     },
     created() {
       this.getList();
-      if (this.hasPerm('member:add') || this.hasPerm('member:update')) {
-        this.getAllRoles();
+      if (this.hasPerm('role:add') || this.hasPerm('role:update')) {
+        this.getPerms();
       }
     },
     computed: {
@@ -169,18 +155,12 @@
         }
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
       },
-      getAllRoles() {
-        roleService.getAllRoles().then(response => {
-          this.roles = response.data;
-        })
-      },
       getList() {
         //查询列表
         this.listLoading = true;
-        console.log(this.listQuery, 'listQuery');
-        memberService.getList(this.listQuery).then(response => {
+        roleService.getList(this.listQuery).then(response => {
           this.listLoading = false;
-          this.list = response.data.pageData;
+          this.list = response.data.records;
           this.totalCount = response.data.totalCount;
         })
       },
@@ -205,42 +185,37 @@
       },
       showCreate() {
         //显示新增对话框
-        this.tempUser.username = "";
-        this.tempUser.password = "";
-        this.tempUser.nickname = "";
-        this.tempUser.roles = [];
-        this.tempUser.memberId = "";
+        this.tempRole.name = "";
+        this.tempRole.permChecks = [];
         this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
-      showUpdate($index) {
-        let user = this.list[$index];
-        console.log(user, 'showUpdate');
-        this.tempUser.id = user.id;
-        this.tempUser.username = user.username;
-        this.tempUser.nickname = user.nickname;
-        this.tempUser.roles = user.roles;
-        this.tempUser.memberId = user.memberId;
-        this.tempUser.state = user.state;
-        this.tempUser.password = '';
-        this.dialogStatus = "update";
+      showSetPerms($index) {
+        let role = this.list[$index];
+        console.log(role,'role');
+        this.tempRole.isSetPerms='1';
+        this.tempRole.id = role.id;
+        this.dialogStatus = "setPerms";
+        permsService.getCheckPerms(this.tempRole.id).then(response => {
+          this.$refs.permsTree.setCheckedKeys(response.data);
+        });
+
         this.dialogFormVisible = true
       },
-      createUser() {
-        //添加新用户
-        memberService.createUser(this.tempUser).then(() => {
+      createRole() {
+        //添加新角色
+        roleService.createRole(this.tempRole).then(() => {
           this.getList();
           this.dialogFormVisible = false
         })
       },
-      updateUserRole() {
-        //修改用户角色
+      updateRole() {
+        //修改角色
         let _vue = this;
-        console.log(this.tempUser, 'tempUser');
-        memberService.updateUser(this.tempUser).then(() => {
+        roleService.updateRole(this.tempRole).then(() => {
           let msg = "修改成功";
           this.dialogFormVisible = false;
-          if (this.memberId === this.tempUser.memberId) {
+          if (this.memberId === this.tempRole.memberId) {
             msg = '修改成功,部分信息重新登录后生效'
           }
           this.$message({
@@ -253,26 +228,28 @@
           })
         })
       },
-      removeUser($index) {
+      removeRole($index) {
         let _vue = this;
-        this.$confirm('确定删除此用户?', '提示', {
+        this.$confirm('确定删除此角色?', '提示', {
           confirmButtonText: '确定',
           showCancelButton: false,
           type: 'warning'
         }).then(() => {
-          let user = _vue.list[$index];
-          console.log(user, 'user');
-          user.state = '4';
-          user.roles = null;
-          memberService.updateUser(user).then(() => {
+          let role = _vue.list[$index];
+          roleService.removeRole({'id':role.id,'state':3}).then(() => {
             _vue.getList()
           }).catch(() => {
             _vue.$message.error("删除失败")
           })
         })
       },
-      selectByType() {
-        this.getList();
+      getPerms() {
+        permsService.getPerms().then(response => {
+          this.perms = response.data.children;
+        })
+      },
+      checkChange(){
+        this.tempRole.permChecks =  this.$refs.permsTree.getCheckedKeys();
       }
     }
   }

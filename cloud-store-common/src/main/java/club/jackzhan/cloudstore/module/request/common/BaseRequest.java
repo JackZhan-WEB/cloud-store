@@ -1,4 +1,6 @@
-package club.jackzhan.cloudstore.module.request;
+package club.jackzhan.cloudstore.module.request.common;
+
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -9,14 +11,9 @@ import java.io.Serializable;
  *
  * @Author: JackZhan
  */
+@Data
 public class BaseRequest{
     private String token;
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
+    private String updateUser;
 }

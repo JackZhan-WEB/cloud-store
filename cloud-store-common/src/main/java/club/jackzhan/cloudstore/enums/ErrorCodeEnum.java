@@ -11,7 +11,7 @@ import lombok.Getter;
  */
 public enum ErrorCodeEnum implements BaseEnum<Integer> {
     //正常
-    NORMAL(1,"调用成功"),
+    NORMAL(1,"操作成功"),
     //用户信息查询失败
     MEMBER_INFO_ERROR(2,"用户信息查询失败"),
 

@@ -81,7 +81,7 @@ const permission = {
           if(adminFlag){
             return true;
           }
-          if (item.name === 'admin') {
+          if (item.code === 'admin') {
             //如果角色里包含'管理员',那么所有的路由都可以用
             //其实管理员也拥有全部菜单,这里主要是利用角色判断,节省加载时间
             adminFlag = true;

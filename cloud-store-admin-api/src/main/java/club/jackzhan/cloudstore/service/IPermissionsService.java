@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.service;
 
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
 import club.jackzhan.cloudstore.util.ResultResponse;
 
 /**
@@ -13,4 +14,8 @@ public interface IPermissionsService {
     ResultResponse list();
 
     ResultResponse loadPerms();
+
+    ResultResponse getPerms();
+
+    ResultResponse getCheckPerms(BaseIdRequest<Integer> request);
 }

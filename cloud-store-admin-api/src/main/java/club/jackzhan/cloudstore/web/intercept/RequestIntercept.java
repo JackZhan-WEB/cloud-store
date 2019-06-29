@@ -1,7 +1,6 @@
 package club.jackzhan.cloudstore.web.intercept;
 
 import club.jackzhan.cloudstore.constant.BusinessConstant;
-import club.jackzhan.cloudstore.constant.Constants;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
@@ -44,7 +43,7 @@ public class RequestIntercept {
     /**
      * Define a pointcut
      */
-//    @Pointcut("@annotation(club.jackzhan.cloudstore.annotation.SystemLog)")
+//    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
     @Pointcut("execution(* club.jackzhan.cloudstore.web.controller.*.*(..))")
     public void controllerLog() {
     }
@@ -58,10 +57,10 @@ public class RequestIntercept {
     public void before(JoinPoint joinPoint) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-        String token = request.getHeader(Constants.TOKEN);
+        String token = request.getHeader(BusinessConstant.TOKEN);
         StringBuffer requestURL = request.getRequestURL();
         if (!requestURL.toString().contains("/login/auth")) {
-            if(!redisOperation.hasKey(token)){
+            if (!redisOperation.hasKey(token)) {
                 throw new BusinessException(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);
             }
             redisOperation.expire(token, BusinessConstant.TOKEN_EXPIRE_TIME);
@@ -102,7 +101,7 @@ public class RequestIntercept {
         log.info("请求IP：{}", request.getRemoteAddr());
         log.info("请求路径：{}", requestURL);
         log.info("请求方式：{}", request.getMethod());
-        log.info("请求参数：{}", joinPoint.getArgs());
+        log.info("请求参数：{}", "get".equalsIgnoreCase(request.getMethod()) ? request.getQueryString() : joinPoint.getArgs());
     }
 
     /**

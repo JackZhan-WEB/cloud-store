@@ -22,6 +22,7 @@ import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.util.RandomUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,10 +82,10 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public PageBean list(MemberQueryRequest request) {
-        PageBean<MemberDTO> page = new PageBean<>(request.getCurrentPage(), request.getPageSize());
-        page.setPageData(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(), request.getPageSize()), MemberDTO.class));
-        page.setTotalCount(memberMapper.countByQuery(request));
+    public Page<MemberDTO> list(MemberQueryRequest request) {
+        Page<MemberDTO> page = new Page<>();
+        page.setRecords(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(),request.getPageSize()), MemberDTO.class));
+        page.setTotal(memberMapper.countByQuery(request));
         return page;
     }
 
@@ -111,7 +112,7 @@ public class MemberServiceImpl implements IMemberService {
 
     private void isAdminRole(List<RoleDTO> roles) {
         for (RoleDTO role : roles) {
-            if ("admin".equals(role.getName())) {
+            if ("admin".equals(role.getCode())) {
                 roles.clear();
                 roles.add(role);
                 break;

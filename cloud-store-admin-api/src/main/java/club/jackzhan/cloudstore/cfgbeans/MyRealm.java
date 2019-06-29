@@ -1,6 +1,6 @@
 package club.jackzhan.cloudstore.cfgbeans;
 
-import club.jackzhan.cloudstore.constant.Constants;
+import club.jackzhan.cloudstore.constant.BusinessConstant;
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
@@ -43,7 +43,7 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        ResultResponse memberResponse = remoteCallUtil.sendGet("/member/member/getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
+        ResultResponse memberResponse = remoteCallUtil.sendGet("member.member.getMember", new MemberQueryRequest().setLoginName(token.getUsername()));
         MemberDTO memberDTO = null;
         try {
             memberDTO = BeanUtils.json2Bean((String) memberResponse.getData(), MemberDTO.class);
@@ -57,7 +57,7 @@ public class MyRealm extends AuthorizingRealm {
         System.out.println(MemberUtil.getSessionId());
 
         //将用户信息放入redis中
-        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO), Constants.TOKEN_EXPIRE_TIME);
+        redisOperation.set(MemberUtil.getSessionId().toString(), BeanUtils.bean2Json(memberDTO), BusinessConstant.TOKEN_EXPIRE_TIME);
         //将用户信息放入session中
 //        SecurityUtils.getSubject().getSession().setAttribute(Constants.MEMBER_IN_SESSION, memberDTO);
         return new SimpleAuthenticationInfo(memberDTO, memberDTO.getPassword().toCharArray(), ByteSource.Util.bytes(memberDTO.getSalt()), getName());
@@ -79,12 +79,12 @@ public class MyRealm extends AuthorizingRealm {
         // 将用户对应的角色和权限信息打包放到AuthorizationInfo中
         List<RoleDTO> roles = memberDTO.getRoles();
         for (RoleDTO role : roles) {
-            if ("admin".equals(role.getName())) {
+            if ("admin".equals(role.getCode())) {
                 info.addStringPermission("*:*");
                 info.addRole("admin");
                 return info;
             } else {
-                info.addRole(role.getName());
+                info.addRole(role.getCode());
                 for (PermissionsDTO p : role.getPermissions()) {
                     info.addStringPermission(p.getName());
                 }

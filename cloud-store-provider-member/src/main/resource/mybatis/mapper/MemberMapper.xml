@@ -45,6 +45,7 @@
         <collection property="roles" ofType="club.jackzhan.cloudstore.module.dto.RoleDTO" columnPrefix="role_">
             <id column="id" property="id"/>
             <result column="name" property="name"/>
+            <result column="code" property="code"/>
             <result column="desc" property="description"/>
         </collection>
     </resultMap>
@@ -78,7 +79,8 @@
         m.update_user,
         mr.role_desc,
         mr.role_id,
-        mr.role_name
+        mr.role_name,
+        mr.role_code
         FROM
         (SELECT *
         FROM member
@@ -89,7 +91,6 @@
         order by m.create_time
     </select>
     <sql id="querySql">
-        <!--@sql select count(1) from member where 1=1-->
         <if test="request.username != null and request.username != ''">
             AND username = #{request.username}
         </if>
@@ -110,9 +111,9 @@
         <include refid="querySql"/>
     </select>
     <insert id="insertMemberRole">
-        insert into member_role (member_id, role_id, role_name, role_desc) VALUES
+        insert into member_role (member_id, role_id,role_code, role_name) VALUES
         <foreach collection="roles" separator="," item="role">
-            (#{memberId}, #{role.id}, #{role.name},#{role.description})
+            (#{memberId}, #{role.id}, #{role.code} ,#{role.name} )
         </foreach>
     </insert>
     <delete id="deleteUserRoles">

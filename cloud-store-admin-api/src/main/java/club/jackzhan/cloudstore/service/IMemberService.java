@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.service;
 
+import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.util.ResultResponse;
 
@@ -11,7 +12,7 @@ import club.jackzhan.cloudstore.util.ResultResponse;
  * @Author: JackZhan
  */
 public interface IMemberService {
-    ResultResponse createUser(MemberQueryRequest request);
+    ResultResponse createUser(MemberQueryRequest request, CurrentMember currentMember);
 
     ResultResponse list(MemberQueryRequest request);
 

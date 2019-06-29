@@ -6,7 +6,7 @@ import router from '../../router'
 
 const member = {
   state: {
-    username: "",
+    name: "",
     memberId: "",
     avatar: 'https://www.gravatar.com/avatar/6560ed55e62396e40b34aac1e5041028',
     role: '',
@@ -16,7 +16,7 @@ const member = {
   },
   mutations: {
     SET_USER: (state, userInfo) => {
-      state.username = userInfo.username;
+      state.username = userInfo.name;
       state.memberId = userInfo.id;
       state.role = userInfo.roles;
       state.menus = userInfo.menus;

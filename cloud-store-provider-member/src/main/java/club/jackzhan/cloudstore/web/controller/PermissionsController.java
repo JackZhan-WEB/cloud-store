@@ -1,6 +1,7 @@
 package club.jackzhan.cloudstore.web.controller;
 
 import club.jackzhan.cloudstore.module.request.PermissionsRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
 import club.jackzhan.cloudstore.service.IPermissionsService;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import io.swagger.annotations.Api;
@@ -34,6 +35,23 @@ public class PermissionsController {
     @ApiOperation(value = "权限列表")
     public ResultResponse list() {
         return ResultResponse.success(permissionsService.list());
+    }
+
+    /**
+     * 查询所有的权限列表
+     */
+    @GetMapping("/getPerms")
+    @ApiOperation(value = "可授权权限列表")
+    public ResultResponse getPerms() {
+        return ResultResponse.success(permissionsService.getPerms());
+    }
+    /**
+     * 查询所有的权限列表
+     */
+    @GetMapping("/getCheckPerms")
+    @ApiOperation(value = "获取当前用户的权限")
+    public ResultResponse getCheckPerms(BaseIdRequest<Integer> request) {
+        return ResultResponse.success(permissionsService.getCheckPerms(request));
     }
 
     /**

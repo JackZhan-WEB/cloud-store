@@ -41,9 +41,9 @@
           update: '编辑',
           create: '新建用户'
         },
-        tempUser: {
+        tempRole: {
           id: '',
-          username: '',
+          name: '',
           phone: '',
           password: '',
           nickname: '',
@@ -76,7 +76,6 @@
       getList() {
         //查询列表
         this.listLoading = true;
-        console.log(this.listQuery, 'listQuery');
         permsService.getList(this.listQuery).then(response => {
           this.listLoading = false;
           this.list = response.data.children;

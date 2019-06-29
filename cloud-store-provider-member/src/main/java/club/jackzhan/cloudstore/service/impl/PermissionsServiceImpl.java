@@ -6,6 +6,7 @@ import club.jackzhan.cloudstore.mapper.PermissionsMapper;
 import club.jackzhan.cloudstore.entities.Permissions;
 import club.jackzhan.cloudstore.module.dto.PermissionsTreeDTO;
 import club.jackzhan.cloudstore.module.request.PermissionsRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
 import club.jackzhan.cloudstore.service.IPermissionsService;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
@@ -73,5 +74,37 @@ public class PermissionsServiceImpl implements IPermissionsService {
     @Override
     public List<String> getAllCodes() {
         return permissionsMapper.getAllCodes();
+    }
+
+    @Override
+    public PermissionsTreeDTO getPerms() {
+        PermissionsTreeDTO treeDTO = new PermissionsTreeDTO();
+        List<PermissionsTreeDTO> treeList = new ArrayList<>();
+        treeDTO.setChildren(treeList);
+        //查询所有的权限父级
+        List<Permissions> parentList = permissionsMapper.selectList(new EntityWrapper<Permissions>().isNull("parent_code").eq("type",TrueFalseEnum.TRUE.getCode()));
+        for (Permissions parent : parentList) {
+            PermissionsTreeDTO parentTreeDTO = new PermissionsTreeDTO();
+            treeList.add(parentTreeDTO);
+            parentTreeDTO.setId(parent.getId());
+            parentTreeDTO.setName(parent.getName());
+            //查询权限父级对应的子权限
+            List<Permissions> childList = permissionsMapper.selectList(new EntityWrapper<Permissions>().eq("parent_code",parent.getCode()).eq("type",TrueFalseEnum.TRUE.getCode()));
+            List<PermissionsTreeDTO> childTreeList = new ArrayList<>();
+            parentTreeDTO.setChildren(childTreeList);
+            //转换成tree结构
+            for (Permissions child : childList) {
+                PermissionsTreeDTO childTreeDTO = new PermissionsTreeDTO();
+                childTreeList.add(childTreeDTO);
+                childTreeDTO.setId(child.getId());
+                childTreeDTO.setName(child.getName());
+            }
+        }
+        return treeDTO;
+    }
+
+    @Override
+    public List<Integer> getCheckPerms(BaseIdRequest request) {
+        return permissionsMapper.getCheckPerms(request.getId());
     }
 }

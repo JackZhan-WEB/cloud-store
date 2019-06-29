@@ -35,14 +35,14 @@ public class MemberController {
     @PostMapping("/createUser")
     @RequiresPermissions({"member:createUser","用户添加"})
     @ApiOperation(value = "用户添加")
-    public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember member){
-        return memberService.createUser(request);
+    public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember currentMember){
+        return memberService.createUser(request,currentMember);
     }
 
     @PostMapping("/updateUser")
     @RequiresPermissions({"member:updateUser","用户更新"})
     @ApiOperation(value = "用户更新")
-    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember member){
+    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember currentMember){
         return memberService.updateUser(request);
     }
 
