@@ -15,6 +15,7 @@ import club.jackzhan.cloudstore.module.dto.MenuDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.entities.Member;
+import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.BeanUtils;
@@ -90,7 +91,7 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public Boolean createUser(MemberQueryRequest request) {
+    public Boolean createUser(MemberCreateRequest request) {
         Date now = new Date();
         Member member = BeanUtils.copyProperties(request, Member.class);
         member.setId(RandomUtil.generateStr(32))

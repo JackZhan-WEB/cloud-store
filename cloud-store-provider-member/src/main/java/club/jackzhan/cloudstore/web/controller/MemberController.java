@@ -1,6 +1,7 @@
 package club.jackzhan.cloudstore.web.controller;
 
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.CheckParametersUtil;
@@ -65,14 +66,7 @@ public class MemberController {
      */
     @PostMapping("/createUser")
     @ApiOperation(value = "用户添加")
-    public ResultResponse createUser(@RequestBody MemberQueryRequest request) {
-        CheckParametersUtil
-                .getInstance()
-                .put(request.getUsername(), "用户名")
-                .put(request.getSalt(), "salt")
-                .put(request.getPassword(), "密码")
-                .put(request.getNickname(), "昵称")
-                .checkParameter();
+    public ResultResponse createUser(@RequestBody MemberCreateRequest request) {
         return ResultResponse.success(memberService.createUser(request));
     }
 }

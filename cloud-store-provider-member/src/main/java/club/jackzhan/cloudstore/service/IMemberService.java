@@ -2,6 +2,7 @@ package club.jackzhan.cloudstore.service;
 
 import club.jackzhan.cloudstore.module.dto.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -26,7 +27,7 @@ public interface IMemberService {
 
     Page<MemberDTO> list(MemberQueryRequest request);
 
-    Boolean createUser(MemberQueryRequest request);
+    Boolean createUser(MemberCreateRequest request);
 
     Boolean updateUser(MemberQueryRequest request);
 }

@@ -1,13 +1,18 @@
 package club.jackzhan.cloudstore.web.controller;
 
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
+import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
+import club.jackzhan.cloudstore.util.CheckParametersUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +40,7 @@ public class MemberController {
     @PostMapping("/createUser")
     @RequiresPermissions({"member:createUser","用户添加"})
     @ApiOperation(value = "用户添加")
-    public ResultResponse createUser(@RequestBody MemberQueryRequest request, CurrentMember currentMember){
+    public ResultResponse createUser(@RequestBody @Valid MemberCreateRequest request, CurrentMember currentMember){
         return memberService.createUser(request,currentMember);
     }
 

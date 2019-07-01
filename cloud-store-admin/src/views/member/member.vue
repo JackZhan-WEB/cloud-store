@@ -52,12 +52,14 @@
       <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
       <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
       <el-table-column align="center" label="修改人" prop="updateUser"/>
-      <el-table-column align="center" label="管理" width="220px" v-if="hasPerm('member:update')">
+      <el-table-column align="center" label="管理" width="320px" v-if="hasPerm('member:update')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)" v-if="scope.row.type===1">设置角色
+          <el-button type="primary" icon="edit" @click="showSetRole(scope.$index)" v-if="scope.row.type===1">设置角色
           </el-button>
-          <el-button type="danger" icon="delete" v-if="scope.row.memberId!==memberId"
-                     @click="removeUser(scope.$index)">删除
+          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">编辑
+          </el-button>
+          <el-button type="danger" icon="el-icon-delete" v-if="scope.row.memberId!==memberId"
+                     @click="removeUser(scope.$index)">
           </el-button>
         </template>
       </el-table-column>
@@ -74,11 +76,11 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px">
       <el-form class="small-space" :model="tempUser" label-position="left" label-width="80px"
                style='width: 300px; margin-left:50px;'>
-        <el-form-item label="用户名" required v-if="dialogStatus==='create'">
+        <el-form-item label="用户名" required v-if="dialogStatus!=='showSetRole'">
           <el-input type="text" v-model="tempUser.username">
           </el-input>
         </el-form-item>
-        <el-form-item label="手机号" required v-if="dialogStatus==='create'">
+        <el-form-item label="手机号" required v-if="dialogStatus!=='showSetRole'">
           <el-input type="text" v-model="tempUser.phone">
           </el-input>
         </el-form-item>
@@ -101,7 +103,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="昵称" v-if="dialogStatus==='create'" required>
+        <el-form-item label="昵称" v-if="dialogStatus!=='showSetRole'" required>
           <el-input type="text" v-model="tempUser.nickname">
           </el-input>
         </el-form-item>
@@ -136,7 +138,8 @@
         dialogFormVisible: false,
         textMap: {
           update: '编辑',
-          create: '新建用户'
+          create: '新建用户',
+          showSetRole: '设置角色'
         },
         tempUser: {
           id: '',
@@ -226,6 +229,19 @@
         this.dialogStatus = "update";
         this.dialogFormVisible = true
       },
+      showSetRole($index) {
+        let user = this.list[$index];
+        console.log(user, 'showSetRole');
+        this.tempUser.id = user.id;
+        this.tempUser.username = user.name;
+        this.tempUser.nickname = user.nickname;
+        this.tempUser.roles = user.roles;
+        this.tempUser.memberId = user.memberId;
+        this.tempUser.state = user.state;
+        this.tempUser.password = '';
+        this.dialogStatus = "showSetRole";
+        this.dialogFormVisible = true
+      },
       createUser() {
         //添加新用户
         memberService.createUser(this.tempUser).then(() => {
@@ -235,22 +251,13 @@
       },
       updateUserRole() {
         //修改用户角色
-        let _vue = this;
         console.log(this.tempUser, 'tempUser');
         memberService.updateUser(this.tempUser).then(() => {
-          let msg = "修改成功";
           this.dialogFormVisible = false;
-          if (this.memberId === this.tempUser.memberId) {
-            msg = '修改成功,部分信息重新登录后生效'
-          }
-          this.$message({
-            message: msg,
-            type: 'success',
-            duration: 1 * 1000,
-            onClose: () => {
-              _vue.getList();
-            }
-          })
+          // if (this.memberId === this.tempUser.memberId) {
+          //   msg = '修改成功,部分信息重新登录后生效'
+          // }
+          this.getList();
         })
       },
       removeUser($index) {

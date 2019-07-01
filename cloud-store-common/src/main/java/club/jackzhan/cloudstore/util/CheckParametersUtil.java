@@ -58,7 +58,12 @@ public class CheckParametersUtil {
      */
     public void checkParameter() {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (isEmpty(entry.getValue())) {
+            Object value = entry.getValue();
+            if (value instanceof Collection) {
+                if (isEmpty((Collection) value)) {
+                    throw new BusinessException("参数【" + entry.getKey() + "】不能为空！");
+                }
+            } else if (isEmptyTrim(value)) {
                 throw new BusinessException("参数【" + entry.getKey() + "】不能为空！");
             }
         }
