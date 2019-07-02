@@ -34,7 +34,7 @@ public interface BusinessConstant {
     /**
      * token过期时间
      */
-    long TOKEN_EXPIRE_TIME = -1;
+    long TOKEN_EXPIRE_TIME = 7200;
     /**
      * token 参数名
      */

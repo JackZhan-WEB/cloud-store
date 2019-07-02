@@ -10,7 +10,9 @@
     <div class="filter-container">
       <el-form>
         <el-form-item>
-          <el-button type="primary" icon="plus" v-if="hasPerm('member:add') && listQuery.type==='1'" @click="showCreate">添加</el-button>
+          <el-button type="primary" icon="plus" v-if="hasPerm('member:add') && listQuery.type==='1'"
+                     @click="showCreate">添加
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -73,25 +75,31 @@
       :page-sizes="[1, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px">
-      <el-form class="small-space" :model="tempUser" label-position="left" label-width="80px"
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px" :before-close="clearForm"
+               :show-close=false>
+      <el-form class="small-space" :model="tempUser" ref="tempUserForm" :rules="rules" label-position="left"
+               label-width="80px"
                style='width: 300px; margin-left:50px;'>
-        <el-form-item label="用户名" required v-if="dialogStatus!=='showSetRole'">
+        <el-form-item label="用户名" prop="username" v-if="dialogStatus!=='showSetRole'">
           <el-input type="text" v-model="tempUser.username">
           </el-input>
         </el-form-item>
-        <el-form-item label="手机号" required v-if="dialogStatus!=='showSetRole'">
+        <el-form-item label="昵称" prop="nickname" v-if="dialogStatus!=='showSetRole'">
+          <el-input type="text" v-model="tempUser.nickname">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phone" v-if="dialogStatus!=='showSetRole'">
           <el-input type="text" v-model="tempUser.phone">
           </el-input>
         </el-form-item>
-        <el-form-item label="密码" v-if="dialogStatus==='create'" required>
+        <el-form-item label="密码" prop="password" v-if="dialogStatus==='create'">
           <el-input type="password" v-model="tempUser.password"/>
         </el-form-item>
         <!--        <el-form-item label="新密码" v-else>-->
         <!--          <el-input type="password" v-model="tempUser.password" placeholder="不填则表示不修改">-->
         <!--          </el-input>-->
         <!--        </el-form-item>-->
-        <el-form-item label="角色" required>
+        <el-form-item label="角色" prop="roles">
           <el-select multiple v-model="tempUser.roles" value-key="id"
                      placeholder="请选择">
             <el-option
@@ -103,13 +111,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="昵称" v-if="dialogStatus!=='showSetRole'" required>
-          <el-input type="text" v-model="tempUser.nickname">
-          </el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="clearForm">取 消</el-button>
         <el-button v-if="dialogStatus==='create'" type="success" @click="createUser">创 建</el-button>
         <el-button type="primary" v-else @click="updateUserRole">确 定</el-button>
       </div>
@@ -124,6 +128,27 @@
 
   export default {
     data() {
+      //验证用户名是否存在
+      let verifyUsername = (rule, value, callback) => {
+        memberService.verifyUsername({'username': value}).then(response => {
+          if (!response.state) {
+            callback(new Error(response.msg));
+          } else {
+            callback();
+          }
+        });
+      };
+      //验证手机是否存在
+      let verifyPhone = (rule, value, callback) => {
+        memberService.verifyPhone({'phone': value}).then(response => {
+          if (!response.state) {
+            callback(new Error());
+          } else {
+            callback();
+          }
+        });
+      };
+
       return {
         totalCount: 0, //分页组件--数据总条数
         list: [],//表格的数据
@@ -143,12 +168,35 @@
         },
         tempUser: {
           id: '',
-          name: '',
+          username: '',
           phone: '',
           password: '',
           nickname: '',
           roles: [],
           memberId: ''
+        },
+        rules: {
+          username: [
+            {required: true, message: '请填写用户名', trigger: 'blur'},
+            {min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur'},
+            {validator: verifyUsername, message: '该用户名已经被注册', trigger: 'blur'}
+          ],
+          roles: [
+            {required: true, message: '请选择角色', trigger: 'change'}
+          ],
+          phone: [
+            //可以写正则表达式
+            {required: true,pattern: /^[1]([3-9])[0-9]{9}$/,message: '目前只支持中国大陆的手机号码',trigger: 'blur'},
+            {validator: verifyPhone, message: '该手机已经被注册', trigger: 'blur'}
+
+            ],
+          password: [
+            {required: true, message: '请填写密码', trigger: 'blur'},
+            {min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur'}
+          ],
+          nickname: [
+            {required: true, message: '请填写昵称', trigger: 'blur'}
+          ]
         }
       }
     },
@@ -164,6 +212,11 @@
       ])
     },
     methods: {
+      //关闭清空表单数据
+      clearForm: function () {
+        this.$refs.tempUserForm.resetFields();
+        this.dialogFormVisible = false;
+      },
       dateFormat: function (row, column) {
         let moment = require('moment');
         let date = row[column.property];
@@ -208,11 +261,6 @@
       },
       showCreate() {
         //显示新增对话框
-        this.tempUser.username = "";
-        this.tempUser.password = "";
-        this.tempUser.nickname = "";
-        this.tempUser.roles = [];
-        this.tempUser.memberId = "";
         this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
@@ -220,8 +268,9 @@
         let user = this.list[$index];
         console.log(user, 'showUpdate');
         this.tempUser.id = user.id;
-        this.tempUser.username = user.name;
+        this.tempUser.username = user.username;
         this.tempUser.nickname = user.nickname;
+        this.tempUser.phone = user.phone;
         this.tempUser.roles = user.roles;
         this.tempUser.memberId = user.memberId;
         this.tempUser.state = user.state;
@@ -233,7 +282,7 @@
         let user = this.list[$index];
         console.log(user, 'showSetRole');
         this.tempUser.id = user.id;
-        this.tempUser.username = user.name;
+        this.tempUser.username = user.username;
         this.tempUser.nickname = user.nickname;
         this.tempUser.roles = user.roles;
         this.tempUser.memberId = user.memberId;
@@ -244,10 +293,14 @@
       },
       createUser() {
         //添加新用户
-        memberService.createUser(this.tempUser).then(() => {
-          this.getList();
-          this.dialogFormVisible = false
-        })
+        this.$refs.tempUserForm.validate((resp, field) => {
+          if (resp) {
+            memberService.createUser(this.tempUser).then(() => {
+              this.getList();
+              this.dialogFormVisible = false
+            })
+          }
+        });
       },
       updateUserRole() {
         //修改用户角色

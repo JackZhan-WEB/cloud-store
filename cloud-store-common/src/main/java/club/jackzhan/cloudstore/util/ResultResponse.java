@@ -53,13 +53,23 @@ public class ResultResponse<T> implements Serializable {
         return ResultResponse.success(null, DEFAULT_SUCCESS_MESSAGE);
     }
 
+    public static <T> ResultResponse success(ErrorCodeEnum codeEnum) {
+        return ResultResponse.success(codeEnum.getDesc(), null, codeEnum.getCode());
+    }
+
     public static <T> ResultResponse success(T data) {
         return ResultResponse.success(data, DEFAULT_SUCCESS_MESSAGE);
     }
 
+
     public static <T> ResultResponse success(T data, String message) {
+        return ResultResponse.success(message,data,DEFAULT_SUCCESS_CODE);
+    }
+
+    public static <T> ResultResponse success(String message, T data, Integer code) {
         ResultResponse<T> response = new ResultResponse<>();
         response.setMsg(message);
+        response.setCode(code);
         response.setData(data);
         response.setState(Boolean.TRUE);
         return response;

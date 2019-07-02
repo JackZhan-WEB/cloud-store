@@ -20,4 +20,8 @@ public interface IMemberService {
     ResultResponse getAllRoles();
 
     ResultResponse updateUser(MemberQueryRequest request);
+
+    ResultResponse verifyUsername(MemberQueryRequest request);
+
+    ResultResponse verifyPhone(MemberQueryRequest request);
 }

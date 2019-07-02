@@ -3,14 +3,12 @@ package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.enums.MemberStateEnum;
 import club.jackzhan.cloudstore.enums.MemberTypeEnum;
-import club.jackzhan.cloudstore.enums.RoleStateEnum;
-import club.jackzhan.cloudstore.enums.TrueFalseEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.mapper.MemberMapper;
 import club.jackzhan.cloudstore.mapper.MenuMapper;
 import club.jackzhan.cloudstore.mapper.PermissionsMapper;
 import club.jackzhan.cloudstore.mapper.RoleMapper;
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
+import club.jackzhan.cloudstore.module.dto.member.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.MenuDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
@@ -19,7 +17,6 @@ import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.BeanUtils;
-import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.util.RandomUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -85,7 +82,7 @@ public class MemberServiceImpl implements IMemberService {
     @Override
     public Page<MemberDTO> list(MemberQueryRequest request) {
         Page<MemberDTO> page = new Page<>();
-        page.setRecords(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(),request.getPageSize()), MemberDTO.class));
+        page.setRecords(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(), request.getPageSize()), MemberDTO.class));
         page.setTotal(memberMapper.countByQuery(request));
         return page;
     }
@@ -139,5 +136,23 @@ public class MemberServiceImpl implements IMemberService {
             }
         }
         return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean verifyUsername(MemberQueryRequest request) {
+        Integer count = memberMapper.selectCount(new EntityWrapper<Member>().eq("username", request.getUsername()));
+        if (count > 0) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Boolean verifyPhone(MemberQueryRequest request) {
+        Integer count = memberMapper.selectCount(new EntityWrapper<Member>().eq("phone", request.getPhone()));
+        if (count > 0) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 }

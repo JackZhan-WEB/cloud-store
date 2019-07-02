@@ -16,6 +16,8 @@ public enum ErrorCodeEnum implements BaseEnum<Integer> {
     MEMBER_INFO_ERROR(2,"用户信息查询失败"),
 
     MEMBER_SESSION_TIME_OUT(3, "登陆已过期，请重新登陆"),
+
+    FRONT_PASS_CODE(8888, "前端不做全局处理的CODE"),
     //业务异常
     SERVICE_ERROR(9999,"业务异常，请稍候重试");
 

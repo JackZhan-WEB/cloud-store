@@ -49,6 +49,16 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
+    public ResultResponse verifyUsername(MemberQueryRequest request) {
+        return remoteCallUtil.sendGet("member.member.verifyUsername", request);
+    }
+
+    @Override
+    public ResultResponse verifyPhone(MemberQueryRequest request) {
+        return remoteCallUtil.sendGet("member.member.verifyPhone", request);
+    }
+
+    @Override
     public ResultResponse list(MemberQueryRequest request) {
         return remoteCallUtil.sendGet("member.member.list", request);
     }

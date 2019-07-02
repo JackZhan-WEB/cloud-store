@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.web.controller;
 
+import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
@@ -50,6 +51,28 @@ public class MemberController {
     @ApiOperation(value = "用户列表")
     public ResultResponse list(MemberQueryRequest request) {
         return ResultResponse.success(memberService.list(request));
+    }
+    /**
+     * 获取用户列表
+     */
+    @GetMapping("/verifyUsername")
+    @ApiOperation(value = "验证用户名重复")
+    public ResultResponse verifyUsername(MemberQueryRequest request) {
+        if (memberService.verifyUsername(request)) {
+           return ResultResponse.failure(ErrorCodeEnum.FRONT_PASS_CODE);
+        }
+        return ResultResponse.success(ErrorCodeEnum.FRONT_PASS_CODE);
+    }
+    /**
+     * 获取用户列表
+     */
+    @GetMapping("/verifyPhone")
+    @ApiOperation(value = "验证手机号码重复")
+    public ResultResponse verifyPhone(MemberQueryRequest request) {
+        if (memberService.verifyPhone(request)) {
+           return ResultResponse.failure(ErrorCodeEnum.FRONT_PASS_CODE);
+        }
+        return ResultResponse.success(ErrorCodeEnum.FRONT_PASS_CODE);
     }
 
     /**

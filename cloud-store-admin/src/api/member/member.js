@@ -18,6 +18,22 @@ export function getAllRoles() {
   })
 }
 
+export function verifyUsername(params) {
+  return api({
+    url: "/member/verifyUsername",
+    method: "get",
+    params: params
+  })
+}
+
+export function verifyPhone(params) {
+  return api({
+    url: "/member/verifyPhone",
+    method: "get",
+    params: params
+  })
+}
+
 export function createUser(params) {
   return api({
     url: "/member/createUser",

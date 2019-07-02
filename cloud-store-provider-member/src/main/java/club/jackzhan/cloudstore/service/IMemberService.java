@@ -1,13 +1,9 @@
 package club.jackzhan.cloudstore.service;
 
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
-import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.dto.member.MemberDTO;
 import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
-import club.jackzhan.cloudstore.util.PageBean;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import com.baomidou.mybatisplus.plugins.Page;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,4 +26,8 @@ public interface IMemberService {
     Boolean createUser(MemberCreateRequest request);
 
     Boolean updateUser(MemberQueryRequest request);
+
+    Boolean verifyUsername(MemberQueryRequest request);
+
+    Boolean verifyPhone(MemberQueryRequest request);
 }

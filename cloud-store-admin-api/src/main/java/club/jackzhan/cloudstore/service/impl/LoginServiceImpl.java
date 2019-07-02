@@ -1,7 +1,7 @@
 package club.jackzhan.cloudstore.service.impl;
 
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
+import club.jackzhan.cloudstore.module.dto.member.MemberDTO;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.BeanUtils;

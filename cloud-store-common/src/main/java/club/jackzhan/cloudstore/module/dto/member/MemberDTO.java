@@ -1,5 +1,8 @@
-package club.jackzhan.cloudstore.module.dto;
+package club.jackzhan.cloudstore.module.dto.member;
 
+import club.jackzhan.cloudstore.module.dto.MenuDTO;
+import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
+import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

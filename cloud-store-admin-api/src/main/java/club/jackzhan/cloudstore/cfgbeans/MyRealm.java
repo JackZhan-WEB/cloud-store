@@ -1,7 +1,7 @@
 package club.jackzhan.cloudstore.cfgbeans;
 
 import club.jackzhan.cloudstore.constant.BusinessConstant;
-import club.jackzhan.cloudstore.module.dto.MemberDTO;
+import club.jackzhan.cloudstore.module.dto.member.MemberDTO;
 import club.jackzhan.cloudstore.module.dto.PermissionsDTO;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;

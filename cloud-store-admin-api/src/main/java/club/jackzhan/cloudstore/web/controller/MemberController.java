@@ -37,6 +37,18 @@ public class MemberController {
         return memberService.list(request);
     }
 
+    @GetMapping("/verifyUsername")
+    @ApiOperation(value = "验证用户名重复")
+    public ResultResponse verifyUsername(MemberQueryRequest request){
+        return memberService.verifyUsername(request);
+    }
+
+    @GetMapping("/verifyPhone")
+    @ApiOperation(value = "验证手机号码重复")
+    public ResultResponse verifyPhone(MemberQueryRequest request){
+        return memberService.verifyPhone(request);
+    }
+
     @PostMapping("/createUser")
     @RequiresPermissions({"member:createUser","用户添加"})
     @ApiOperation(value = "用户添加")

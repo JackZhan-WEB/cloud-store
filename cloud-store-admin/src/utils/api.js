@@ -32,7 +32,7 @@ service.interceptors.response.use(response => {
         duration: 3 * 1000
       });
       return res;
-    } else if (res.code === 3) {
+    }else if (res.code === 3) {
       Message({
         showClose: true,
         message: res.msg,
@@ -45,6 +45,9 @@ service.interceptors.response.use(response => {
         }
       });
       return Promise.reject("未登录")
+    } else if (res.code === 8888) {
+      //不做全局处理的code
+      return res;
     } else {
       Message({
         message: res.msg,
