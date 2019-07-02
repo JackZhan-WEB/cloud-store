@@ -24,5 +24,5 @@ public interface LoginService {
 	/**
 	 * 退出登录
 	 */
-	ResultResponse logout();
+	ResultResponse logout(String token);
 }

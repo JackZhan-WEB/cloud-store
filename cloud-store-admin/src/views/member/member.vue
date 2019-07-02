@@ -75,7 +75,8 @@
       :page-sizes="[1, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px" :before-close="clearForm"
+    <el-dialog :title="textMap[dialogStatus]" :close-on-click-modal="false" :visible.sync="dialogFormVisible"
+               width="450px" :before-close="clearForm"
                :show-close=false>
       <el-form class="small-space" :model="tempUser" ref="tempUserForm" :rules="rules" label-position="left"
                label-width="80px"
@@ -115,7 +116,8 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="clearForm">取 消</el-button>
         <el-button v-if="dialogStatus==='create'" type="success" @click="createUser">创 建</el-button>
-        <el-button type="primary" v-else @click="updateUserRole">确 定</el-button>
+        <el-button type="primary"  v-if="dialogStatus==='update'" @click="updateUser">确 定</el-button>
+        <el-button type="primary" v-if="dialogStatus==='showSetRole'" @click="updateUserRole">设 置</el-button>
       </div>
     </el-dialog>
   </div>
@@ -130,7 +132,7 @@
     data() {
       //验证用户名是否存在
       let verifyUsername = (rule, value, callback) => {
-        memberService.verifyUsername({'username': value}).then(response => {
+        memberService.verifyUsername({'username': value, 'id': this.tempUser.id}).then(response => {
           if (!response.state) {
             callback(new Error(response.msg));
           } else {
@@ -140,7 +142,7 @@
       };
       //验证手机是否存在
       let verifyPhone = (rule, value, callback) => {
-        memberService.verifyPhone({'phone': value}).then(response => {
+        memberService.verifyPhone({'phone': value, 'id': this.tempUser.id}).then(response => {
           if (!response.state) {
             callback(new Error());
           } else {
@@ -186,10 +188,10 @@
           ],
           phone: [
             //可以写正则表达式
-            {required: true,pattern: /^[1]([3-9])[0-9]{9}$/,message: '目前只支持中国大陆的手机号码',trigger: 'blur'},
+            {required: true, pattern: /^[1]([3-9])[0-9]{9}$/, message: '目前只支持中国大陆的手机号码', trigger: 'blur'},
             {validator: verifyPhone, message: '该手机已经被注册', trigger: 'blur'}
 
-            ],
+          ],
           password: [
             {required: true, message: '请填写密码', trigger: 'blur'},
             {min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur'}
@@ -265,6 +267,7 @@
         this.dialogFormVisible = true
       },
       showUpdate($index) {
+        //显示编辑对话框
         let user = this.list[$index];
         console.log(user, 'showUpdate');
         this.tempUser.id = user.id;
@@ -279,6 +282,7 @@
         this.dialogFormVisible = true
       },
       showSetRole($index) {
+        //显示设置角色对话框
         let user = this.list[$index];
         console.log(user, 'showSetRole');
         this.tempUser.id = user.id;
@@ -298,6 +302,21 @@
             memberService.createUser(this.tempUser).then(() => {
               this.getList();
               this.dialogFormVisible = false
+            })
+          }
+        });
+      },
+      updateUser() {
+        //修改用户
+        console.log(this.tempUser, 'tempUser');
+        this.$refs.tempUserForm.validate((resp, field) => {
+          if (resp) {
+            memberService.updateUser(this.tempUser).then(() => {
+              this.dialogFormVisible = false;
+              // if (this.memberId === this.tempUser.memberId) {
+              //   msg = '修改成功,部分信息重新登录后生效'
+              // }
+              this.getList();
             })
           }
         });

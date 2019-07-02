@@ -120,6 +120,11 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public Boolean updateUser(MemberQueryRequest request) {
+        Wrapper<Member> wrapper = new EntityWrapper<Member>().eq("id", request.getId());
+        if (memberMapper.update(BeanUtils.copyProperties(request, Member.class), wrapper) < 0) {
+            throw new BusinessException("操作失败");
+        }
+
         if (request.getRoles() != null) {
             if (memberMapper.deleteUserRoles(request.getId()) <= 0) {
                 throw new BusinessException("设置角色失败");
@@ -129,18 +134,17 @@ public class MemberServiceImpl implements IMemberService {
                     throw new BusinessException("设置角色失败");
                 }
             }
-        } else {
-            Wrapper<Member> wrapper = new EntityWrapper<Member>().eq("id", request.getId());
-            if (memberMapper.update(BeanUtils.copyProperties(request, Member.class), wrapper) < 0) {
-                throw new BusinessException("删除失败");
-            }
         }
         return Boolean.TRUE;
     }
 
     @Override
     public Boolean verifyUsername(MemberQueryRequest request) {
-        Integer count = memberMapper.selectCount(new EntityWrapper<Member>().eq("username", request.getUsername()));
+        Wrapper<Member> wrapper = new EntityWrapper<Member>().eq("username", request.getUsername());
+        if(request.getId() != null){
+            wrapper.ne("id", request.getId());
+        }
+        Integer count = memberMapper.selectCount(wrapper);
         if (count > 0) {
             return Boolean.TRUE;
         }
@@ -149,7 +153,11 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public Boolean verifyPhone(MemberQueryRequest request) {
-        Integer count = memberMapper.selectCount(new EntityWrapper<Member>().eq("phone", request.getPhone()));
+        Wrapper<Member> wrapper = new EntityWrapper<Member>().eq("phone", request.getPhone());
+        if(request.getId() != null){
+            wrapper.ne("id", request.getId());
+        }
+        Integer count = memberMapper.selectCount(wrapper);
         if (count > 0) {
             return Boolean.TRUE;
         }

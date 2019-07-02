@@ -101,13 +101,13 @@ public class RedisOperation {
     }
 
 
+    // ============================String=============================
+
     /**
      * 删除缓存
      *
      * @param key 可以传一个值 或多个
      */
-
-    @SuppressWarnings("unchecked")
 
     public void del(String... key) {
 
@@ -115,20 +115,17 @@ public class RedisOperation {
 
             if (key.length == 1) {
 
-                redisTemplate.delete(key[0]);
+                stringRedisTemplate.delete(key[0]);
 
             } else {
 
-                redisTemplate.delete(CollectionUtils.arrayToList(key));
+                stringRedisTemplate.delete(CollectionUtils.arrayToList(key));
 
             }
 
         }
 
     }
-
-
-    // ============================String=============================
 
     /**
      * 普通缓存获取
@@ -137,7 +134,7 @@ public class RedisOperation {
      * @return 值
      */
 
-    public Object get(String key) {
+    public String get(String key) {
 
         return key == null ? null : stringRedisTemplate.opsForValue().get(key);
 

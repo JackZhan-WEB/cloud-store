@@ -6,6 +6,7 @@ import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.LoginService;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.MemberUtil;
+import club.jackzhan.cloudstore.util.RedisOperation;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -28,10 +29,10 @@ import org.springframework.util.StringUtils;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private RedisOperation redisOperation;
 
     /**
-     * 登录表单提交
+     * 登录表单提交 TODO 登陆需要增加    登陆时间、IP、密码错误次数（超过次数冻结）
      */
     @Override
     public ResultResponse authLogin(MemberQueryRequest request) {
@@ -59,7 +60,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ResultResponse getInfo(String token) {
         //从redis获取用户信息
-        MemberDTO memberDTO = BeanUtils.json2Bean(redisTemplate.opsForValue().get(token), MemberDTO.class);
+        MemberDTO memberDTO = BeanUtils.json2Bean(redisOperation.get(token), MemberDTO.class);
         if (memberDTO == null) {
             return ResultResponse.failure(ErrorCodeEnum.MEMBER_SESSION_TIME_OUT);
         }
@@ -81,10 +82,11 @@ public class LoginServiceImpl implements LoginService {
      * 退出登录
      */
     @Override
-    public ResultResponse logout() {
+    public ResultResponse logout(String token) {
         try {
             Subject currentUser = SecurityUtils.getSubject();
             currentUser.logout();
+            redisOperation.del(token);
         } catch (Exception e) {
             log.error("[LoginServiceImpl][logout]失败");
         }

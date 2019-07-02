@@ -6,7 +6,9 @@ import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
-import club.jackzhan.cloudstore.util.*;
+import club.jackzhan.cloudstore.util.RandomUtil;
+import club.jackzhan.cloudstore.util.RemoteCallUtil;
+import club.jackzhan.cloudstore.util.ResultResponse;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,8 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public ResultResponse updateUser(MemberQueryRequest request) {
+    public ResultResponse updateUser(MemberQueryRequest request, CurrentMember currentMember) {
+        request.setUpdateUser(currentMember.getUsername());
         return remoteCallUtil.sendPost("member.member.updateUser",request);
     }
 

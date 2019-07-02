@@ -19,7 +19,7 @@ public interface IMemberService {
 
     ResultResponse getAllRoles();
 
-    ResultResponse updateUser(MemberQueryRequest request);
+    ResultResponse updateUser(MemberQueryRequest request, CurrentMember currentMember);
 
     ResultResponse verifyUsername(MemberQueryRequest request);
 

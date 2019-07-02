@@ -52,7 +52,7 @@ public class LoginController {
 	 */
 	@PostMapping("/logout")
 	@ApiOperation(value = "登出")
-	public ResultResponse logout() {
-		return loginService.logout();
+	public ResultResponse logout(HttpServletRequest request) {
+		return loginService.logout(request.getHeader(BusinessConstant.TOKEN));
 	}
 }
