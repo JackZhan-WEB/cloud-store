@@ -1,6 +1,7 @@
 
 package club.jackzhan.cloudstore.service.impl;
 
+import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.enums.MemberStateEnum;
 import club.jackzhan.cloudstore.enums.MemberTypeEnum;
 import club.jackzhan.cloudstore.exception.BusinessException;
@@ -89,6 +90,10 @@ public class MemberServiceImpl implements IMemberService {
 
     @Override
     public Boolean createUser(MemberCreateRequest request) {
+        if (verifyUsername(BeanUtils.copyProperties(request, MemberQueryRequest.class)) || verifyPhone(BeanUtils.copyProperties(request, MemberQueryRequest.class))) {
+            throw new BusinessException(ErrorCodeEnum.USERNAME_OR_PHONE_ALREADY_EXISTS);
+        }
+
         Date now = new Date();
         Member member = BeanUtils.copyProperties(request, Member.class);
         member.setId(RandomUtil.generateStr(32))

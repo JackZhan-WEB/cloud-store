@@ -10,9 +10,14 @@ import lombok.Getter;
  * Time: 15:41
  */
 public enum RoleStateEnum implements BaseEnum {
+    /**
+     * 正常
+     */
     NORMAL(1, "正常"),
-    DISABLE(2, "禁用"),
-    DELETE(3, "已删除");
+    /**
+     * 禁用
+     */
+    DISABLE(2, "禁用");
 
 
     @Getter

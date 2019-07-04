@@ -26,7 +26,7 @@
       <el-table-column align="center" label="昵称" prop="nickname"/>
       <el-table-column align="center" label="用户名" prop="username"/>
       <el-table-column align="center" label="手机号" prop="phone"/>
-      <el-table-column align="center" label="角色">
+      <el-table-column align="center" label="角色" v-if="listQuery.type==='1'">
         <template slot-scope="scope">
           <span v-for="role in scope.row.roles">
             <el-tag type="success" v-text="role.name" v-if="role.code==='admin'"/>
@@ -43,26 +43,23 @@
           <el-tag type="danger" v-else>账号异常</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="用户类型" prop="type">
-        <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.type===1">后台管理人员</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===2">普通用户</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===3">VIP用户</el-tag>
-          <el-tag type="danger" v-else>账号异常</el-tag>
-        </template>
-      </el-table-column>
+<!--      <el-table-column align="center" label="用户类型" prop="type">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-tag type="success" v-if="scope.row.type===1">后台管理人员</el-tag>-->
+<!--          <el-tag type="primary" v-else-if="scope.row.type===2">普通用户</el-tag>-->
+<!--          <el-tag type="primary" v-else-if="scope.row.type===3">VIP用户</el-tag>-->
+<!--          <el-tag type="danger" v-else>账号异常</el-tag>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
       <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
       <el-table-column align="center" label="修改人" prop="updateUser"/>
-      <el-table-column align="center" label="管理" width="320px" v-if="hasPerm('member:update')">
+      <el-table-column align="center" label="管理" width="380px" v-if="hasPerm('member:update')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showSetRole(scope.$index)" v-if="scope.row.type===1">设置角色
-          </el-button>
-          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">编辑
-          </el-button>
-          <el-button type="danger" icon="el-icon-delete" v-if="scope.row.memberId!==memberId"
-                     @click="removeUser(scope.$index)">
-          </el-button>
+          <el-button type="primary" icon="edit" @click="showSetRole(scope.$index)" v-if="scope.row.type===1">设置角色</el-button>
+          <el-button type="primary" icon="edit" @click="disableUser(scope.$index)">禁用</el-button>
+          <el-button type="primary" icon="edit" @click="showUpdate(scope.$index)">编辑</el-button>
+          <el-button type="danger" icon="el-icon-delete" v-if="scope.row.memberId!==memberId" @click="removeUser(scope.$index)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -345,8 +342,22 @@
           user.roles = null;
           memberService.updateUser(user).then(() => {
             _vue.getList()
-          }).catch(() => {
-            _vue.$message.error("删除失败")
+          })
+        })
+      },
+      disableUser($index) {
+        let _vue = this;
+        this.$confirm('确定禁用此用户?', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          type: 'warning'
+        }).then(() => {
+          let user = _vue.list[$index];
+          console.log(user, 'user');
+          user.state = '3';
+          user.roles = null;
+          memberService.updateUser(user).then(() => {
+            _vue.getList()
           })
         })
       },

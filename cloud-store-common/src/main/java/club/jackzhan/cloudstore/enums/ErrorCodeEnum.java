@@ -17,6 +17,8 @@ public enum ErrorCodeEnum implements BaseEnum<Integer> {
 
     MEMBER_SESSION_TIME_OUT(3, "登陆已过期，请重新登陆"),
 
+    USERNAME_OR_PHONE_ALREADY_EXISTS(4, "用户名或手机已经存在"),
+
     /**
      * 前端不做全局处理的CODE，并且不会显示提示弹窗
      */

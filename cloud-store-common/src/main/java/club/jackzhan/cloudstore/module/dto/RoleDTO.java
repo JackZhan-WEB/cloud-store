@@ -54,7 +54,7 @@ public class RoleDTO implements Serializable{
      */
     private Integer type;
     /**
-     * 角色状态  1：正常  2：禁用  3：已删除
+     * 角色状态  1：正常  2：禁用
      */
     private Integer state;
 
