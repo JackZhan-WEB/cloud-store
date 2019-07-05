@@ -106,4 +106,8 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>cloud-store-provider-member</finalName> <!-- 指定package生成的文件名 -->
+    </build>
 </project>
