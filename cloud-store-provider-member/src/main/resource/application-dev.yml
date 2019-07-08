@@ -28,19 +28,6 @@ server:
     uri-encoding: UTF-8
   context-path: /member
 
-spring:
-  application:
-    name: cloud-store-member
-  datasource:
-    url: jdbc:mysql://yun888.xyz:3306/cloud-store-member?useUnicode=true&characterEncoding=utf-8
-    type: com.alibaba.druid.pool.DruidDataSource
-    username: root
-    password: admin
-  http:
-    encoding:
-      force: true
-      charset: utf-8
-      enabled: true
 
 logging:
   level:
@@ -49,3 +36,19 @@ logging:
         cloudstore:
           mapper:
             debug
+
+spring:
+  profiles:
+    active: $spring.profiles.active$
+  application:
+    name: cloud-store-member
+  datasource:
+    url: jdbc:mysql://yun888.xyz:3306/cloud-store-member?useUnicode=true&characterEncoding=utf-8
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 123456
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
