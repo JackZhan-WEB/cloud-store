@@ -2,7 +2,10 @@
 var path = require('path');
 module.exports = {
   build: {
-    env: require('./prod.env'),
+    prodEnv: require('./prod.env'),
+    devEnv: require('./dev.env'),
+    localEnv: require('./local.env'),
+    // env: require('./prod.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -20,17 +23,18 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   },
-  dev: {
-    env: require('./dev.env'),
+  local: {
+    localEnv: require('./local.env'),
     host: 'localhost',
     port: 9521,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     autoOpenPage: '/login',
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:9992',
+        target: 'http://localhost:9992/',
+        changeOrigin: true,
         pathRewrite: {
           '^/api': '/'
         }

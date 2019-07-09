@@ -3,5 +3,6 @@ var prodEnv = require('./prod.env')
 
 module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
-  BASE_URL:'"/api"',
+  EVN_CONFIG:'"local"',
+  API_ROOT:'"http://development:9992"'
 })

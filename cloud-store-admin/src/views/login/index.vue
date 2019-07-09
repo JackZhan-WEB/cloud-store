@@ -51,7 +51,6 @@
               if (data.code === 1) {
                 this.$router.push({path: '/'})
               } else {
-                debugger;
                 this.$message.error("账号/密码错误");
               }
             }).catch(() => {

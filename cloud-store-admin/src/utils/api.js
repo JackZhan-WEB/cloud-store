@@ -2,9 +2,11 @@ import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import {getToken} from '@/utils/auth'
 import store from '../store'
-// 创建axios实例
+
+//Axios.defaults.baseURL = "/apis/v1"
+// axios.defaults.baseURL = process.env.API_ROOT;
 const service = axios.create({
-  baseURL: process.env.BASE_URL, // api的base_url
+  baseURL: process.env.API_ROOT, // api的base_url
   timeout: 15000                  // 请求超时时间2
 });
 // request拦截器

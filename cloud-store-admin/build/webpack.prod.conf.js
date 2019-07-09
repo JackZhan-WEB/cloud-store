@@ -15,7 +15,8 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const env = require('../config/prod.env')
+// const env = require('../config/prod.env')
+const env = config.build[process.env.ENV_CONFIG+'Env']
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({

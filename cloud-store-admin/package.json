@@ -6,11 +6,15 @@
   "author": "",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "local": "webpack-dev-server --inline --progress --config build/webpack.local.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
     "build:report": "npm_config_report=true node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "build:local": "cross-env NODE_ENV=production env_config=local node build/build.js",
+    "build:pre": "cross-env NODE_ENV=production env_config=pre node build/build.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js"
   },
   "dependencies": {
     "axios": "0.17.1",
@@ -66,7 +70,7 @@
     "vue-template-compiler": "2.5.10",
     "webpack": "3.10.0",
     "webpack-bundle-analyzer": "2.9.1",
-    "webpack-dev-server": "2.9.7",
+    "webpack-dev-server": "^2.9.7",
     "webpack-merge": "4.1.1"
   },
   "engines": {

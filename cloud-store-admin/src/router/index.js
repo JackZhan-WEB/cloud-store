@@ -3,8 +3,10 @@ import Router from 'vue-router'
 // in development env not use Lazy Loading,because Lazy Loading too many pages will cause webpack hot update too slow.so only in production use Lazy Loading
 /* layout */
 import Layout from '../views/layout/Layout'
-
 const _import = require('./_import_' + process.env.NODE_ENV);
+console.log(process.env.NODE_ENV,'NODE_ENV');
+console.log(process.env.API_ROOT,'API_ROOT');
+
 Vue.use(Router);
 export const constantRouterMap = [
   {path: '/login', component: _import('login/index'), hidden: true},
