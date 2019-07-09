@@ -1,7 +1,7 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://yun888.xyz:7001/eureka/ #,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+      defaultZone: http://eureka7001.com:7001/eureka/ #,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
   instance:
     instance-id: cloud-store-member
     prefer-ip-address: true
@@ -38,8 +38,6 @@ logging:
             debug
 
 spring:
-  profiles:
-    active: $spring.profiles.active$
   application:
     name: cloud-store-member
   datasource:

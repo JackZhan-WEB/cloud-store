@@ -199,21 +199,74 @@
     </build>
     <profiles>
         <!-- 本地环境 -->
+<!--        <profile>-->
+<!--            <id>local</id>-->
+<!--            <properties>-->
+<!--                <spring.profiles.active>local</spring.profiles.active>-->
+<!--            </properties>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--        </profile>-->
+        <!-- 开发环境 -->
+<!--        <profile>-->
+<!--            <id>dev</id>-->
+<!--            <properties>-->
+<!--                <spring.profiles.active>dev</spring.profiles.active>-->
+<!--            </properties>-->
+<!--        </profile>-->
         <profile>
             <id>local</id>
-            <properties>
-                <spring.profiles.active>local</spring.profiles.active>
-            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <maven.test.skip>true</maven.test.skip>
+                <profile.id>local</profile.id>
+            </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>environment/local</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resource</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
         </profile>
-        <!-- 开发环境 -->
         <profile>
             <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
-                <spring.profiles.active>dev</spring.profiles.active>
+                <maven.test.skip>true</maven.test.skip>
+                <profile.id>dev</profile.id>
             </properties>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>environment/dev</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resource</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </resource>
+                </resources>
+            </build>
         </profile>
+
     </profiles>
 </project>
