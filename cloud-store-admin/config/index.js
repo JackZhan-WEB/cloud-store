@@ -23,8 +23,8 @@ module.exports = {
     // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   },
-  local: {
-    localEnv: require('./local.env'),
+  dev: {
+    localEnv: require('./dev.env'),
     host: 'localhost',
     port: 9521,
     autoOpenBrowser: false,
@@ -33,7 +33,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:9992/',
+        target: 'http://localhost:9992',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/'

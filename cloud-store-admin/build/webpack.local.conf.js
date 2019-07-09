@@ -18,10 +18,10 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.local.cssSourceMap, usePostCSS: true })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
   },
   // cheap-module-eval-source-map is faster for development
-  devtool: config.local.devtool,
+  devtool: config.dev.devtool,
 
   // these devServer options should be customized in /config/index.js
   devServer: {
@@ -29,17 +29,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     historyApiFallback: true,
     hot: true,
     compress: true,
-    host: HOST || config.local.host,
-    port: PORT || config.local.port,
-    open: config.local.autoOpenBrowser,
-    overlay: config.local.errorOverlay
+    host: HOST || config.dev.host,
+    port: PORT || config.dev.port,
+    open: config.dev.autoOpenBrowser,
+    overlay: config.dev.errorOverlay
       ? { warnings: false, errors: true }
       : false,
-    publicPath: config.local.assetsPublicPath,
+    publicPath: config.dev.assetsPublicPath,
     // proxy: config.local.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
-      poll: config.local.poll,
+      poll: config.dev.poll,
     }
   },
   plugins: [
@@ -61,7 +61,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 })
 
 module.exports = new Promise((resolve, reject) => {
-  portfinder.basePort = process.env.PORT || config.local.port
+  portfinder.basePort = process.env.PORT || config.dev.port
   portfinder.getPort((err, port) => {
     if (err) {
       reject(err)
@@ -76,7 +76,7 @@ module.exports = new Promise((resolve, reject) => {
         compilationSuccessInfo: {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
         },
-        onErrors: config.local.notifyOnErrors
+        onErrors: config.dev.notifyOnErrors
         ? utils.createNotifierCallback()
         : undefined
       }))
