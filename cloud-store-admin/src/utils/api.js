@@ -2,9 +2,22 @@ import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import {getToken} from '@/utils/auth'
 import store from '../store'
+import config from './config'
+
+let RequestBaseUrl;
+try {
+  if (process.env.NODE_ENV === 'dev') {
+    RequestBaseUrl = config.dev.baseApi
+  }else {
+    RequestBaseUrl = config.local.baseApi
+  }
+} catch (error) {
+  RequestBaseUrl = config.local.baseApi
+}
+
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_URL, // api的base_url
+  baseURL: RequestBaseUrl, // api的base_url
   timeout: 15000                  // 请求超时时间2
 });
 // request拦截器

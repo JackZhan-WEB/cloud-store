@@ -2,7 +2,7 @@
 var path = require('path');
 module.exports = {
   build: {
-    env: require('./prod.env'),
+    env: require('./dev.env'),
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
@@ -21,16 +21,16 @@ module.exports = {
     bundleAnalyzerReport: process.env.npm_config_report
   },
   dev: {
-    env: require('./dev.env'),
+    env: require('./local.env'),
     host: 'localhost',
     port: 9521,
     autoOpenBrowser: true,
     autoOpenPage: '/login',
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:9992',
+        // target: 'http://localhost:9992',
         pathRewrite: {
           '^/api': '/'
         }
