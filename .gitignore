@@ -9,3 +9,5 @@ out
 gen
 target
 cloud-store-admin/node_modules
+cloud-store-admin/dist/
+session/

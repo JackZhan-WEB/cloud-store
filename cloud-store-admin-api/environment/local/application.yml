@@ -19,6 +19,7 @@ server:
     session:
         store-dir: ./session #session序列化存储数据的目录
         persistent: true  #重新启动之间持续会话数据
+    context-path: /admin
 
 spring:
     application:
