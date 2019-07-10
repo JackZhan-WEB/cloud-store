@@ -24,4 +24,6 @@ server:
 spring:
     application:
         name: cloud-store-admin
+    redis:
+        host: self.yun888.xyz
 
