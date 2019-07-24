@@ -83,7 +83,7 @@ public class MemberServiceImpl implements IMemberService {
     @Override
     public Page<MemberDTO> list(MemberQueryRequest request) {
         Page<MemberDTO> page = new Page<>();
-        page.setRecords(BeanUtils.copyList(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(), request.getPageSize()), MemberDTO.class));
+        page.setRecords(memberMapper.list(request, (request.getCurrentPage() - 1) * request.getPageSize(), request.getPageSize()));
         page.setTotal(memberMapper.countByQuery(request));
         return page;
     }
