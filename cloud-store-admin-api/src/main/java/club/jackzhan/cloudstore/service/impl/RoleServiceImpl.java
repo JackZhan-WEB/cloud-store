@@ -1,9 +1,11 @@
 package club.jackzhan.cloudstore.service.impl;
 
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseIdsRequest;
 import club.jackzhan.cloudstore.module.request.common.BaseRequest;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.role.RoleCreateRequest;
-import club.jackzhan.cloudstore.module.request.role.RoleRemoveRequest;
+import club.jackzhan.cloudstore.module.request.role.RoleUpdateRequest;
 import club.jackzhan.cloudstore.service.IRoleService;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
 import club.jackzhan.cloudstore.util.ResultResponse;
@@ -41,9 +43,23 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public ResultResponse removeRole(RoleRemoveRequest request, CurrentMember currentMember) {
+    public ResultResponse deleteRole(Integer id, CurrentMember currentMember) {
+        BaseIdRequest<Integer> request = new BaseIdRequest<>();
         request.setUpdateUser(currentMember.getUsername());
-        return remoteCallUtil.sendPost("member.role.removeRole", request);
+        request.setId(id);
+        return remoteCallUtil.sendPost("member.role.deleteRole", request);
+    }
+
+    @Override
+    public ResultResponse batchDelete(BaseIdsRequest<Integer> request, CurrentMember currentMember) {
+        request.setUpdateUser(currentMember.getUsername());
+        return remoteCallUtil.sendPost("member.role.batchDelete", request);
+    }
+
+    @Override
+    public ResultResponse updateRole(RoleUpdateRequest request, CurrentMember currentMember) {
+        request.setUpdateUser(currentMember.getUsername());
+        return remoteCallUtil.sendPost("member.role.updateRole", request);
     }
 
 }

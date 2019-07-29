@@ -6,11 +6,18 @@
           <el-button type="primary" icon="plus" v-if="hasPerm('role:add') && listQuery.type==='1'" @click="showCreate">
             添加
           </el-button>
+          <el-button type="primary" icon="plus" v-if="hasPerm('role:batchDelete')"
+                     @click="batchDelete">批量删除
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
-              highlight-current-row>
+              highlight-current-row @selection-change="handleSelectionChange">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
       <el-table-column align="center" label="序号" width="80px">
         <template slot-scope="scope">
           <span v-text="getIndex(scope.$index)"> </span>
@@ -42,7 +49,7 @@
           <el-button type="primary" icon="" size="medium"
                      @click="removeUser(scope.$index)">设置角色</el-button>
           <el-button type="danger" icon="el-icon-delete" size="medium"
-                     @click="removeRole(scope.$index)"></el-button>
+                     @click="deleteRole(scope.$index)"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -90,7 +97,7 @@
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button v-if="dialogStatus==='create'" type="success" @click="createRole">创 建</el-button>
-        <el-button type="primary" v-else @click="">确 定</el-button>
+        <el-button type="primary" v-else @click="updateRole">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -132,6 +139,7 @@
           children: 'children',
           label: 'name'
         },
+        multipleSelection:[],
 
       }
     },
@@ -147,6 +155,9 @@
       ])
     },
     methods: {
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
       dateFormat: function (row, column) {
         let moment = require('moment');
         let date = row[column.property];
@@ -190,9 +201,33 @@
         this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
+      batchDelete(){
+        let selection = this.multipleSelection;
+        //批量删除
+        let arr = selection.map(function (item) {
+          return item.id;
+        });
+        if(arr.length <= 0){
+          this.$message.error("请选择需要删除的角色！")
+        }
+        this.$confirm('确定批量删除角色?', '提示', {
+          confirmButtonText: '确定',
+          showCancelButton: false,
+          type: 'warning'
+        }).then(() => {
+          roleService.batchDelete({'ids':arr}).then(() => {
+            this.getList()
+          }).catch(() => {
+            this.$message.error("删除失败")
+          })
+        })
+      },
       showSetPerms($index) {
         let role = this.list[$index];
         console.log(role,'role');
+        this.tempRole.name = role.name;
+        this.tempRole.code = role.code;
+        this.tempRole.description = role.description;
         this.tempRole.isSetPerms='1';
         this.tempRole.id = role.id;
         this.dialogStatus = "setPerms";
@@ -215,9 +250,6 @@
         roleService.updateRole(this.tempRole).then(() => {
           let msg = "修改成功";
           this.dialogFormVisible = false;
-          if (this.memberId === this.tempRole.memberId) {
-            msg = '修改成功,部分信息重新登录后生效'
-          }
           this.$message({
             message: msg,
             type: 'success',
@@ -228,7 +260,7 @@
           })
         })
       },
-      removeRole($index) {
+      deleteRole($index) {
         let _vue = this;
         this.$confirm('确定删除此角色?', '提示', {
           confirmButtonText: '确定',
@@ -236,7 +268,7 @@
           type: 'warning'
         }).then(() => {
           let role = _vue.list[$index];
-          roleService.removeRole({'id':role.id,'state':3}).then(() => {
+          roleService.deleteRole(role.id).then(() => {
             _vue.getList()
           }).catch(() => {
             _vue.$message.error("删除失败")

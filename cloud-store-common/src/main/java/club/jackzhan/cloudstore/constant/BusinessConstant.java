@@ -32,9 +32,9 @@ public interface BusinessConstant {
     String BUSINESS_EXCEPTION_SPLIT = ",code:";
 
     /**
-     * token过期时间
+     * token过期时间 秒
      */
-    long TOKEN_EXPIRE_TIME = 7200;
+    long TOKEN_EXPIRE_TIME = 300;
     /**
      * token 参数名
      */

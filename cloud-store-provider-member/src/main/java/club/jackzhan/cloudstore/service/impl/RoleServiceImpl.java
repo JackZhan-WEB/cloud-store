@@ -4,23 +4,24 @@ import club.jackzhan.cloudstore.entities.Role;
 import club.jackzhan.cloudstore.enums.ErrorCodeEnum;
 import club.jackzhan.cloudstore.enums.RoleStateEnum;
 import club.jackzhan.cloudstore.enums.TrueFalseEnum;
-import club.jackzhan.cloudstore.exception.BusinessException;
 import club.jackzhan.cloudstore.mapper.RoleMapper;
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseIdsRequest;
 import club.jackzhan.cloudstore.module.request.common.PageQueryRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import club.jackzhan.cloudstore.module.request.role.RoleCreateRequest;
-import club.jackzhan.cloudstore.module.request.role.RoleRemoveRequest;
+import club.jackzhan.cloudstore.module.request.role.RoleUpdateRequest;
 import club.jackzhan.cloudstore.service.IRoleService;
 import club.jackzhan.cloudstore.util.AssertUtil;
 import club.jackzhan.cloudstore.util.BeanUtils;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -84,11 +85,32 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Boolean removeRole(RoleRemoveRequest request) {
-        Wrapper<Role> wrapper = new EntityWrapper<Role>().eq("id", request.getId());
-        if (roleMapper.update(BeanUtils.copyProperties(request, Role.class), wrapper) < 0) {
-            throw new BusinessException("删除失败");
+    public Boolean deleteRole(BaseIdRequest<Integer> request) {
+        Integer id = request.getId();
+        BaseIdsRequest<Integer> idsRequest = new BaseIdsRequest<>();
+        idsRequest.setIds(Arrays.asList(id));
+        return batchDelete(idsRequest);
+    }
+
+    @Override
+    public Boolean batchDelete(BaseIdsRequest<Integer> request) {
+        List<Integer> ids = request.getIds();
+        if (roleMapper.deleteBatchIds(ids) > 0) {
+            roleMapper.deleteMemberRole(ids);
+            roleMapper.deleteRolePermission(ids);
+            return Boolean.TRUE;
         }
-        return Boolean.TRUE;
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Boolean updateRole(RoleUpdateRequest request) {
+        roleMapper.updateById(BeanUtils.copyProperties(request,Role.class));
+        Integer[] permChecks = request.getPermChecks();
+        if (permChecks != null && permChecks.length != 0) {
+            roleMapper.deleteRolePermission(Arrays.asList(request.getId()));
+            return roleMapper.insertRolePerms(request.getId(), request.getPermChecks()) > 0;
+        }
+        return Boolean.FALSE;
     }
 }

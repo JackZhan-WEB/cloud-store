@@ -166,9 +166,9 @@
                 <resources>
                     <resource>
                         <directory>config/environment/local</directory>
-                        <excludes>
-                            <exclude>**/*</exclude>
-                        </excludes>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
                     </resource>
                     <resource>
                         <directory>src/main/resource</directory>

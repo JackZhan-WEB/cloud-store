@@ -30,7 +30,7 @@ export function createRole(params) {
   });
 }
 /**
- * 创建角色
+ * 更新角色
  */
 export function updateRole(params) {
   return api({
@@ -40,11 +40,20 @@ export function updateRole(params) {
   });
 }
 /**
- * 创建角色
+ * 删除角色
  */
-export function removeRole(params) {
+export function deleteRole(params) {
   return api({
-    url: "/role/removeRole",
+    url: "/role/deleteRole/"+params,
+    method: "delete",
+  });
+}
+/**
+ * 批量删除角色
+ */
+export function batchDelete(params) {
+  return api({
+    url: "/role/batchDelete",
     method: "post",
     data: params
   });

@@ -226,7 +226,7 @@
             <build>
                 <resources>
                     <resource>
-                        <directory>environment/local</directory>
+                        <directory>config/environment/local</directory>
                         <includes>
                             <include>**/*</include>
                         </includes>
@@ -252,10 +252,10 @@
             <build>
                 <resources>
                     <resource>
-                        <directory>environment/dev</directory>
-                        <includes>
-                            <include>**/*</include>
-                        </includes>
+                        <directory>config/environment/dev</directory>
+                        <excludes>
+                            <exclude>**/*</exclude>
+                        </excludes>
                     </resource>
                     <resource>
                         <directory>src/main/resource</directory>

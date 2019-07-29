@@ -1,9 +1,11 @@
 package club.jackzhan.cloudstore.service;
 
 import club.jackzhan.cloudstore.module.dto.RoleDTO;
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
+import club.jackzhan.cloudstore.module.request.common.BaseIdsRequest;
 import club.jackzhan.cloudstore.module.request.common.PageQueryRequest;
 import club.jackzhan.cloudstore.module.request.role.RoleCreateRequest;
-import club.jackzhan.cloudstore.module.request.role.RoleRemoveRequest;
+import club.jackzhan.cloudstore.module.request.role.RoleUpdateRequest;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -33,5 +35,9 @@ public interface IRoleService {
 
     Boolean createRole(RoleCreateRequest request);
 
-    Boolean removeRole(RoleRemoveRequest request);
+    Boolean deleteRole(BaseIdRequest<Integer> request);
+
+    Boolean batchDelete(BaseIdsRequest<Integer> request);
+
+    Boolean updateRole(RoleUpdateRequest request);
 }

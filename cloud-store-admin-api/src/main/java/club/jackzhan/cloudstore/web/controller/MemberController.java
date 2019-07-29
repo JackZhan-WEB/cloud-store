@@ -3,6 +3,7 @@ package club.jackzhan.cloudstore.web.controller;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberUpdateRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.ResultResponse;
 import io.swagger.annotations.Api;
@@ -58,9 +59,7 @@ public class MemberController {
     @PostMapping("/updateUser")
     @RequiresPermissions({"member:updateUser", "用户更新"})
     @ApiOperation(value = "用户更新")
-    public ResultResponse updateUser(@RequestBody MemberQueryRequest request, CurrentMember currentMember) {
+    public ResultResponse updateUser(@RequestBody @Valid MemberUpdateRequest request, CurrentMember currentMember) {
         return memberService.updateUser(request,currentMember);
     }
-
-
 }

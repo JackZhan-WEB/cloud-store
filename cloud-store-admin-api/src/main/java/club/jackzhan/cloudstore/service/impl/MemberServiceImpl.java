@@ -5,6 +5,7 @@ import club.jackzhan.cloudstore.enums.MemberTypeEnum;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberUpdateRequest;
 import club.jackzhan.cloudstore.service.IMemberService;
 import club.jackzhan.cloudstore.util.RandomUtil;
 import club.jackzhan.cloudstore.util.RemoteCallUtil;
@@ -46,7 +47,7 @@ public class MemberServiceImpl implements IMemberService {
     }
 
     @Override
-    public ResultResponse updateUser(MemberQueryRequest request, CurrentMember currentMember) {
+    public ResultResponse updateUser(MemberUpdateRequest request, CurrentMember currentMember) {
         request.setUpdateUser(currentMember.getUsername());
         return remoteCallUtil.sendPost("member.member.updateUser",request);
     }

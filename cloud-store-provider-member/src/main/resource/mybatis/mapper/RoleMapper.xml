@@ -41,4 +41,19 @@
             (#{id}, #{perm})
         </foreach>
     </insert>
+    <delete id="deleteMemberRole">
+        delete from member_role where role_id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteRolePermission">
+        delete from role_permissions where role_id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="updateRolePerms">
+        delete from role_permissions where role_id = #{id};
+    </update>
 </mapper>

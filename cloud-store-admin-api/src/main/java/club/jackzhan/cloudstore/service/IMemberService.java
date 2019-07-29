@@ -3,6 +3,7 @@ package club.jackzhan.cloudstore.service;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
 import club.jackzhan.cloudstore.module.request.member.MemberCreateRequest;
 import club.jackzhan.cloudstore.module.request.member.MemberQueryRequest;
+import club.jackzhan.cloudstore.module.request.member.MemberUpdateRequest;
 import club.jackzhan.cloudstore.util.ResultResponse;
 
 /**
@@ -19,7 +20,7 @@ public interface IMemberService {
 
     ResultResponse getAllRoles();
 
-    ResultResponse updateUser(MemberQueryRequest request, CurrentMember currentMember);
+    ResultResponse updateUser(MemberUpdateRequest request, CurrentMember currentMember);
 
     ResultResponse verifyUsername(MemberQueryRequest request);
 
