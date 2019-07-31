@@ -58,3 +58,13 @@ export function batchDelete(params) {
     data: params
   });
 }
+/**
+ * 获取父角色的子角色
+ */
+export function getCheckRoles(params) {
+  return api({
+    url: "/role/getCheckRoles",
+    method: "get",
+    params: params
+  });
+}

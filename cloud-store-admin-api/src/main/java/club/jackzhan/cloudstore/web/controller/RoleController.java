@@ -78,4 +78,10 @@ public class RoleController {
         return roleService.updateRole(request,currentMember);
     }
 
+    @GetMapping("/getCheckRoles")
+    @ApiOperation(value = "获取父角色的子角色")
+    public ResultResponse getCheckRoles(@Valid BaseIdRequest<Integer> request) {
+        return roleService.getCheckRoles(request);
+    }
+
 }

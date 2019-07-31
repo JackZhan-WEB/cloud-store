@@ -1,5 +1,6 @@
 package club.jackzhan.cloudstore.service;
 
+import club.jackzhan.cloudstore.module.request.common.BaseIdRequest;
 import club.jackzhan.cloudstore.module.request.common.BaseIdsRequest;
 import club.jackzhan.cloudstore.module.request.common.BaseRequest;
 import club.jackzhan.cloudstore.module.request.member.CurrentMember;
@@ -27,4 +28,6 @@ public interface IRoleService {
     ResultResponse batchDelete(BaseIdsRequest<Integer> request, CurrentMember currentMember);
 
     ResultResponse updateRole(RoleUpdateRequest request, CurrentMember currentMember);
+
+    ResultResponse getCheckRoles(BaseIdRequest<Integer> request);
 }

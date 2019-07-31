@@ -33,4 +33,7 @@ public class RoleUpdateRequest extends BaseRequest {
     @ApiModelProperty(required = true,value = "权限")
     private Integer[] permChecks;
 
+    @ApiModelProperty(required = true,value = "角色")
+    private Integer[] roleChecks;
+
 }

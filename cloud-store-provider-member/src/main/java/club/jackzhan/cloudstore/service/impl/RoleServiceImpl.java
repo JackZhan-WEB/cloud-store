@@ -105,12 +105,22 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public Boolean updateRole(RoleUpdateRequest request) {
-        roleMapper.updateById(BeanUtils.copyProperties(request,Role.class));
+        //修改
         Integer[] permChecks = request.getPermChecks();
         if (permChecks != null && permChecks.length != 0) {
             roleMapper.deleteRolePermission(Arrays.asList(request.getId()));
-            return roleMapper.insertRolePerms(request.getId(), request.getPermChecks()) > 0;
+            roleMapper.insertRolePerms(request.getId(), request.getPermChecks());
         }
-        return Boolean.FALSE;
+        Integer[] roleChecks = request.getRoleChecks();
+        if (roleChecks != null && roleChecks.length != 0) {
+            roleMapper.deleteParentRoleById(request.getId());
+            roleMapper.insertParentRole(request.getId(), request.getRoleChecks());
+        }
+        return roleMapper.updateById(BeanUtils.copyProperties(request,Role.class)) > 0;
+    }
+
+    @Override
+    public List<Integer> getCheckRoles(BaseIdRequest request) {
+        return roleMapper.getCheckRoles(request.getId());
     }
 }

@@ -24,6 +24,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="角色名称" prop="name"/>
+      <el-table-column align="center" label="角色编码" prop="code"/>
       <el-table-column align="center" label="角色描述" prop="description"/>
       <el-table-column align="center" label="角色状态" prop="state">
         <template slot-scope="scope">
@@ -45,9 +46,11 @@
       <el-table-column align="center" label="修改人" prop="updateUser"/>
       <el-table-column align="center" label="管理" width="320px" v-if="hasPerm('role:update')">
         <template slot-scope="scope">
-          <el-button type="primary" icon="edit" @click="showSetPerms(scope.$index)" size="medium">设置权限</el-button>
-          <el-button type="primary" icon="" size="medium"
-                     @click="removeUser(scope.$index)">设置角色</el-button>
+          <!--          <el-button type="primary" icon="" @click="showSetPerms(scope.$index)" size="medium">设置权限</el-button>-->
+          <el-button type="primary" icon="" @click="showUpdate(scope.$index)" size="medium">编辑</el-button>
+          <!--          <el-button type="primary" icon="" size="medium"-->
+          <!--                     @click="showSetRoles(scope.$index)">设置角色-->
+          <!--          </el-button>-->
           <el-button type="danger" icon="el-icon-delete" size="medium"
                      @click="deleteRole(scope.$index)"></el-button>
         </template>
@@ -62,38 +65,47 @@
       :page-sizes="[1, 20, 50, 100]"
       layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="450px" @close="clearDialog">
       <el-form class="small-space" :model="tempRole" label-position="left" label-width="80px"
                style='width: 300px; margin-left:50px;'>
-        <el-form-item label="角色名" required v-if="dialogStatus==='create'">
+        <el-form-item label="角色名" required>
           <el-input type="text" v-model="tempRole.name">
           </el-input>
         </el-form-item>
-        <el-form-item label="角色编码" required v-if="dialogStatus==='create'">
+        <el-form-item label="角色编码" required>
           <el-input type="text" v-model="tempRole.code">
           </el-input>
         </el-form-item>
-        <el-form-item label="角色描述" v-if="dialogStatus==='create'">
+        <el-form-item label="角色描述">
           <el-input type="text" v-model="tempRole.description">
           </el-input>
         </el-form-item>
         <el-form-item label="设置权限" required>
-          <div v-if="dialogStatus==='create'">
+          <div>
             <el-radio v-model="tempRole.isSetPerms" label="1">是</el-radio>
             <el-radio v-model="tempRole.isSetPerms" label="2">否</el-radio>
           </div>
           <el-tree
             :data="perms"
             show-checkbox
-            @check-change="checkChange"
+            @check-change="checkPerms"
             :default-checked-keys="tempRole.permChecks"
             node-key="id"
             ref="permsTree"
-            :props="defaultProps"
-            v-if="tempRole.isSetPerms==='1'">
+            :props="defaultProps">
           </el-tree>
         </el-form-item>
       </el-form>
+      <!--      <el-table :data="roleList" ref="checkRolesTable"-->
+      <!--                v-else-if="this.dialogStatus === 'setRoles'">-->
+      <!--        <el-table-column-->
+      <!--          type="selection"-->
+      <!--          width="55">-->
+      <!--        </el-table-column>-->
+      <!--        <el-table-column align="center" label="角色名称" prop="name"/>-->
+      <!--        <el-table-column align="center" label="角色编码" prop="code"/>-->
+      <!--        <el-table-column align="center" label="角色描述" prop="description"/>-->
+      <!--      </el-table>-->
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button v-if="dialogStatus==='create'" type="success" @click="createRole">创 建</el-button>
@@ -113,6 +125,7 @@
       return {
         totalCount: 0, //分页组件--数据总条数
         list: [],//表格的数据
+        roleList: [],//dialog表格的数据
         listLoading: false,//数据加载等待动画
         listQuery: {
           type: '1',
@@ -125,6 +138,7 @@
         textMap: {
           update: '编辑',
           setPerms: '设置权限',
+          setRoles: '设置角色',
           create: '新建角色'
         },
         tempRole: {
@@ -133,13 +147,14 @@
           code: '',
           isSetPerms: '2',
           description: '',
-          permChecks: []
+          permChecks: [],
+          roleChecks: [],
         },
         defaultProps: {
           children: 'children',
           label: 'name'
         },
-        multipleSelection:[],
+        multipleSelection: [],
 
       }
     },
@@ -194,20 +209,32 @@
         //表格序号
         return (this.listQuery.currentPage - 1) * this.listQuery.pageSize + $index + 1
       },
-      showCreate() {
-        //显示新增对话框
-        this.tempRole.name = "";
+      clearDialog() {
+        //关闭dialog清空数据
+        this.tempRole.id = '';
+        this.tempRole.name = '';
+        this.tempRole.code = '';
+        this.tempRole.isSetPerms = '1';
+        this.tempRole.description = '';
         this.tempRole.permChecks = [];
+        this.tempRole.roleChecks = [];
+        this.$refs.permsTree.setCheckedKeys([]);
+        // this.tempRole.roleChecks = [];
+        // this.$refs.checkRolesTable.clearSelection();
+      },
+      showCreate() {
+        console.log(this.tempRole,'open');
+        //显示新增对话框
         this.dialogStatus = "create";
         this.dialogFormVisible = true
       },
-      batchDelete(){
+      batchDelete() {
         let selection = this.multipleSelection;
         //批量删除
         let arr = selection.map(function (item) {
           return item.id;
         });
-        if(arr.length <= 0){
+        if (arr.length <= 0) {
           this.$message.error("请选择需要删除的角色！")
         }
         this.$confirm('确定批量删除角色?', '提示', {
@@ -215,7 +242,7 @@
           showCancelButton: false,
           type: 'warning'
         }).then(() => {
-          roleService.batchDelete({'ids':arr}).then(() => {
+          roleService.batchDelete({'ids': arr}).then(() => {
             this.getList()
           }).catch(() => {
             this.$message.error("删除失败")
@@ -224,18 +251,61 @@
       },
       showSetPerms($index) {
         let role = this.list[$index];
-        console.log(role,'role');
+        console.log(role, 'role');
         this.tempRole.name = role.name;
         this.tempRole.code = role.code;
         this.tempRole.description = role.description;
-        this.tempRole.isSetPerms='1';
+        this.tempRole.isSetPerms = '1';
         this.tempRole.id = role.id;
         this.dialogStatus = "setPerms";
         permsService.getCheckPerms(this.tempRole.id).then(response => {
           this.$refs.permsTree.setCheckedKeys(response.data);
         });
-
         this.dialogFormVisible = true
+      },
+      showUpdate($index) {
+        let role = this.list[$index];
+        console.log(role, 'role');
+        this.tempRole.name = role.name;
+        this.tempRole.code = role.code;
+        this.tempRole.description = role.description;
+        this.tempRole.isSetPerms = '1';
+        this.tempRole.id = role.id;
+        this.dialogStatus = "setPerms";
+        permsService.getCheckPerms(this.tempRole.id).then(response => {
+          this.$refs.permsTree.setCheckedKeys(response.data);
+        });
+        this.dialogFormVisible = true
+      },
+      showSetRoles($index) {
+        let role = this.list[$index];
+        this.tempRole.name = role.name;
+        this.tempRole.code = role.code;
+        this.tempRole.description = role.description;
+        this.tempRole.isSetPerms = '1';
+        this.tempRole.id = role.id;
+        this.dialogStatus = "setRoles";
+        //回显角色
+        roleService.getCheckRoles({'id': this.tempRole.id}).then(response => {
+          let rows = response.data;
+          let newRoles = [];
+          this.list.forEach(item => {
+            if (item.id !== this.tempRole.id) {
+              newRoles.push(item);
+            }
+            rows.forEach(row => {
+              if (item.id === row) {
+                this.$refs.checkRolesTable.toggleRowSelection(item, true);
+              }
+            });
+          });
+          this.roleList = newRoles;
+          this.tempRole.roleChecks = response.data;
+        });
+        this.dialogFormVisible = true
+      },
+      filterHandler(value, row, column) {
+        console.log(row, 'row');
       },
       createRole() {
         //添加新角色
@@ -246,7 +316,12 @@
       },
       updateRole() {
         //修改角色
-        let _vue = this;
+        // let selection = this.$refs.checkRolesTable.selection;
+        // this.tempRole.roleChecks = selection.map(function (item) {
+        //   console.log(item, 'item');
+        //   return item.id;
+        // });
+
         roleService.updateRole(this.tempRole).then(() => {
           let msg = "修改成功";
           this.dialogFormVisible = false;
@@ -255,7 +330,7 @@
             type: 'success',
             duration: 1 * 1000,
             onClose: () => {
-              _vue.getList();
+              this.getList();
             }
           })
         })
@@ -276,13 +351,15 @@
         })
       },
       getPerms() {
+        //回显权限
         permsService.getPerms().then(response => {
           this.perms = response.data.children;
         })
       },
-      checkChange(){
-        this.tempRole.permChecks =  this.$refs.permsTree.getCheckedKeys();
-      }
+      checkPerms() {
+        //选择权限
+        this.tempRole.permChecks = this.$refs.permsTree.getCheckedKeys();
+      },
     }
   }
 </script>

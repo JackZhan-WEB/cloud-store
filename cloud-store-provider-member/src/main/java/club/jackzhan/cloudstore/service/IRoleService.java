@@ -40,4 +40,6 @@ public interface IRoleService {
     Boolean batchDelete(BaseIdsRequest<Integer> request);
 
     Boolean updateRole(RoleUpdateRequest request);
+
+    List<Integer> getCheckRoles(BaseIdRequest<Integer> request);
 }

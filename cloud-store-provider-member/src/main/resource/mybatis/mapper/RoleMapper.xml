@@ -56,4 +56,18 @@
     <update id="updateRolePerms">
         delete from role_permissions where role_id = #{id};
     </update>
+    <delete id="deleteParentRoleById">
+        delete from role_parent where parent_role_id = #{id}
+    </delete>
+    <insert id="insertParentRole">
+        insert into role_parent (role_id, parent_role_id) VALUES
+        <foreach collection="roleChecks" separator="," item="roleId">
+            (#{roleId}, #{id})
+        </foreach>
+    </insert>
+    <select id="getCheckRoles" resultType="java.lang.Integer">
+        select role_id
+        from role_parent
+        where parent_role_id = #{id}
+    </select>
 </mapper>

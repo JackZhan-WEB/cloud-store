@@ -25,4 +25,10 @@ public interface RoleMapper extends BaseMapper<Role> {
     Integer deleteRolePermission(List<Integer> ids);
 
     Integer updateRolePerms(@Param("id") Integer id, @Param("permChecks") Integer[] permChecks);
+
+    Integer deleteParentRoleById(Integer id);
+
+    Integer insertParentRole(@Param("id") Integer id, @Param("roleChecks") Integer[] roleChecks);
+
+    List<Integer> getCheckRoles(Object id);
 }

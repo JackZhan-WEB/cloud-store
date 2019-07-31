@@ -54,10 +54,10 @@ public class RoleController {
 
     @PostMapping("/createRole")
     @ApiOperation(value = "创建角色")
-    public ResultResponse createRole(@RequestBody RoleCreateRequest request){
+    public ResultResponse createRole(@RequestBody RoleCreateRequest request) {
         if (roleService.createRole(request)) {
             return ResultResponse.success();
-        }else {
+        } else {
             return ResultResponse.failure("创建失败！");
         }
 
@@ -65,31 +65,37 @@ public class RoleController {
 
     @PostMapping("/deleteRole")
     @ApiOperation(value = "删除角色")
-    public ResultResponse deleteRole(@RequestBody BaseIdRequest<Integer> request){
+    public ResultResponse deleteRole(@RequestBody BaseIdRequest<Integer> request) {
         if (roleService.deleteRole(request)) {
             return ResultResponse.success();
-        }else {
+        } else {
             return ResultResponse.failure("删除失败！");
         }
     }
 
     @PostMapping("/batchDelete")
     @ApiOperation(value = "批量删除")
-    public ResultResponse batchDelete(@RequestBody @Valid BaseIdsRequest<Integer> request){
+    public ResultResponse batchDelete(@RequestBody @Valid BaseIdsRequest<Integer> request) {
         if (roleService.batchDelete(request)) {
             return ResultResponse.success();
-        }else {
+        } else {
             return ResultResponse.failure("删除失败！");
         }
     }
 
     @PostMapping("/updateRole")
     @ApiOperation(value = "修改角色")
-    public ResultResponse updateRole(@RequestBody RoleUpdateRequest request){
+    public ResultResponse updateRole(@RequestBody RoleUpdateRequest request) {
         if (roleService.updateRole(request)) {
             return ResultResponse.success();
-        }else {
+        } else {
             return ResultResponse.failure("修改失败！");
         }
+    }
+
+    @GetMapping("/getCheckRoles")
+    @ApiOperation(value = "获取父角色的子角色")
+    public ResultResponse getCheckRoles(BaseIdRequest<Integer> request) {
+        return ResultResponse.success(roleService.getCheckRoles(request));
     }
 }

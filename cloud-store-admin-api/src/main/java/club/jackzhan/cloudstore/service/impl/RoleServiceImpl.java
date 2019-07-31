@@ -62,4 +62,9 @@ public class RoleServiceImpl implements IRoleService {
         return remoteCallUtil.sendPost("member.role.updateRole", request);
     }
 
+    @Override
+    public ResultResponse getCheckRoles(BaseIdRequest<Integer> request) {
+        return remoteCallUtil.sendGet("member.role.getCheckRoles", request);
+    }
+
 }
