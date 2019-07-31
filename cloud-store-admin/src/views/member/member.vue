@@ -34,7 +34,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip="true" align="center" label="用户状态" prop="state">
+      <el-table-column :show-overflow-tooltip="true" align="center" label="用户状态" prop="state">
         <template slot-scope="scope">
           <el-tag type="primary" v-if="scope.row.state===1">正常</el-tag>
           <el-tag type="warning" v-else-if="scope.row.state===2">密码错误次数过多被禁用</el-tag>
@@ -127,7 +127,7 @@
 </template>
 <script>
   import * as memberService from '@/api/member/member'
-  import * as roleService from '@/api/member/role'
+  import * as roleService from '@/api/system/role'
   import {mapGetters} from 'vuex'
 
 

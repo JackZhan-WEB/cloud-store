@@ -115,9 +115,8 @@
   </div>
 </template>
 <script>
-  import * as roleService from '@/api/member/role'
-  import * as permsService from '@/api/member/permissions'
-  import {mapGetters} from 'vuex'
+  import * as roleService from '@/api/system/role'
+  import * as permsService from '@/api/system/permissions'
 
 
   export default {
@@ -164,17 +163,12 @@
         this.getPerms();
       }
     },
-    computed: {
-      ...mapGetters([
-        'memberId'
-      ])
-    },
     methods: {
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
       dateFormat: function (row, column) {
-        let moment = require('moment');
+        let moment = require('moment/moment');
         let date = row[column.property];
         if (!date) {
           return "";

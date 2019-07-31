@@ -29,27 +29,11 @@ export default new Router({
 })
 export const asyncRouterMap = [
   {
-    path: '/system',
-    component: Layout,
-    redirect: '/system/article',
-    name: '功能模块',
-    meta: {title: '功能模块', icon: 'tree'},
-    children: [
-      {
-        path: 'article',
-        name: '文章',
-        component: _import('article/article'),
-        meta: {title: '文章', icon: 'example'},
-        menu: 'article'
-      },
-    ]
-  },
-  {
     path: '/member',
     component: Layout,
     redirect: '/member/',
-    name: '',
-    meta: {title: '用户权限', icon: 'table'},
+    name: '用户管理',
+    meta: {title: '用户管理', icon: ''},
     children: [
       {
         path: '',
@@ -59,16 +43,32 @@ export const asyncRouterMap = [
         menu: 'member'
       },
       {
-        path: 'role',
+        path: 'member',
+        name: '空位',
+        component: _import('member/member'),
+        meta: {title: '空位', icon: ''},
+        menu: 'member'
+      },
+    ]
+  },
+  {
+    path: '/system',
+    component: Layout,
+    redirect: '/system/',
+    name: '系统管理',
+    meta: {title: '系统管理', icon: ''},
+    children: [
+      {
+        path: '',
         name: '角色管理',
-        component: _import('member/role'),
+        component: _import('system/role'),
         meta: {title: '角色管理', icon: ''},
         menu: 'role'
       },
       {
         path: 'permissions',
         name: '权限管理',
-        component: _import('member/permissions'),
+        component: _import('system/permissions'),
         meta: {title: '权限管理', icon: ''},
         menu: 'permissions'
       },

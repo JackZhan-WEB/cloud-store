@@ -18,8 +18,7 @@
   </div>
 </template>
 <script>
-  import * as permsService from '@/api/member/permissions'
-  import {mapGetters} from 'vuex'
+  import * as permsService from '@/api/system/permissions'
 
 
   export default {
@@ -59,14 +58,9 @@
     created() {
       this.getList();
     },
-    computed: {
-      ...mapGetters([
-        'memberId'
-      ])
-    },
     methods: {
       dateFormat: function (row, column) {
-        let moment = require('moment');
+        let moment = require('moment/moment');
         let date = row[column.property];
         if (!date) {
           return "";
