@@ -45,6 +45,26 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
     password: admin
+    # 连接池配置
+    druid:
+      initialSize: 5
+      minIdle: 5
+      maxActive: 30
+      ######Druid监控配置######
+      #是否启用StatFilter默认值true
+      web-stat-filter.enabled: true
+      #IP 白名单
+      stat-view-servlet.allow: 127.0.0.1
+      #IP 黑名单
+      #spring.datasource.druid.stat-view-servlet.deny=192.168.0.101
+      #监控地址,默认 /druid/*
+      stat-view-servlet.url-pattern: /druid/*
+      #哪些资源配置监控：主要只静态资源和监控地址本身
+      WebStatFilter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet.login-username: druid
+      stat-view-servlet.login-password: druid123123
+
   http:
     encoding:
       force: true

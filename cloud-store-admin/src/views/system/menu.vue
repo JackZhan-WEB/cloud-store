@@ -12,47 +12,31 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit
-              highlight-current-row @selection-change="handleSelectionChange">
+    <el-table :data="dataList" row-key="menuId" border style="width: 100%; ">
+      <el-table-column prop="name" header-align="center" min-width="150" label="名称"/>
+      <el-table-column prop="parentName" header-align="center" align="center" width="120" label="上级菜单"/>
       <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
-      <el-table-column align="center" label="序号" width="80px">
+        header-align="center" align="center" label="图标">
         <template slot-scope="scope">
-          <span v-text="getIndex(scope.$index)"> </span>
+          <icon-svg :name="scope.row.icon || ''"></icon-svg>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="角色名称" prop="name"/>
-      <el-table-column align="center" label="角色编码" prop="code"/>
-      <el-table-column align="center" label="角色描述" prop="description"/>
-      <el-table-column align="center" label="角色状态" prop="state">
+      <el-table-column prop="type" header-align="center" align="center" label="类型">
         <template slot-scope="scope">
-          <el-tag type="primary" v-if="scope.row.state===1">正常</el-tag>
-          <el-tag type="warning" v-else-if="scope.row.state===2">禁用</el-tag>
-          <el-tag type="warning" v-else-if="scope.row.state===3">已删除</el-tag>
-          <el-tag type="danger" v-else>角色状态异常</el-tag>
+          <el-tag v-if="scope.row.type === 0" size="small">目录</el-tag>
+          <el-tag v-else-if="scope.row.type === 1" size="small" type="success">菜单</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" size="small" type="info">按钮</el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="角色类型" prop="type">
-        <template slot-scope="scope">
-          <el-tag type="success" v-if="scope.row.type===1">可授权</el-tag>
-          <el-tag type="primary" v-else-if="scope.row.type===2">不可授权</el-tag>
-          <el-tag type="danger" v-else>角色类型异常</el-tag>
-        </template>
+      <el-table-column
+        prop="orderNum" header-align="center" align="center" label="排序号">
       </el-table-column>
-      <el-table-column align="center" label="创建时间" :formatter="dateFormat" prop="createTime"/>
-      <el-table-column align="center" label="最近修改时间" :formatter="dateFormat" prop="updateTime"/>
-      <el-table-column align="center" label="修改人" prop="updateUser"/>
-      <el-table-column align="center" label="管理" width="320px" v-if="hasPerm('role:update')">
+      <el-table-column prop="url" header-align="center" align="center" width="150" :show-overflow-tooltip="true" label="菜单URL"/>
+      <el-table-column prop="perms" header-align="center" align="center" width="150" :show-overflow-tooltip="true" label="授权标识"/>
+      <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
         <template slot-scope="scope">
-          <!--          <el-button type="primary" icon="" @click="showSetPerms(scope.$index)" size="medium">设置权限</el-button>-->
-          <el-button type="primary" icon="" @click="showUpdate(scope.$index)" size="medium">编辑</el-button>
-          <!--          <el-button type="primary" icon="" size="medium"-->
-          <!--                     @click="showSetRoles(scope.$index)">设置角色-->
-          <!--          </el-button>-->
-          <el-button type="danger" icon="el-icon-delete" size="medium"
-                     @click="deleteRole(scope.$index)"></el-button>
+          <el-button v-if="" type="text" size="small" @click="">修改</el-button>
+          <el-button v-if="" type="text" size="small" @click="">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -92,21 +76,10 @@
             :default-checked-keys="tempRole.permChecks"
             node-key="id"
             ref="permsTree"
-            :props="defaultProps"
-            v-if="tempRole.isSetPerms==='1'">
+            :props="defaultProps">
           </el-tree>
         </el-form-item>
       </el-form>
-      <!--      <el-table :data="roleList" ref="checkRolesTable"-->
-      <!--                v-else-if="this.dialogStatus === 'setRoles'">-->
-      <!--        <el-table-column-->
-      <!--          type="selection"-->
-      <!--          width="55">-->
-      <!--        </el-table-column>-->
-      <!--        <el-table-column align="center" label="角色名称" prop="name"/>-->
-      <!--        <el-table-column align="center" label="角色编码" prop="code"/>-->
-      <!--        <el-table-column align="center" label="角色描述" prop="description"/>-->
-      <!--      </el-table>-->
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button v-if="dialogStatus==='create'" type="success" @click="createRole">创 建</el-button>
@@ -213,9 +186,7 @@
         this.tempRole.description = '';
         this.tempRole.permChecks = [];
         this.tempRole.roleChecks = [];
-        if(this.$refs.permsTree){
-          this.$refs.permsTree.setCheckedKeys([]);
-        }
+        this.$refs.permsTree.setCheckedKeys([]);
         // this.tempRole.roleChecks = [];
         // this.$refs.checkRolesTable.clearSelection();
       },
