@@ -31,6 +31,7 @@
         <reflectasm.version>1.11.1</reflectasm.version>
         <mybatis-plus.version>2.2.0</mybatis-plus.version>
         <swagger.version>2.7.0</swagger.version>
+        <docker.image.prefix>jackzhan</docker.image.prefix>
     </properties>
 
     <dependencyManagement>

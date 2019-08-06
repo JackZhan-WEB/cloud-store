@@ -1,0 +1,31 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka #,http://eureka7002.com:7002/eureka,http://eureka7003.com:7003/eureka
+  instance:
+    instance-id: cloud-store-zuul-gateway
+    prefer-ip-address: true
+
+info:
+  app:
+    name: jackzhan-cloud-store
+
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-store-zuul-gateway
+
+zuul:
+  #    ignored-services: '*'
+  #    prefix: /jackzhan
+  routes:
+    member:
+      path: /member/**
+#      url: http://localhost:9991/
+      serviceId: cloud-store-member
+    api:
+      path: /api/**
+#      url: http://localhost:9992/
+      serviceId: cloud-store-admin
